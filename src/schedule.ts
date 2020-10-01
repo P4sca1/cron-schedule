@@ -14,8 +14,8 @@ export interface IScheduleDefinition {
 }
 
 export class Schedule {
-  // readonly #prev: IScheduleDefinition
-  readonly #next: IScheduleDefinition
+  public readonly prev: IScheduleDefinition
+  public readonly next: IScheduleDefinition
 
   public constructor({
     seconds,
@@ -27,18 +27,18 @@ export class Schedule {
   }: IScheduleDefinition) {
     // Clone the schedule definition and sort all values in descending order.
     // Used to lookup previous schedules.
-    // this.#prev = {
-    //   seconds: seconds.map((x) => x).sort((a, b) => a + b),
-    //   minutes: minutes.map((x) => x).sort((a, b) => a + b),
-    //   hours: hours.map((x) => x).sort((a, b) => a + b),
-    //   days: days.map((x) => x).sort((a, b) => a + b),
-    //   months: months.map((x) => x).sort((a, b) => a + b),
-    //   weekdays: weekdays.map((x) => x).sort((a, b) => a + b),
-    // }
+    this.prev = {
+      seconds: seconds.map((x) => x).sort((a, b) => b - a),
+      minutes: minutes.map((x) => x).sort((a, b) => b - a),
+      hours: hours.map((x) => x).sort((a, b) => b - a),
+      days: days.map((x) => x).sort((a, b) => b - a),
+      months: months.map((x) => x).sort((a, b) => b - a),
+      weekdays: weekdays.map((x) => x).sort((a, b) => b - a),
+    }
 
     // Clone the schedule definition and sort all values in ascending order.
     // Used to lookup next schedules.
-    this.#next = {
+    this.next = {
       seconds: seconds.map((x) => x).sort((a, b) => a - b),
       minutes: minutes.map((x) => x).sort((a, b) => a - b),
       hours: hours.map((x) => x).sort((a, b) => a - b),
@@ -69,7 +69,7 @@ export class Schedule {
       days: allowedDays,
       months: allowedMonths,
       // weekdays: allowedWeekdays,
-    } = this.#next
+    } = this.next
 
     const nextDate = new Date(
       startYear,
@@ -199,7 +199,7 @@ export class Schedule {
       days: allowedDays,
       months: allowedMonths,
       weekdays: allowedWeekdays,
-    } = this.#next
+    } = this.next
 
     return (
       (allowedSeconds.length === 0 || allowedSeconds.indexOf(second) !== -1) &&

@@ -1,4 +1,4 @@
-const TIMEOUT_MAX = 2147483647 // 2^31-1
+export const TIMEOUT_MAX = 2147483647 // 2^31-1
 
 export interface ITimerHandle {
   timeoutId?: ReturnType<typeof setTimeout>
