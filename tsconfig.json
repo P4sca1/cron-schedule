@@ -5,9 +5,9 @@
     "sourceMap": true,
     "declaration": true,
 
-    "target": "es2018", // ES2019 is 100% supported in node.js 10.13.
+    "target": "es6",
 
-    "module": "commonjs", // Node.js does not yet support es-modules.
+    "module": "commonjs",
     "moduleResolution": "node",
     "esModuleInterop": true,
 
