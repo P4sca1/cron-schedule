@@ -6,8 +6,6 @@ A zero-dependency cron scheduler for Node.js and the browser.
 * Get next or previous schedules from a specific starting date.
 * Check if a date matches a cron expression.
 * Schedule a function call based on a cron expression.
-* Fully tree-shakeable API.
-* Timezone support.
 
 ## Installation for usage in Node.js or in the browser via bundlers
 Via npm:
@@ -30,5 +28,13 @@ After the script has been loaded, you can use the global `cronSchedule` object t
 
 **Requires ES6 (ES2015) browser support. Internet Explorer is not supported.** If you need to support older browsers, get _cron-schedula_ via npm or yarn and transpile it with your bundler.
 
-## API
+## Usage
+```ts
+import { parseCronExpression } from 'cron-schedule'
+
+// Once every minute.
+const schedule = parseCronExpression('0 * * * * *') // In the browser: cronSchedule.parseCronExpression
+console.log(schedule.getNextDates(10))
+```
+
 WORK IN PROGRESS
