@@ -1,4 +1,5 @@
 export class Schedule {
+  public readonly seconds: number[]
   public readonly minutes: number[]
   public readonly hours: number[]
   public readonly days: number[]
