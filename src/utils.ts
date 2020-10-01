@@ -37,3 +37,26 @@ export function longTimeout(
 
   return handle
 }
+
+/* Extracts second, minute, hour, date, month and the weekday from a date. */
+export function extractDateElements(
+  date: Date
+): {
+  second: number
+  minute: number
+  hour: number
+  day: number
+  month: number
+  weekday: number
+  year: number
+} {
+  return {
+    second: date.getSeconds(),
+    minute: date.getMinutes(),
+    hour: date.getHours(),
+    day: date.getDate(),
+    month: date.getMonth(),
+    weekday: date.getDay(),
+    year: date.getFullYear(),
+  }
+}
