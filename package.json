@@ -51,6 +51,6 @@
     }
   },
   "dependencies": {
-    "@rollup/plugin-typescript": "^6.0.0"
+    "@rollup/plugin-typescript": "6.0.0"
   }
 }
