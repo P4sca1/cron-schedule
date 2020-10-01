@@ -1,7 +1,7 @@
 const TIMEOUT_MAX = 2147483647 // 2^31-1
 
 export interface ITimerHandle {
-  timeoutId: number
+  timeoutId?: ReturnType<typeof setTimeout>
 }
 
 /**
@@ -24,7 +24,7 @@ export function longTimeout(
   }
 
   handle ??= {
-    timeoutId: -1,
+    timeoutId: undefined,
   }
 
   handle.timeoutId = setTimeout(() => {

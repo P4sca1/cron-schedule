@@ -14,7 +14,7 @@ export interface IScheduleDefinition {
 }
 
 export class Schedule {
-  readonly #prev: IScheduleDefinition
+  // readonly #prev: IScheduleDefinition
   readonly #next: IScheduleDefinition
 
   public constructor({
@@ -27,14 +27,14 @@ export class Schedule {
   }: IScheduleDefinition) {
     // Clone the schedule definition and sort all values in descending order.
     // Used to lookup previous schedules.
-    this.#prev = {
-      seconds: seconds.map((x) => x).sort((a, b) => a + b),
-      minutes: minutes.map((x) => x).sort((a, b) => a + b),
-      hours: hours.map((x) => x).sort((a, b) => a + b),
-      days: days.map((x) => x).sort((a, b) => a + b),
-      months: months.map((x) => x).sort((a, b) => a + b),
-      weekdays: weekdays.map((x) => x).sort((a, b) => a + b),
-    }
+    // this.#prev = {
+    //   seconds: seconds.map((x) => x).sort((a, b) => a + b),
+    //   minutes: minutes.map((x) => x).sort((a, b) => a + b),
+    //   hours: hours.map((x) => x).sort((a, b) => a + b),
+    //   days: days.map((x) => x).sort((a, b) => a + b),
+    //   months: months.map((x) => x).sort((a, b) => a + b),
+    //   weekdays: weekdays.map((x) => x).sort((a, b) => a + b),
+    // }
 
     // Clone the schedule definition and sort all values in ascending order.
     // Used to lookup next schedules.
@@ -58,7 +58,7 @@ export class Schedule {
       hour: startHour,
       day: startDay,
       month: startMonth,
-      weekday: startWeekday,
+      // weekday: startWeekday,
       year: startYear,
     } = extractDateElements(startDate)
 
@@ -68,7 +68,7 @@ export class Schedule {
       hours: allowedHours,
       days: allowedDays,
       months: allowedMonths,
-      weekdays: allowedWeekdays,
+      // weekdays: allowedWeekdays,
     } = this.#next
 
     const nextDate = new Date(
@@ -229,7 +229,7 @@ export class Schedule {
    * in the handle up to date.
    */
   public setInterval(fn: () => void, handle?: ITimerHandle): ITimerHandle {
-    handle ??= { timeoutId: -1 }
+    handle ??= { timeoutId: undefined }
 
     const { timeoutId } = this.setTimeout(() => {
       fn()
@@ -243,6 +243,8 @@ export class Schedule {
 
   /** Clears a timeout or interval, making sure that the function will no longer execute. */
   public clearTimeoutOrInterval(handle: ITimerHandle): void {
-    clearTimeout(handle.timeoutId)
+    if (handle.timeoutId) {
+      clearTimeout(handle.timeoutId)
+    }
   }
 }
