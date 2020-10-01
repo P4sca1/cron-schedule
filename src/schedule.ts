@@ -1,3 +1,5 @@
+import { ITimerHandle, longTimeout } from './utils'
+
 export class Schedule {
   public readonly seconds: number[]
   public readonly minutes: number[]
@@ -6,15 +8,15 @@ export class Schedule {
   public readonly months: number[]
   public readonly weekdays: number[]
 
-  #timerHandles: number[] = []
-
   public constructor(
+    seconds: number[],
     minutes: number[],
     hours: number[],
     days: number[],
     months: number[],
     weekdays: number[]
   ) {
+    this.seconds = seconds
     this.minutes = minutes
     this.hours = hours
     this.days = days
@@ -25,7 +27,7 @@ export class Schedule {
   /** Gets the next scheduled date starting from the given start date or now. */
   public getNextDate(startDate: Date = new Date()): Date {
     // TODO
-    return new Date()
+    return new Date(startDate.getTime() + 5000)
   }
 
   /** Gets the specified amount of future scheduled dates starting from the given start date or now. */
@@ -56,32 +58,36 @@ export class Schedule {
 
   /**
    * Creates a timeout, which will fire the given function on the next schedule.
-   * Returns a handle which can be used with clearTimeout.
+   * Returns a handle which can be used to clear the timeout using clearTimeoutOrInterval.
    */
-  public setTimeout(fn: () => void): number {
+  public setTimeout(fn: () => void): ITimerHandle {
     const nextSchedule = this.getNextDate()
-    return setTimeout(fn, nextSchedule.getTime() - Date.now())
+    const timeout = nextSchedule.getTime() - Date.now()
+
+    return longTimeout(fn, timeout)
   }
 
   /**
    * Creates an interval, which will fire the given function on every future schedule.
-   * Returns a handle which can be used to clear the interval.
+   * Returns a handle which can be used to clear the interval using clearTimeoutOrInterval.
+   * The handle parameter can be ignored. It is used internally to keep the timeoutId
+   * in the handle up to date.
    */
-  public setInterval(fn: () => void, handle?: number): number {
-    handle ??= this.#timerHandles.length++
+  public setInterval(fn: () => void, handle?: ITimerHandle): ITimerHandle {
+    handle ??= { timeoutId: -1 }
 
-    const nextSchedule = this.getNextDate()
-
-    this.#timerHandles[handle] = setTimeout(() => {
+    const { timeoutId } = this.setTimeout(() => {
       fn()
       this.setInterval(fn, handle)
-    }, nextSchedule.getTime() - Date.now())
+    })
+
+    handle.timeoutId = timeoutId
 
     return handle
   }
 
-  /** Clears the interval, making sure that the function will no longer execute on future schedules. */
-  public clearInterval(handle: number): void {
-    clearTimeout(this.#timerHandles[handle])
+  /** Clears a timeout or interval, making sure that the function will no longer execute. */
+  public clearTimeoutOrInterval(handle: ITimerHandle): void {
+    clearTimeout(handle.timeoutId)
   }
 }
