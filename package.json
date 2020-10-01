@@ -6,7 +6,7 @@
   },
   "author": "P4sca1 <sthamer.pascal@gmail.com>",
   "contributors": [
-    "Airfooox <>"
+    "Airfooox <konstantin.zisiadis@st.ovgu.de>"
   ],
   "main": "dist/index.js",
   "browser": "dist/cron-schedule.min.js",
