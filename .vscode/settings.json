@@ -1,0 +1,14 @@
+{
+    // Do not allow guests to join live share session without approval.
+    "liveshare.guestApprovalRequired": true,
+
+    // Always use 2 spaces for indentation.
+    "editor.detectIndentation": false,
+    "editor.insertSpaces": true,
+    "editor.tabSize": 2,
+    
+    // Run eslint fix on save.
+    "editor.codeActionsOnSave": {
+        "source.fixAll.eslint": true
+    }
+}
