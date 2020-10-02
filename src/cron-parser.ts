@@ -1,14 +1,179 @@
 import { Schedule } from './schedule'
 
+interface IConstraint {
+  min: number
+  max: number
+  aliases?: Record<string, string>
+}
+
+const timeNicknames: Record<string, string | undefined> = {
+  '@yearly': '0 0 1 1 *',
+  '@annually': '0 0 1 1 *',
+  '@monthly': '0 0 1 1 *',
+  '@weekly': '0 0 * * 0',
+  '@daily': '0 0 * * *',
+  '@hourly': '0 * * * *',
+  '@minutely': '* * * * *',
+  '@secondly': '* * * * * *',
+}
+
+const secondConstraint: IConstraint = {
+  min: 0,
+  max: 59,
+}
+
+const minuteConstraint: IConstraint = {
+  min: 0,
+  max: 59,
+}
+
+const hourConstraint: IConstraint = {
+  min: 0,
+  max: 23,
+}
+
+const dayConstraint: IConstraint = {
+  min: 1,
+  max: 31,
+}
+
+const monthConstraint: IConstraint = {
+  min: 1,
+  max: 12,
+  aliases: {
+    jan: '1',
+    feb: '2',
+    mar: '3',
+    apr: '4',
+    may: '5',
+    jun: '6',
+    jul: '7',
+    aug: '8',
+    sep: '9',
+    oct: '10',
+    nov: '11',
+    dec: '12',
+  },
+}
+
+const weekdayConstraint: IConstraint = {
+  min: 0,
+  max: 6,
+  aliases: {
+    '7': '0',
+    'sun': '0',
+    'mon': '1',
+    'tue': '2',
+    'wed': '3',
+    'thu': '4',
+    'fri': '5',
+    'sat': '6',
+  },
+}
+
+function parseElement(element: string, constraint: IConstraint): Set<number> {
+  const result = new Set<number>()
+
+  if (element === '*') return result
+
+  // Parse each element in a list.
+  const listElements = element.split(',')
+  if (listElements.length > 1) {
+    listElements.forEach((listElement) => {
+      const parsedListElement = parseElement(listElement, constraint)
+      parsedListElement.forEach((x) => result.add(x))
+    })
+
+    return result
+  }
+
+  const parseSingleElement = (singleElement: string): number => {
+    singleElement =
+      constraint.aliases?.[singleElement.toLowerCase()] ?? singleElement
+    const parsedElement = parseInt(singleElement, 10)
+
+    if (Number.isNaN(parsedElement)) {
+      throw new Error(`Failed to parse ${element}: ${singleElement} is NaN.`)
+    }
+
+    if (parsedElement < constraint.min || parsedElement > constraint.max) {
+      throw new Error(
+        `Failed to parse ${element}: ${singleElement} is outside of constraint range of ${constraint.min} - ${constraint.max}.`
+      )
+    }
+
+    return parsedElement
+  }
+
+  // eslint-disable-next-line security/detect-unsafe-regex
+  const rangeSegments = /^((([0-9a-zA-Z]+)-([0-9a-zA-Z]+))|\*)(\/([0-9]+))?$/.exec(
+    element
+  )
+  if (rangeSegments === null) {
+    result.add(parseSingleElement(element))
+    return result
+  }
+
+  const parsedStart =
+    rangeSegments[1] === '*'
+      ? constraint.min
+      : parseSingleElement(rangeSegments[3])
+
+  const parsedEnd =
+    rangeSegments[1] === '*'
+      ? constraint.max
+      : parseSingleElement(rangeSegments[4])
+
+  if (parsedStart >= parsedEnd - 1) {
+    throw new Error(
+      `Failed to parse ${element}: Invalid range (start: ${parsedStart}, end: ${parsedEnd}).`
+    )
+  }
+
+  const step = rangeSegments[6] as string | undefined
+  let parsedStep = 1
+
+  if (step !== undefined) {
+    parsedStep = parseInt(step, 10)
+    if (Number.isNaN(parsedStep)) {
+      throw new Error(`Failed to parse step: ${step} is NaN.`)
+    }
+  }
+
+  for (let i = parsedStart; i <= parsedEnd; i = i + parsedStep) {
+    result.add(i)
+  }
+
+  return result
+}
+
 /** Parses a cron expressiom and returns a schedule instance. */
 export function parseCronExpression(cronExpression: string): Schedule {
-  // TODO
+  if (typeof cronExpression !== 'string') {
+    throw new Error('Invalid cron expression: must be of type string.')
+  }
+
+  // Convert time nicknames.
+  cronExpression = timeNicknames[cronExpression.toLowerCase()] ?? cronExpression
+
+  const elements = cronExpression.split(' ')
+  if (elements.length < 5 || elements.length > 6) {
+    throw new Error('Invalid cron expression: expected 5 or 6 elements.')
+  }
+
+  const rawSeconds = elements.length === 6 ? elements[0] : '0'
+  const rawMinutes = elements.length === 6 ? elements[1] : elements[0]
+  const rawHours = elements.length === 6 ? elements[2] : elements[1]
+  const rawDays = elements.length === 6 ? elements[3] : elements[2]
+  const rawMonths = elements.length === 6 ? elements[4] : elements[3]
+  const rawWeekdays = elements.length === 6 ? elements[5] : elements[4]
+
   return new Schedule({
-    seconds: [],
-    minutes: [],
-    hours: [],
-    days: [],
-    months: [],
-    weekdays: [],
+    seconds: Array.from(parseElement(rawSeconds, secondConstraint)),
+    minutes: Array.from(parseElement(rawMinutes, minuteConstraint)),
+    hours: Array.from(parseElement(rawHours, hourConstraint)),
+    days: Array.from(parseElement(rawDays, dayConstraint)),
+    months: Array.from(parseElement(rawMonths, monthConstraint)),
+    weekdays: Array.from(parseElement(rawWeekdays, weekdayConstraint)),
   })
 }
