@@ -2,20 +2,25 @@ import { extractDateElements, ITimerHandle, longTimeout } from './utils'
 
 /**
  * An object with contains for each element of a date, which values are allowed.
- * When an array is empty, it means that all values are allowed for that element.
+ * Everything indexed by 0, except for days.
  */
 export interface IScheduleDefinition {
-  readonly seconds: ReadonlyArray<number>
-  readonly minutes: ReadonlyArray<number>
-  readonly hours: ReadonlyArray<number>
-  readonly days: ReadonlyArray<number>
-  readonly months: ReadonlyArray<number>
-  readonly weekdays: ReadonlyArray<number>
+  readonly seconds: Set<number>
+  readonly minutes: Set<number>
+  readonly hours: Set<number>
+  readonly days: Set<number>
+  readonly months: Set<number>
+  readonly weekdays: Set<number>
 }
 
 export class Schedule {
-  public readonly prev: IScheduleDefinition
-  public readonly next: IScheduleDefinition
+  // Everything indexed by 0, except for days.
+  public readonly seconds: ReadonlyArray<number>
+  public readonly minutes: ReadonlyArray<number>
+  public readonly hours: ReadonlyArray<number>
+  public readonly days: ReadonlyArray<number>
+  public readonly months: ReadonlyArray<number>
+  public readonly weekdays: ReadonlyArray<number>
 
   public constructor({
     seconds,
@@ -25,27 +30,53 @@ export class Schedule {
     months,
     weekdays,
   }: IScheduleDefinition) {
-    // Clone the schedule definition and sort all values in descending order.
-    // Used to lookup previous schedules.
-    this.prev = {
-      seconds: seconds.map((x) => x).sort((a, b) => b - a),
-      minutes: minutes.map((x) => x).sort((a, b) => b - a),
-      hours: hours.map((x) => x).sort((a, b) => b - a),
-      days: days.map((x) => x).sort((a, b) => b - a),
-      months: months.map((x) => x).sort((a, b) => b - a),
-      weekdays: weekdays.map((x) => x).sort((a, b) => b - a),
+    // Validate that there are values provided.
+    if (!seconds || seconds.size === 0)
+      throw new Error('There must be at least one allowed second.')
+    if (!minutes || minutes.size === 0)
+      throw new Error('There must be at least one allowed minute.')
+    if (!hours || hours.size === 0)
+      throw new Error('There must be at least one allowed hour.')
+    if (!months || months.size === 0)
+      throw new Error('There must be at least one allowed month.')
+    if ((!weekdays || weekdays.size === 0) && (!days || days.size === 0))
+      throw new Error('There must be at least one allowed day or weekday.')
+
+    // Convert set to array and sort in ascending order.
+    this.seconds = Array.from(seconds).sort((a, b) => a - b)
+    this.minutes = Array.from(minutes).sort((a, b) => a - b)
+    this.hours = Array.from(hours).sort((a, b) => a - b)
+    this.days = Array.from(days).sort((a, b) => a - b)
+    this.months = Array.from(months).sort((a, b) => a - b)
+    this.weekdays = Array.from(weekdays).sort((a, b) => a - b)
+
+    // Validate that all values are integers within the constraint.
+    const validateDate = (
+      name: string,
+      data: ReadonlyArray<number>,
+      constraint: { min: number; max: number }
+    ) => {
+      if (
+        data.some(
+          (x) =>
+            typeof x !== 'number' ||
+            x % 1 !== 0 ||
+            x < constraint.min ||
+            x > constraint.max
+        )
+      ) {
+        throw new Error(
+          `${name} must only consist of integers which are within the range of ${constraint.min} and ${constraint.max}`
+        )
+      }
     }
 
-    // Clone the schedule definition and sort all values in ascending order.
-    // Used to lookup next schedules.
-    this.next = {
-      seconds: seconds.map((x) => x).sort((a, b) => a - b),
-      minutes: minutes.map((x) => x).sort((a, b) => a - b),
-      hours: hours.map((x) => x).sort((a, b) => a - b),
-      days: days.map((x) => x).sort((a, b) => a - b),
-      months: months.map((x) => x).sort((a, b) => a - b),
-      weekdays: weekdays.map((x) => x).sort((a, b) => a - b),
-    }
+    validateDate('seconds', this.seconds, { min: 0, max: 59 })
+    validateDate('minutes', this.minutes, { min: 0, max: 59 })
+    validateDate('hours', this.hours, { min: 0, max: 23 })
+    validateDate('days', this.days, { min: 1, max: 31 })
+    validateDate('months', this.months, { min: 0, max: 11 })
+    validateDate('weekdays', this.weekdays, { min: 0, max: 6 })
   }
 
   /** Gets the next scheduled date starting from the given start date or now. */
@@ -192,22 +223,12 @@ export class Schedule {
       date
     )
 
-    const {
-      seconds: allowedSeconds,
-      minutes: allowedMinutes,
-      hours: allowedHours,
-      days: allowedDays,
-      months: allowedMonths,
-      weekdays: allowedWeekdays,
-    } = this.next
-
     return (
-      (allowedSeconds.length === 0 || allowedSeconds.indexOf(second) !== -1) &&
-      (allowedMinutes.length === 0 || allowedMinutes.indexOf(minute) !== -1) &&
-      (allowedHours.length === 0 || allowedHours.indexOf(hour) !== -1) &&
-      (allowedDays.length === 0 || allowedDays.indexOf(day) !== -1) &&
-      (allowedMonths.length === 0 || allowedMonths.indexOf(month) !== -1) &&
-      (allowedWeekdays.length === 0 || allowedWeekdays.indexOf(weekday) !== -1)
+      this.seconds.indexOf(second) !== -1 &&
+      this.minutes.indexOf(minute) !== -1 &&
+      this.hours.indexOf(hour) !== -1 &&
+      this.months.indexOf(month) !== -1 &&
+      (this.days.indexOf(day) !== -1 || this.weekdays.indexOf(weekday) !== -1)
     )
   }
 

@@ -73,7 +73,14 @@ const timeNicknames: Record<string, string | undefined> = {
 function parseElement(element: string, constraint: IConstraint): Set<number> {
   const result = new Set<number>()
 
-  if (element === '*') return result
+  // If returned set of numbers is empty, the scheduler class interpretes the emtpy set of numbers as all valid values of the constraint
+  if (element === '*') {
+    for (let i = constraint.min; i <= constraint.max; i = i + 1) {
+      result.add(i)
+    }
+
+    return result
+  }
 
   // If the element is a list, parse each element in the list.
   const listElements = element.split(',')
@@ -156,7 +163,7 @@ function parseElement(element: string, constraint: IConstraint): Set<number> {
 /** Parses a cron expressiom and returns a schedule instance. */
 export function parseCronExpression(cronExpression: string): Schedule {
   if (typeof cronExpression !== 'string') {
-    throw new Error('Invalid cron expression: must be of type string.')
+    throw new TypeError('Invalid cron expression: must be of type string.')
   }
 
   // Convert time nicknames.
@@ -175,11 +182,14 @@ export function parseCronExpression(cronExpression: string): Schedule {
   const rawWeekdays = elements.length === 6 ? elements[5] : elements[4]
 
   return new Schedule({
-    seconds: Array.from(parseElement(rawSeconds, secondConstraint)),
-    minutes: Array.from(parseElement(rawMinutes, minuteConstraint)),
-    hours: Array.from(parseElement(rawHours, hourConstraint)),
-    days: Array.from(parseElement(rawDays, dayConstraint)),
-    months: Array.from(parseElement(rawMonths, monthConstraint)),
-    weekdays: Array.from(parseElement(rawWeekdays, weekdayConstraint)),
+    seconds: parseElement(rawSeconds, secondConstraint),
+    minutes: parseElement(rawMinutes, minuteConstraint),
+    hours: parseElement(rawHours, hourConstraint),
+    days: parseElement(rawDays, dayConstraint),
+    // months in cron are indexed by 1, but schedule expects indexes by 0, so we need to reduce all set values by one.
+    months: new Set(
+      Array.from(parseElement(rawMonths, monthConstraint)).map((x) => x - 1)
+    ),
+    weekdays: parseElement(rawWeekdays, weekdayConstraint),
   })
 }
