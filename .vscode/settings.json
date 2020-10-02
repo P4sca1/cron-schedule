@@ -6,6 +6,9 @@
     "editor.detectIndentation": false,
     "editor.insertSpaces": true,
     "editor.tabSize": 2,
+
+    // Use LF (\n) as end of line character.
+    "files.eol": "\n",
     
     // Run eslint fix on save.
     "editor.codeActionsOnSave": {

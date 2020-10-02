@@ -2,7 +2,7 @@ import { extractDateElements, ITimerHandle, longTimeout } from './utils'
 
 /**
  * An object with contains for each element of a date, which values are allowed.
- * Everything indexed by 0, except for days.
+ * Everything starting at 0, except for days.
  */
 export interface IScheduleDefinition {
   readonly seconds: Set<number>
@@ -14,13 +14,22 @@ export interface IScheduleDefinition {
 }
 
 export class Schedule {
-  // Everything indexed by 0, except for days.
+  // Everything starting at 0, except for days.
   public readonly seconds: ReadonlyArray<number>
   public readonly minutes: ReadonlyArray<number>
   public readonly hours: ReadonlyArray<number>
   public readonly days: ReadonlyArray<number>
   public readonly months: ReadonlyArray<number>
   public readonly weekdays: ReadonlyArray<number>
+
+  public readonly reversed: {
+    seconds: ReadonlyArray<number>
+    minutes: ReadonlyArray<number>
+    hours: ReadonlyArray<number>
+    days: ReadonlyArray<number>
+    months: ReadonlyArray<number>
+    weekdays: ReadonlyArray<number>
+  }
 
   public constructor({
     seconds,
@@ -77,110 +86,89 @@ export class Schedule {
     validateDate('days', this.days, { min: 1, max: 31 })
     validateDate('months', this.months, { min: 0, max: 11 })
     validateDate('weekdays', this.weekdays, { min: 0, max: 6 })
+
+    // For each element, store a reversed copy in the reversed attribute for finding prev dates.
+    this.reversed = {
+      seconds: this.seconds.map((x) => x).reverse(),
+      minutes: this.minutes.map((x) => x).reverse(),
+      hours: this.hours.map((x) => x).reverse(),
+      days: this.days.map((x) => x).reverse(),
+      months: this.months.map((x) => x).reverse(),
+      weekdays: this.weekdays.map((x) => x).reverse(),
+    }
   }
 
   /** Gets the next scheduled date starting from the given start date or now. */
-  // TODO: getNextDate and getPrevDate algorithms will work very similar. So we should combine logic into
-  // one function calcDate and pass a prev or next argument. This function should then be called in getNextDate and getPrevDate.
   public getNextDate(startDate: Date = new Date()): Date {
-    const {
-      second: startSecond,
-      minute: startMinute,
-      hour: startHour,
-      day: startDay,
-      month: startMonth,
-      // weekday: startWeekday,
-      year: startYear,
-    } = extractDateElements(startDate)
-
-    const {
-      seconds: allowedSeconds,
-      minutes: allowedMinutes,
-      hours: allowedHours,
-      days: allowedDays,
-      months: allowedMonths,
-      // weekdays: allowedWeekdays,
-    } = this.next
+    const startDateElements = extractDateElements(startDate)
 
     const nextDate = new Date(
-      startYear,
-      startMonth,
-      startDay,
-      startHour,
-      startMinute,
-      startSecond
+      startDateElements.year,
+      startDateElements.month,
+      startDateElements.day,
+      startDateElements.hour,
+      startDateElements.minute,
+      startDateElements.second
     )
 
-    // 1: Find an allowed month that is greater or equal than the current month.
-    if (allowedMonths.length > 0) {
-      const nextMonth =
-        allowedMonths.find((x) => x >= startMonth) ?? allowedMonths[0]
+    // Find next allowed element -> if next allowed element is less than start value
+    // add it to the max allowed value and the Date instance rolles over automatically
+    // e.g. 60 seconds -> +1 minute and set second to 0.
+    nextDate.setSeconds(
+      this.seconds.find((x) => x > nextDate.getSeconds()) ??
+        60 + this.seconds[0]
+    )
 
-      if (nextMonth !== startMonth) {
-        nextDate.setMonth(nextMonth)
-        nextDate.setDate(allowedDays[0])
-        nextDate.setHours(allowedHours[0])
-        nextDate.setMinutes(allowedMinutes[0])
-        nextDate.setSeconds(allowedSeconds[0])
-      }
+    nextDate.setMinutes(
+      this.minutes.find((x) => x >= nextDate.getMinutes()) ??
+        60 + this.minutes[0]
+    )
 
-      // When the next month is behind the start month, the date belongs to the next year.
-      if (nextMonth < startMonth) {
-        nextDate.setFullYear(startYear + 1)
-      }
-    }
+    nextDate.setHours(
+      this.hours.find((x) => x >= nextDate.getHours()) ?? 24 + this.hours[0]
+    )
 
-    // 2: Find an allowed date that is greater or equal than the current date.
-    // TODO: Does not check for weekday yet.
-    if (allowedDays.length > 0) {
-      const nextDay = allowedDays.find((x) => x >= startDay) ?? allowedDays[0]
+    // See if next day of month or day of week is next to start date
+    // Get date of next matching weekday and then compare the abs differences of those to the startDate
+    // const nextDateByDay =
+    //   this.days.find((x) => x >= nextDate.getDate()) ??
+    //   new Date(nextDate.getFullYear(), nextDate.getMonth() + 1, 0).getDate() +
+    //     this.days[0]
 
-      if (nextDay !== startDay) {
-        nextDate.setDate(nextDay)
-        nextDate.setHours(allowedHours[0])
-        nextDate.setMinutes(allowedMinutes[0])
-        nextDate.setSeconds(allowedSeconds[0])
-      }
-    }
+    // const nextWeekday =
+    //   this.days.find((x) => x >= nextDate.getDay()) ?? this.days[0]
 
-    // 3: Find an allowed hour that is greater or equal than the current hour.
-    if (allowedHours.length > 0) {
-      const nextHour =
-        allowedHours.find((x) => x >= startDay) ?? allowedHours[0]
+    // const daysToAddByWeekday = Math.abs(nextWeekday - nextDate.getDay())
 
-      if (nextHour !== startHour) {
-        nextDate.setHours(nextHour)
-        nextDate.setMinutes(allowedMinutes[0])
-        nextDate.setSeconds(allowedSeconds[0])
-      }
-    }
+    // TODO: Store in var new Date(nextDate.getFullYear(), nextDate.getMonth() + 1, 0).getDate()
 
-    // 4: Find an allowed minute that is greater or equal than the current minute.
-    if (allowedMinutes.length > 0) {
-      const nextMinute =
-        allowedMinutes.find((x) => x >= startMinute) ?? allowedMinutes[0]
+    // IF DAYS IS NOT EMPTY
+    // TODO: Find day which is >= current day AND <= days of current month
+    //       When nothing is found:
+    //       1. Get next day with this.days[0]
+    //       2. Find next month which has the desired amount of days. ATTENTION: NEEDS TO CONFORM WITH limited months
+    // => We have the date with fits the days property
 
-      if (nextMinute !== startMinute) {
-        nextDate.setMinutes(allowedMinutes[0])
-        nextDate.setSeconds(allowedSeconds[0])
-      }
-    }
+    // IF WEEKDAYS IS NOT EMPTY
+    // Find next weekday
+    // const nextWeekday =
+    //   this.days.find((x) => x >= nextDate.getDay()) ?? this.days[0]
 
-    // 5: Find an allowed second that is greater than the current second.
-    // TODO: Algorithm is bad! second might jump from 59 to 0 and other elements stay the same
-    // so that the next date is in the past.
-    if (allowedSeconds.length > 0) {
-      const nextSecond =
-        allowedSeconds.find((x) => x >= startSecond) ?? allowedSeconds[0]
+    // const daysToAddByWeekday = Math.abs(nextWeekday - nextDate.getDay())
 
-      if (nextSecond !== startSecond) {
-        nextDate.setSeconds(allowedSeconds[0])
-      } else {
-        nextDate.setSeconds((startSecond + 1) % 60)
-      }
-    } else {
-      nextDate.setSeconds((startSecond + 1) % 60)
-    }
+    // AFTER CALCULATING NEXT DATE
+    // ONLY DAYS IS SET: Use date from days calculatiton
+    // ONLY WEEKDAYS IS SET: Use date from weekday calculation
+    // BOTH ARE SET: Use date that is closer to next date
+    nextDate.setDate(
+      this.days.find((x) => x >= nextDate.getDate()) ??
+        new Date(nextDate.getFullYear(), nextDate.getMonth() + 1, 0).getDate() +
+          this.days[0]
+    )
+
+    nextDate.setMonth(
+      this.months.find((x) => x >= nextDate.getMonth()) ?? 12 + this.months[0]
+    )
 
     return nextDate
   }
@@ -200,8 +188,49 @@ export class Schedule {
 
   /** Gets the previously scheduled date starting from the given start date or now. */
   public getPrevDate(startDate: Date = new Date()): Date {
-    // TODO
-    return new Date()
+    const startDateElements = extractDateElements(startDate)
+
+    const prevDate = new Date(
+      startDateElements.year,
+      startDateElements.month,
+      startDateElements.day,
+      startDateElements.hour,
+      startDateElements.minute,
+      startDateElements.second
+    )
+
+    // Find prev allowed element -> if prev allowed element is greater than start value
+    // substract the difference between the allowed value and the min value and the Date instance rolles over automatically
+    // e.g. -1 seconds -> -1 minute and set second to 59.
+    prevDate.setSeconds(
+      this.reversed.seconds.find((x) => x < prevDate.getSeconds()) ??
+        -(60 - this.reversed.seconds[0])
+    )
+
+    prevDate.setMinutes(
+      this.reversed.minutes.find((x) => x <= prevDate.getMinutes()) ??
+        -(60 - this.reversed.minutes[0])
+    )
+
+    prevDate.setHours(
+      this.reversed.hours.find((x) => x <= prevDate.getHours()) ??
+        -(24 - this.reversed.hours[0])
+    )
+
+    prevDate.setDate(
+      this.reversed.days.find((x) => x <= prevDate.getDate()) ??
+        -(
+          new Date(prevDate.getFullYear(), prevDate.getMonth(), 0).getDate() -
+          this.reversed.days[0]
+        )
+    )
+
+    prevDate.setMonth(
+      this.reversed.months.find((x) => x <= prevDate.getMonth()) ??
+        -(12 - this.reversed.months[0])
+    )
+
+    return prevDate
   }
 
   /** Gets the specified amount of previously scheduled dates starting from the given start date or now. */
