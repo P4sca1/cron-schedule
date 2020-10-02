@@ -2,70 +2,313 @@ import { parseCronExpression } from '../src/cron-parser'
 import { Schedule } from '../src/schedule'
 
 describe('constructor', () => {
-  const scheduleDefinition = {
-    seconds: [23, 10, 17],
-    minutes: [5, 4, 2],
-    hours: [0, 1],
-    days: [12],
-    months: [7, 3],
-    weekdays: [6, 3],
-  }
-  const schedule = new Schedule(scheduleDefinition)
+  test('should create an array from the set in ascending order', () => {
+    const schedule = new Schedule({
+      seconds: new Set([23, 10, 17]),
+      minutes: new Set([5, 4, 2]),
+      hours: new Set([0, 1]),
+      days: new Set([12]),
+      months: new Set([7, 3]),
+      weekdays: new Set([6, 3]),
+    })
 
-  test('should clone schedule definition', () => {
-    expect(scheduleDefinition).not.toBe(schedule.prev)
-    expect(scheduleDefinition).not.toBe(schedule.next)
-    expect(schedule.next).not.toBe(schedule.prev)
-
-    expect(new Set(scheduleDefinition.seconds)).toEqual(
-      new Set(schedule.next.seconds)
-    )
-    expect(new Set(scheduleDefinition.minutes)).toEqual(
-      new Set(schedule.next.minutes)
-    )
-    expect(new Set(scheduleDefinition.hours)).toEqual(
-      new Set(schedule.next.hours)
-    )
-    expect(new Set(scheduleDefinition.days)).toEqual(
-      new Set(schedule.next.days)
-    )
-    expect(new Set(scheduleDefinition.months)).toEqual(
-      new Set(schedule.next.months)
-    )
-    expect(new Set(scheduleDefinition.weekdays)).toEqual(
-      new Set(schedule.next.weekdays)
-    )
-
-    expect(new Set(schedule.next.seconds)).toEqual(
-      new Set(schedule.prev.seconds)
-    )
-    expect(new Set(schedule.next.minutes)).toEqual(
-      new Set(schedule.prev.minutes)
-    )
-    expect(new Set(schedule.next.hours)).toEqual(new Set(schedule.prev.hours))
-    expect(new Set(schedule.next.days)).toEqual(new Set(schedule.prev.days))
-    expect(new Set(schedule.next.months)).toEqual(new Set(schedule.prev.months))
-    expect(new Set(schedule.next.weekdays)).toEqual(
-      new Set(schedule.prev.weekdays)
-    )
+    expect(schedule.seconds).toStrictEqual([10, 17, 23])
+    expect(schedule.minutes).toStrictEqual([2, 4, 5])
+    expect(schedule.hours).toStrictEqual([0, 1])
+    expect(schedule.days).toStrictEqual([12])
+    expect(schedule.months).toStrictEqual([3, 7])
+    expect(schedule.weekdays).toStrictEqual([3, 6])
   })
 
-  test('next should be sorted in ascending order', () => {
-    expect(schedule.next.seconds).toStrictEqual([10, 17, 23])
-    expect(schedule.next.minutes).toStrictEqual([2, 4, 5])
-    expect(schedule.next.hours).toStrictEqual([0, 1])
-    expect(schedule.next.days).toStrictEqual([12])
-    expect(schedule.next.months).toStrictEqual([3, 7])
-    expect(schedule.next.weekdays).toStrictEqual([3, 6])
+  test('Should throw when a set is empty', () => {
+    // @ts-expect-error -- test
+    expect(() => new Schedule()).toThrow()
+    // @ts-expect-error -- test
+    expect(() => new Schedule({})).toThrow()
+    expect(
+      () =>
+        new Schedule({
+          seconds: new Set([]),
+          minutes: new Set([1]),
+          hours: new Set([1]),
+          days: new Set([1]),
+          months: new Set([1]),
+          weekdays: new Set([1]),
+        })
+    ).toThrow()
+    expect(
+      () =>
+        new Schedule({
+          seconds: new Set([1]),
+          minutes: new Set([]),
+          hours: new Set([1]),
+          days: new Set([1]),
+          months: new Set([1]),
+          weekdays: new Set([1]),
+        })
+    ).toThrow()
+    expect(
+      () =>
+        new Schedule({
+          seconds: new Set([1]),
+          minutes: new Set([1]),
+          hours: new Set([]),
+          days: new Set([1]),
+          months: new Set([1]),
+          weekdays: new Set([1]),
+        })
+    ).toThrow()
+    expect(
+      () =>
+        new Schedule({
+          seconds: new Set([1]),
+          minutes: new Set([1]),
+          hours: new Set([1]),
+          days: new Set([]),
+          months: new Set([1]),
+          weekdays: new Set([1]),
+        })
+    ).not.toThrow()
+    expect(
+      () =>
+        new Schedule({
+          seconds: new Set([1]),
+          minutes: new Set([1]),
+          hours: new Set([1]),
+          days: new Set([1]),
+          months: new Set([]),
+          weekdays: new Set([1]),
+        })
+    ).toThrow()
+    expect(
+      () =>
+        new Schedule({
+          seconds: new Set([1]),
+          minutes: new Set([1]),
+          hours: new Set([1]),
+          days: new Set([1]),
+          months: new Set([1]),
+          weekdays: new Set([]),
+        })
+    ).not.toThrow()
+    expect(
+      () =>
+        new Schedule({
+          seconds: new Set([1]),
+          minutes: new Set([1]),
+          hours: new Set([1]),
+          days: new Set([]),
+          months: new Set([1]),
+          weekdays: new Set([]),
+        })
+    ).toThrow()
   })
 
-  test('prev should be sorted in descending order', () => {
-    expect(schedule.prev.seconds).toStrictEqual([23, 17, 10])
-    expect(schedule.prev.minutes).toStrictEqual([5, 4, 2])
-    expect(schedule.prev.hours).toStrictEqual([1, 0])
-    expect(schedule.prev.days).toStrictEqual([12])
-    expect(schedule.prev.months).toStrictEqual([7, 3])
-    expect(schedule.prev.weekdays).toStrictEqual([6, 3])
+  test('Should throw when value is not an integer', () => {
+    expect(
+      () =>
+        new Schedule({
+          // @ts-expect-error -- test
+          seconds: new Set(['a']),
+          minutes: new Set([1]),
+          hours: new Set([1]),
+          days: new Set([1]),
+          months: new Set([1]),
+          weekdays: new Set([1]),
+        })
+    ).toThrow()
+    expect(
+      () =>
+        new Schedule({
+          seconds: new Set([1]),
+          minutes: new Set([2.5]),
+          hours: new Set([1]),
+          days: new Set([1]),
+          months: new Set([1]),
+          weekdays: new Set([1]),
+        })
+    ).toThrow()
+    expect(
+      () =>
+        new Schedule({
+          seconds: new Set([1]),
+          minutes: new Set([1]),
+          hours: new Set([2.5]),
+          days: new Set([1]),
+          months: new Set([1]),
+          weekdays: new Set([1]),
+        })
+    ).toThrow()
+    expect(
+      () =>
+        new Schedule({
+          seconds: new Set([1]),
+          minutes: new Set([1]),
+          hours: new Set([1]),
+          // @ts-expect-error -- test
+          days: new Set([() => undefined]),
+          months: new Set([1]),
+          weekdays: new Set([1]),
+        })
+    ).toThrow()
+    expect(
+      () =>
+        new Schedule({
+          seconds: new Set([1]),
+          minutes: new Set([1]),
+          hours: new Set([1]),
+          days: new Set([1]),
+          months: new Set([2.5]),
+          weekdays: new Set([1]),
+        })
+    ).toThrow()
+    expect(
+      () =>
+        new Schedule({
+          seconds: new Set([1]),
+          minutes: new Set([1]),
+          hours: new Set([1]),
+          days: new Set([1]),
+          months: new Set([1]),
+          // @ts-expect-error -- test
+          weekdays: new Set([{}]),
+        })
+    ).toThrow()
+  })
+
+  test('Should throw when value is outside of an allowed range', () => {
+    expect(
+      () =>
+        new Schedule({
+          seconds: new Set([-1]),
+          minutes: new Set([1]),
+          hours: new Set([1]),
+          days: new Set([1]),
+          months: new Set([1]),
+          weekdays: new Set([1]),
+        })
+    ).toThrow()
+    expect(
+      () =>
+        new Schedule({
+          seconds: new Set([60]),
+          minutes: new Set([1]),
+          hours: new Set([1]),
+          days: new Set([1]),
+          months: new Set([1]),
+          weekdays: new Set([1]),
+        })
+    ).toThrow()
+    expect(
+      () =>
+        new Schedule({
+          seconds: new Set([1]),
+          minutes: new Set([-1]),
+          hours: new Set([1]),
+          days: new Set([1]),
+          months: new Set([1]),
+          weekdays: new Set([1]),
+        })
+    ).toThrow()
+    expect(
+      () =>
+        new Schedule({
+          seconds: new Set([1]),
+          minutes: new Set([60]),
+          hours: new Set([1]),
+          days: new Set([1]),
+          months: new Set([1]),
+          weekdays: new Set([1]),
+        })
+    ).toThrow()
+    expect(
+      () =>
+        new Schedule({
+          seconds: new Set([1]),
+          minutes: new Set([1]),
+          hours: new Set([-1]),
+          days: new Set([1]),
+          months: new Set([1]),
+          weekdays: new Set([1]),
+        })
+    ).toThrow()
+    expect(
+      () =>
+        new Schedule({
+          seconds: new Set([1]),
+          minutes: new Set([1]),
+          hours: new Set([24]),
+          days: new Set([1]),
+          months: new Set([1]),
+          weekdays: new Set([1]),
+        })
+    ).toThrow()
+    expect(
+      () =>
+        new Schedule({
+          seconds: new Set([1]),
+          minutes: new Set([1]),
+          hours: new Set([1]),
+          days: new Set([0]),
+          months: new Set([1]),
+          weekdays: new Set([1]),
+        })
+    ).toThrow()
+    expect(
+      () =>
+        new Schedule({
+          seconds: new Set([1]),
+          minutes: new Set([1]),
+          hours: new Set([1]),
+          days: new Set([32]),
+          months: new Set([1]),
+          weekdays: new Set([1]),
+        })
+    ).toThrow()
+    expect(
+      () =>
+        new Schedule({
+          seconds: new Set([1]),
+          minutes: new Set([1]),
+          hours: new Set([1]),
+          days: new Set([1]),
+          months: new Set([-1]),
+          weekdays: new Set([1]),
+        })
+    ).toThrow()
+    expect(
+      () =>
+        new Schedule({
+          seconds: new Set([1]),
+          minutes: new Set([1]),
+          hours: new Set([1]),
+          days: new Set([1]),
+          months: new Set([12]),
+          weekdays: new Set([1]),
+        })
+    ).toThrow()
+    expect(
+      () =>
+        new Schedule({
+          seconds: new Set([1]),
+          minutes: new Set([1]),
+          hours: new Set([1]),
+          days: new Set([1]),
+          months: new Set([1]),
+          weekdays: new Set([-1]),
+        })
+    ).toThrow()
+    expect(
+      () =>
+        new Schedule({
+          seconds: new Set([1]),
+          minutes: new Set([1]),
+          hours: new Set([1]),
+          days: new Set([1]),
+          months: new Set([1]),
+          weekdays: new Set([7]),
+        })
+    ).toThrow()
   })
 })
 
@@ -117,34 +360,34 @@ describe('getPrevDate(s)', () => {
 describe('matchDate', () => {
   test('Should return true for a matching date', () => {
     const schedule1 = new Schedule({
-      seconds: [],
-      minutes: [],
-      hours: [],
-      days: [],
-      months: [],
-      weekdays: [],
+      seconds: new Set([0]),
+      minutes: new Set([2]),
+      hours: new Set([23]),
+      days: new Set([12]),
+      months: new Set([2]),
+      weekdays: new Set([]),
     })
-    expect(schedule1.matchDate(new Date())).toBeTruthy()
+    expect(schedule1.matchDate(new Date(2001, 2, 12, 23, 2, 0))).toBeTruthy()
 
     const schedule2 = new Schedule({
-      seconds: [47, 48, 49],
-      minutes: [37],
-      hours: [0, 1],
-      days: [12],
-      months: [2, 3],
-      weekdays: [1],
+      seconds: new Set([47, 48, 49]),
+      minutes: new Set([37]),
+      hours: new Set([0, 1]),
+      days: new Set([]),
+      months: new Set([2, 3]),
+      weekdays: new Set([1]),
     })
     expect(schedule2.matchDate(new Date(2001, 2, 12, 0, 37, 48))).toBeTruthy()
   })
 
   test('Should return false for a non matching date', () => {
     const schedule1 = new Schedule({
-      seconds: [47, 48, 49],
-      minutes: [37],
-      hours: [0, 1],
-      days: [12],
-      months: [2, 3],
-      weekdays: [1],
+      seconds: new Set([47, 48, 49]),
+      minutes: new Set([37]),
+      hours: new Set([0, 1]),
+      days: new Set([12]),
+      months: new Set([2, 3]),
+      weekdays: new Set([1]),
     })
     expect(schedule1.matchDate(new Date(2001, 1, 12, 0, 37, 48))).toBeFalsy()
     expect(schedule1.matchDate(new Date(2001, 2, 13, 0, 37, 48))).toBeFalsy()
