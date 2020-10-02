@@ -36,7 +36,7 @@ describe('parseCronExpression', () => {
       days,
       months,
       weekdays,
-    } = parseCronExpression('1 2 3 4 5 6').next
+    } = parseCronExpression('1,2 2,3,4 4,5,6 7,8 9,10,11 0,1,2').next
 
     expect(seconds.map((x) => x).sort()).toStrictEqual([1, 2].sort())
     expect(minutes.map((x) => x).sort()).toStrictEqual([2, 3, 4].sort())
@@ -102,7 +102,7 @@ describe('parseCronExpression', () => {
       months,
       weekdays,
     } = parseCronExpression(
-      '1-3,7,9-11 2,3,2-6 1,3-22,2 2,3,4-10 0,5-11 0-6,7'
+      '1-3,7,9-11 2,3,2-6 1,3-22,2 2,3,4-10 1,5-11 0-6,7'
     ).next
 
     expect(seconds.map((x) => x).sort()).toStrictEqual(
@@ -139,7 +139,7 @@ describe('parseCronExpression', () => {
       [2, 3, 4, 5, 6, 7, 8, 9, 10].sort()
     )
     expect(months.map((x) => x).sort()).toStrictEqual(
-      [0, 5, 6, 7, 8, 9, 10, 11].sort()
+      [1, 5, 6, 7, 8, 9, 10, 11].sort()
     )
     expect(weekdays.map((x) => x).sort()).toStrictEqual(
       [0, 1, 2, 3, 4, 5, 6].sort()
@@ -154,7 +154,7 @@ describe('parseCronExpression', () => {
       days,
       months,
       weekdays,
-    } = parseCronExpression('*/10 2-10/3 0-9/2 5-11/4 */2 0-7/3').next
+    } = parseCronExpression('*/10 2-10/3 0-9/2 5-11/4 */2 0-6/3').next
 
     expect(seconds.map((x) => x).sort()).toStrictEqual(
       [0, 10, 20, 30, 40, 50].sort()
@@ -163,7 +163,7 @@ describe('parseCronExpression', () => {
     expect(hours.map((x) => x).sort()).toStrictEqual([0, 2, 4, 6, 8].sort())
     expect(days.map((x) => x).sort()).toStrictEqual([5, 9].sort())
     expect(months.map((x) => x).sort()).toStrictEqual(
-      [0, 2, 4, 6, 8, 10].sort()
+      [1, 3, 5, 7, 9, 11].sort()
     )
     expect(weekdays.map((x) => x).sort()).toStrictEqual([0, 3, 6].sort())
   })
@@ -174,7 +174,7 @@ describe('parseCronExpression', () => {
       minutes: [],
       hours: [],
       days: [],
-      months: [0],
+      months: [1],
       weekdays: [],
     })
 
@@ -183,7 +183,7 @@ describe('parseCronExpression', () => {
       minutes: [],
       hours: [],
       days: [],
-      months: [1],
+      months: [2],
       weekdays: [],
     })
 
@@ -192,7 +192,7 @@ describe('parseCronExpression', () => {
       minutes: [],
       hours: [],
       days: [],
-      months: [2],
+      months: [3],
       weekdays: [],
     })
 
@@ -201,7 +201,7 @@ describe('parseCronExpression', () => {
       minutes: [],
       hours: [],
       days: [],
-      months: [3],
+      months: [4],
       weekdays: [],
     })
 
@@ -210,7 +210,7 @@ describe('parseCronExpression', () => {
       minutes: [],
       hours: [],
       days: [],
-      months: [4],
+      months: [5],
       weekdays: [],
     })
 
@@ -219,7 +219,7 @@ describe('parseCronExpression', () => {
       minutes: [],
       hours: [],
       days: [],
-      months: [5],
+      months: [6],
       weekdays: [],
     })
 
@@ -228,7 +228,7 @@ describe('parseCronExpression', () => {
       minutes: [],
       hours: [],
       days: [],
-      months: [6],
+      months: [7],
       weekdays: [],
     })
 
@@ -237,7 +237,7 @@ describe('parseCronExpression', () => {
       minutes: [],
       hours: [],
       days: [],
-      months: [7],
+      months: [8],
       weekdays: [],
     })
 
@@ -246,7 +246,7 @@ describe('parseCronExpression', () => {
       minutes: [],
       hours: [],
       days: [],
-      months: [8],
+      months: [9],
       weekdays: [],
     })
 
@@ -255,7 +255,7 @@ describe('parseCronExpression', () => {
       minutes: [],
       hours: [],
       days: [],
-      months: [9],
+      months: [10],
       weekdays: [],
     })
 
@@ -264,7 +264,7 @@ describe('parseCronExpression', () => {
       minutes: [],
       hours: [],
       days: [],
-      months: [10],
+      months: [11],
       weekdays: [],
     })
 
@@ -273,7 +273,7 @@ describe('parseCronExpression', () => {
       minutes: [],
       hours: [],
       days: [],
-      months: [11],
+      months: [12],
       weekdays: [],
     })
 
@@ -282,7 +282,7 @@ describe('parseCronExpression', () => {
       minutes: [],
       hours: [],
       days: [],
-      months: [0, 10],
+      months: [1, 11],
       weekdays: [],
     })
 
@@ -291,7 +291,7 @@ describe('parseCronExpression', () => {
       minutes: [],
       hours: [],
       days: [],
-      months: [5, 6, 7, 8],
+      months: [6, 7, 8, 9],
       weekdays: [],
     })
   })
@@ -358,15 +358,6 @@ describe('parseCronExpression', () => {
       days: [],
       months: [],
       weekdays: [6],
-    })
-
-    expect(parseCronExpression('* * * * * sun').next).toStrictEqual({
-      seconds: [],
-      minutes: [],
-      hours: [],
-      days: [],
-      months: [],
-      weekdays: [7],
     })
 
     expect(parseCronExpression('* * * * * mon,tue').next).toStrictEqual({
@@ -444,34 +435,114 @@ describe('parseCronExpression', () => {
   })
 
   test('Should throw error on invalid cron string', () => {
-    expect(parseCronExpression('')).toThrow()
+    expect(() => parseCronExpression('')).toThrow(
+      new Error('Invalid cron expression: expected 5 or 6 elements.')
+    )
     // @ts-expect-error -- test without argument
-    expect(parseCronExpression()).toThrow()
+    expect(() => parseCronExpression()).toThrow(
+      new Error('Invalid cron expression: must be of type string.')
+    )
     // @ts-expect-error -- test with number argument
-    expect(parseCronExpression(0)).toThrow()
-    expect(parseCronExpression('0 0 0 0')).toThrow()
-    expect(parseCronExpression('* * * * * * *')).toThrow()
-    expect(parseCronExpression('60 * * * * *')).toThrow()
-    expect(parseCronExpression('-1 * * * * *')).toThrow()
-    expect(parseCronExpression('* 60 * * * *')).toThrow()
-    expect(parseCronExpression('* -1 * * * *')).toThrow()
-    expect(parseCronExpression('* * 24 * * *')).toThrow()
-    expect(parseCronExpression('* * -1 * * *')).toThrow()
-    expect(parseCronExpression('* * * 32 * *')).toThrow()
-    expect(parseCronExpression('* * * 0 * *')).toThrow()
-    expect(parseCronExpression('* * * * 12 *')).toThrow()
-    expect(parseCronExpression('* * * * -1 *')).toThrow()
-    expect(parseCronExpression('* * * * * 8')).toThrow()
-    expect(parseCronExpression('* * * * * -1')).toThrow()
-    expect(parseCronExpression('** * * * * *')).toThrow()
-    expect(parseCronExpression('0,, * * * * *')).toThrow()
-    expect(parseCronExpression('2- * * * * *')).toThrow()
-    expect(parseCronExpression('*/ * * * * *')).toThrow()
-    expect(parseCronExpression('*/* * * * * *')).toThrow()
-    expect(parseCronExpression('1-2 * * * * *')).toThrow()
-    expect(parseCronExpression('* * * * * sun-sat')).toThrow()
-    expect(parseCronExpression('3-1 * * * * *')).toThrow()
-    expect(parseCronExpression('4-60 * * * * *')).toThrow()
-    expect(parseCronExpression('* * * 0-10 * *')).toThrow()
+    expect(() => parseCronExpression(0)).toThrow(
+      new Error('Invalid cron expression: must be of type string.')
+    )
+    expect(() => parseCronExpression('0 0 0 0')).toThrow(
+      new Error('Invalid cron expression: expected 5 or 6 elements.')
+    )
+    expect(() => parseCronExpression('* * * * * * *')).toThrow(
+      new Error('Invalid cron expression: expected 5 or 6 elements.')
+    )
+    expect(() => parseCronExpression('60 * * * * *')).toThrow(
+      new Error(
+        'Failed to parse 60: 60 is outside of constraint range of 0 - 59.'
+      )
+    )
+    expect(() => parseCronExpression('-1 * * * * *')).toThrow(
+      new Error(
+        'Failed to parse -1: -1 is outside of constraint range of 0 - 59.'
+      )
+    )
+    expect(() => parseCronExpression('* 60 * * * *')).toThrow(
+      new Error(
+        'Failed to parse 60: 60 is outside of constraint range of 0 - 59.'
+      )
+    )
+    expect(() => parseCronExpression('* -1 * * * *')).toThrow(
+      new Error(
+        'Failed to parse -1: -1 is outside of constraint range of 0 - 59.'
+      )
+    )
+    expect(() => parseCronExpression('* * 24 * * *')).toThrow(
+      new Error(
+        'Failed to parse 24: 24 is outside of constraint range of 0 - 23.'
+      )
+    )
+    expect(() => parseCronExpression('* * -1 * * *')).toThrow(
+      new Error(
+        'Failed to parse -1: -1 is outside of constraint range of 0 - 23.'
+      )
+    )
+    expect(() => parseCronExpression('* * * 32 * *')).toThrow(
+      new Error(
+        'Failed to parse 32: 32 is outside of constraint range of 1 - 31.'
+      )
+    )
+    expect(() => parseCronExpression('* * * 0 * *')).toThrow(
+      new Error(
+        'Failed to parse 0: 0 is outside of constraint range of 1 - 31.'
+      )
+    )
+    expect(() => parseCronExpression('* * * * 13 *')).toThrow(
+      new Error(
+        'Failed to parse 13: 13 is outside of constraint range of 1 - 12.'
+      )
+    )
+    expect(() => parseCronExpression('* * * * 0 *')).toThrow(
+      new Error(
+        'Failed to parse 0: 0 is outside of constraint range of 1 - 12.'
+      )
+    )
+    expect(() => parseCronExpression('* * * * * 8')).toThrow(
+      new Error('Failed to parse 8: 8 is outside of constraint range of 0 - 6.')
+    )
+    expect(() => parseCronExpression('* * * * * -1')).toThrow(
+      new Error(
+        'Failed to parse -1: -1 is outside of constraint range of 0 - 6.'
+      )
+    )
+    expect(() => parseCronExpression('** * * * * *')).toThrow(
+      new Error('Failed to parse **: ** is NaN.')
+    )
+    expect(() => parseCronExpression('0,, * * * * *')).toThrow(
+      new Error('Failed to parse :  is NaN.')
+    )
+    expect(() => parseCronExpression('2-abc * * * * *')).toThrow(
+      new Error('Failed to parse 2-abc: abc is NaN.')
+    )
+    expect(() => parseCronExpression('*/ * * * * *')).toThrow(
+      new Error('Failed to parse */: */ is NaN.')
+    )
+    expect(() => parseCronExpression('*/* * * * * *')).toThrow(
+      new Error('Failed to parse */*: */* is NaN.')
+    )
+    expect(() => parseCronExpression('1-2 * * * * *')).toThrow(
+      new Error('Failed to parse 1-2: Invalid range (start: 1, end: 2).')
+    )
+    expect(() => parseCronExpression('* * * * * sun-mon')).toThrow(
+      new Error('Failed to parse sun-mon: Invalid range (start: 0, end: 1).')
+    )
+    expect(() => parseCronExpression('3-1 * * * * *')).toThrow(
+      new Error('Failed to parse 3-1: Invalid range (start: 3, end: 1).')
+    )
+    expect(() => parseCronExpression('4-60 * * * * *')).toThrow(
+      new Error(
+        'Failed to parse 4-60: 60 is outside of constraint range of 0 - 59.'
+      )
+    )
+    expect(() => parseCronExpression('* * * 0-10 * *')).toThrow(
+      new Error(
+        'Failed to parse 0-10: 0 is outside of constraint range of 1 - 31.'
+      )
+    )
   })
 })
