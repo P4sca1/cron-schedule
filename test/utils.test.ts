@@ -1,4 +1,4 @@
-import { TIMEOUT_MAX, longTimeout, extractDateElements } from './utils'
+import { TIMEOUT_MAX, longTimeout, extractDateElements } from '../src/utils'
 
 describe('longTimeout', () => {
   test('Works with short timeouts', () => {
