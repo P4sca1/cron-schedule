@@ -105,15 +105,19 @@ function parseElement(element: string, constraint: IConstraint): Set<number> {
     return parsedElement
   }
 
+  // Detect if the element is a range.
   // eslint-disable-next-line security/detect-unsafe-regex
   const rangeSegments = /^((([0-9a-zA-Z]+)-([0-9a-zA-Z]+))|\*)(\/([0-9]+))?$/.exec(
     element
   )
+
+  // If not, it must be a single element.
   if (rangeSegments === null) {
     result.add(parseSingleElement(element))
     return result
   }
 
+  // If it is a range, get start and end of the range.
   const parsedStart =
     rangeSegments[1] === '*'
       ? constraint.min
@@ -130,6 +134,7 @@ function parseElement(element: string, constraint: IConstraint): Set<number> {
     )
   }
 
+  // Check whether there is a custom step defined for the range, defaulting to 1.
   const step = rangeSegments[6] as string | undefined
   let parsedStep = 1
 
@@ -140,6 +145,7 @@ function parseElement(element: string, constraint: IConstraint): Set<number> {
     }
   }
 
+  // Go from start to end of the range by the given steps.
   for (let i = parsedStart; i <= parsedEnd; i = i + parsedStep) {
     result.add(i)
   }
