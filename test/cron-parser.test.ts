@@ -168,7 +168,7 @@ describe('parseCronExpression', () => {
     expect(weekdays.map((x) => x).sort()).toStrictEqual([0, 3, 6].sort())
   })
 
-  test('Should correctly parse synonyms for months', () => {
+  test('Should correctly parse month names', () => {
     expect(parseCronExpression('* * * * jan *').next).toStrictEqual({
       seconds: [],
       minutes: [],
@@ -296,7 +296,7 @@ describe('parseCronExpression', () => {
     })
   })
 
-  test('Should correctly parse synonyms for weekdays', () => {
+  test('Should correctly parse weekday names', () => {
     expect(parseCronExpression('* * * * * sun').next).toStrictEqual({
       seconds: [],
       minutes: [],
@@ -408,19 +408,19 @@ describe('parseCronExpression', () => {
   })
 
   test('Should parse @monthly', () => {
-    expect(parseCronExpression('@monthly')).toStrictEqual(
+    expect(parseCronExpression('@MONTHLY')).toStrictEqual(
       parseCronExpression('0 0 1 1 *')
     )
   })
 
   test('Should parse @weekly', () => {
-    expect(parseCronExpression('@weekly')).toStrictEqual(
+    expect(parseCronExpression('@Weekly')).toStrictEqual(
       parseCronExpression('0 0 * * 0')
     )
   })
 
   test('Should parse @daily', () => {
-    expect(parseCronExpression('@daily')).toStrictEqual(
+    expect(parseCronExpression('@dailY')).toStrictEqual(
       parseCronExpression('0 0 * * *')
     )
   })
@@ -466,7 +466,12 @@ describe('parseCronExpression', () => {
     expect(parseCronExpression('** * * * * *')).toThrow()
     expect(parseCronExpression('0,, * * * * *')).toThrow()
     expect(parseCronExpression('2- * * * * *')).toThrow()
-    expect(parseCronExpression('*/ * * * *')).toThrow()
-    expect(parseCronExpression('*/* * * * *')).toThrow()
+    expect(parseCronExpression('*/ * * * * *')).toThrow()
+    expect(parseCronExpression('*/* * * * * *')).toThrow()
+    expect(parseCronExpression('1-2 * * * * *')).toThrow()
+    expect(parseCronExpression('* * * * * sun-sat')).toThrow()
+    expect(parseCronExpression('3-1 * * * * *')).toThrow()
+    expect(parseCronExpression('4-60 * * * * *')).toThrow()
+    expect(parseCronExpression('* * * 0-10 * *')).toThrow()
   })
 })
