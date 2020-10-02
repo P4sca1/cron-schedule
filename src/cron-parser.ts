@@ -76,7 +76,7 @@ function parseElement(element: string, constraint: IConstraint): Set<number> {
 
   if (element === '*') return result
 
-  // Parse each element in a list.
+  // If the element is a list, parse each element in the list.
   const listElements = element.split(',')
   if (listElements.length > 1) {
     listElements.forEach((listElement) => {
@@ -87,6 +87,7 @@ function parseElement(element: string, constraint: IConstraint): Set<number> {
     return result
   }
 
+  // Helper function to parse a single element, which includes checking for alias, valid number and constraint min and max.
   const parseSingleElement = (singleElement: string): number => {
     singleElement =
       constraint.aliases?.[singleElement.toLowerCase()] ?? singleElement
