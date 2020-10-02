@@ -91,7 +91,9 @@ All linux cron features are supported, including
 * step values
 * month names (fan,feb,... - case insensitive)
 * weekday names (mon,tue,... - case insensitive)
-* time nicknames (@yearly, @annually, @monthly, @weekly, @daily, @hourly, @secondly - case insensitive)
+* time nicknames (@yearly, @annually, @monthly, @weekly, @daily, @hourly - case insensitive)
+
+**Instead of using * * * * * * for a job that runs every second, you should consider using `setInterval(cb, 1000)` which is more suitable for such a simple timing task, because due to the calculation overhead, there would likely be delays when using cron.**
 
 ## Cron validation
 Looking for a way to validate cron expressions in your backend (node.js) or in the browser with support for multiple presets? Check out [cron-validate](https://github.com/airfooox/cron-validate)!
