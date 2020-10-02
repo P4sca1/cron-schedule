@@ -3,6 +3,7 @@ import { TIMEOUT_MAX, longTimeout, extractDateElements } from '../src/utils'
 describe('longTimeout', () => {
   test('Works with short timeouts', () => {
     jest.useFakeTimers()
+
     const callback = jest.fn()
 
     longTimeout(callback, 10000)
@@ -12,10 +13,13 @@ describe('longTimeout', () => {
     jest.runAllTimers()
     expect(setTimeout).toHaveBeenCalledTimes(1)
     expect(callback).toHaveBeenCalledTimes(1)
+
+    jest.clearAllTimers()
   })
 
   test('Works with long timeouts (1 extra iteration)', () => {
     jest.useFakeTimers()
+
     const callback = jest.fn()
 
     longTimeout(callback, TIMEOUT_MAX + 1)
@@ -28,10 +32,13 @@ describe('longTimeout', () => {
     jest.runAllTimers()
     expect(setTimeout).toHaveBeenCalledTimes(2)
     expect(callback).toHaveBeenCalledTimes(1)
+
+    jest.clearAllTimers()
   })
 
   test('Works with long timeouts (2 extra iterations)', () => {
     jest.useFakeTimers()
+
     const callback = jest.fn()
 
     longTimeout(callback, TIMEOUT_MAX * 2 + 1)
@@ -47,6 +54,8 @@ describe('longTimeout', () => {
     jest.runAllTimers()
     expect(setTimeout).toHaveBeenCalledTimes(3)
     expect(callback).toHaveBeenCalledTimes(1)
+
+    jest.clearAllTimers()
   })
 })
 
