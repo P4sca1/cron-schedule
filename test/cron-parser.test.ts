@@ -7,7 +7,7 @@ describe('parseCronExpression', () => {
   })
 
   test('Should parse asterix to all allowed values', () => {
-    expect(parseCronExpression('* * * * * *')).toEqual({
+    expect(parseCronExpression('* * * * * *')).toMatchObject({
       seconds: Array.from({ length: 60 }, (_, i) => i),
       minutes: Array.from({ length: 60 }, (_, i) => i),
       hours: Array.from({ length: 24 }, (_, i) => i),
@@ -18,7 +18,7 @@ describe('parseCronExpression', () => {
   })
 
   test('Should correctly parse single numbers', () => {
-    expect(parseCronExpression('1 2 3 4 5 6')).toEqual({
+    expect(parseCronExpression('1 2 3 4 5 6')).toMatchObject({
       seconds: [1],
       minutes: [2],
       hours: [3],
@@ -145,7 +145,7 @@ describe('parseCronExpression', () => {
   })
 
   test('Should correctly parse month names', () => {
-    expect(parseCronExpression('0 0 0 1 jan 0')).toEqual({
+    expect(parseCronExpression('0 0 0 1 jan 0')).toMatchObject({
       seconds: [0],
       minutes: [0],
       hours: [0],
@@ -154,7 +154,7 @@ describe('parseCronExpression', () => {
       weekdays: [0],
     })
 
-    expect(parseCronExpression('0 0 0 1 feb 0')).toEqual({
+    expect(parseCronExpression('0 0 0 1 feb 0')).toMatchObject({
       seconds: [0],
       minutes: [0],
       hours: [0],
@@ -163,7 +163,7 @@ describe('parseCronExpression', () => {
       weekdays: [0],
     })
 
-    expect(parseCronExpression('0 0 0 1 MAR 0')).toEqual({
+    expect(parseCronExpression('0 0 0 1 MAR 0')).toMatchObject({
       seconds: [0],
       minutes: [0],
       hours: [0],
@@ -172,7 +172,7 @@ describe('parseCronExpression', () => {
       weekdays: [0],
     })
 
-    expect(parseCronExpression('0 0 0 1 ApR 0')).toEqual({
+    expect(parseCronExpression('0 0 0 1 ApR 0')).toMatchObject({
       seconds: [0],
       minutes: [0],
       hours: [0],
@@ -181,7 +181,7 @@ describe('parseCronExpression', () => {
       weekdays: [0],
     })
 
-    expect(parseCronExpression('0 0 0 1 maY 0')).toEqual({
+    expect(parseCronExpression('0 0 0 1 maY 0')).toMatchObject({
       seconds: [0],
       minutes: [0],
       hours: [0],
@@ -190,7 +190,7 @@ describe('parseCronExpression', () => {
       weekdays: [0],
     })
 
-    expect(parseCronExpression('0 0 0 1 jun 0')).toEqual({
+    expect(parseCronExpression('0 0 0 1 jun 0')).toMatchObject({
       seconds: [0],
       minutes: [0],
       hours: [0],
@@ -199,7 +199,7 @@ describe('parseCronExpression', () => {
       weekdays: [0],
     })
 
-    expect(parseCronExpression('0 0 0 1 jul 0')).toEqual({
+    expect(parseCronExpression('0 0 0 1 jul 0')).toMatchObject({
       seconds: [0],
       minutes: [0],
       hours: [0],
@@ -208,7 +208,7 @@ describe('parseCronExpression', () => {
       weekdays: [0],
     })
 
-    expect(parseCronExpression('0 0 0 1 aug 0')).toEqual({
+    expect(parseCronExpression('0 0 0 1 aug 0')).toMatchObject({
       seconds: [0],
       minutes: [0],
       hours: [0],
@@ -217,7 +217,7 @@ describe('parseCronExpression', () => {
       weekdays: [0],
     })
 
-    expect(parseCronExpression('0 0 0 1 sep 0')).toEqual({
+    expect(parseCronExpression('0 0 0 1 sep 0')).toMatchObject({
       seconds: [0],
       minutes: [0],
       hours: [0],
@@ -226,7 +226,7 @@ describe('parseCronExpression', () => {
       weekdays: [0],
     })
 
-    expect(parseCronExpression('0 0 0 1 oct 0')).toEqual({
+    expect(parseCronExpression('0 0 0 1 oct 0')).toMatchObject({
       seconds: [0],
       minutes: [0],
       hours: [0],
@@ -235,7 +235,7 @@ describe('parseCronExpression', () => {
       weekdays: [0],
     })
 
-    expect(parseCronExpression('0 0 0 1 nov 0')).toEqual({
+    expect(parseCronExpression('0 0 0 1 nov 0')).toMatchObject({
       seconds: [0],
       minutes: [0],
       hours: [0],
@@ -244,7 +244,7 @@ describe('parseCronExpression', () => {
       weekdays: [0],
     })
 
-    expect(parseCronExpression('0 0 0 1 dec 0')).toEqual({
+    expect(parseCronExpression('0 0 0 1 dec 0')).toMatchObject({
       seconds: [0],
       minutes: [0],
       hours: [0],
@@ -253,7 +253,7 @@ describe('parseCronExpression', () => {
       weekdays: [0],
     })
 
-    expect(parseCronExpression('0 0 0 1 jan,nov 0')).toEqual({
+    expect(parseCronExpression('0 0 0 1 jan,nov 0')).toMatchObject({
       seconds: [0],
       minutes: [0],
       hours: [0],
@@ -262,7 +262,7 @@ describe('parseCronExpression', () => {
       weekdays: [0],
     })
 
-    expect(parseCronExpression('0 0 0 1 jun-sep 0')).toEqual({
+    expect(parseCronExpression('0 0 0 1 jun-sep 0')).toMatchObject({
       seconds: [0],
       minutes: [0],
       hours: [0],
@@ -273,7 +273,7 @@ describe('parseCronExpression', () => {
   })
 
   test('Should correctly parse weekday names', () => {
-    expect(parseCronExpression('0 0 0 1 1 sun')).toEqual({
+    expect(parseCronExpression('0 0 0 1 1 sun')).toMatchObject({
       seconds: [0],
       minutes: [0],
       hours: [0],
@@ -282,7 +282,7 @@ describe('parseCronExpression', () => {
       weekdays: [0],
     })
 
-    expect(parseCronExpression('0 0 0 1 1 Mon')).toEqual({
+    expect(parseCronExpression('0 0 0 1 1 Mon')).toMatchObject({
       seconds: [0],
       minutes: [0],
       hours: [0],
@@ -291,7 +291,7 @@ describe('parseCronExpression', () => {
       weekdays: [1],
     })
 
-    expect(parseCronExpression('0 0 0 1 1 Tue')).toEqual({
+    expect(parseCronExpression('0 0 0 1 1 Tue')).toMatchObject({
       seconds: [0],
       minutes: [0],
       hours: [0],
@@ -300,7 +300,7 @@ describe('parseCronExpression', () => {
       weekdays: [2],
     })
 
-    expect(parseCronExpression('0 0 0 1 1 WeD')).toEqual({
+    expect(parseCronExpression('0 0 0 1 1 WeD')).toMatchObject({
       seconds: [0],
       minutes: [0],
       hours: [0],
@@ -309,7 +309,7 @@ describe('parseCronExpression', () => {
       weekdays: [3],
     })
 
-    expect(parseCronExpression('0 0 0 1 1 THU')).toEqual({
+    expect(parseCronExpression('0 0 0 1 1 THU')).toMatchObject({
       seconds: [0],
       minutes: [0],
       hours: [0],
@@ -318,7 +318,7 @@ describe('parseCronExpression', () => {
       weekdays: [4],
     })
 
-    expect(parseCronExpression('0 0 0 1 1 fri')).toEqual({
+    expect(parseCronExpression('0 0 0 1 1 fri')).toMatchObject({
       seconds: [0],
       minutes: [0],
       hours: [0],
@@ -327,7 +327,7 @@ describe('parseCronExpression', () => {
       weekdays: [5],
     })
 
-    expect(parseCronExpression('0 0 0 1 1 sat')).toEqual({
+    expect(parseCronExpression('0 0 0 1 1 sat')).toMatchObject({
       seconds: [0],
       minutes: [0],
       hours: [0],
@@ -336,7 +336,7 @@ describe('parseCronExpression', () => {
       weekdays: [6],
     })
 
-    expect(parseCronExpression('0 0 0 1 1 mon,tue')).toEqual({
+    expect(parseCronExpression('0 0 0 1 1 mon,tue')).toMatchObject({
       seconds: [0],
       minutes: [0],
       hours: [0],
@@ -345,7 +345,7 @@ describe('parseCronExpression', () => {
       weekdays: [1, 2],
     })
 
-    expect(parseCronExpression('0 0 0 1 1 thu-sat')).toEqual({
+    expect(parseCronExpression('0 0 0 1 1 thu-sat')).toMatchObject({
       seconds: [0],
       minutes: [0],
       hours: [0],
@@ -362,8 +362,8 @@ describe('parseCronExpression', () => {
   })
 
   test('Should parse both 0 and 7 for weekday as sunday', () => {
-    expect(parseCronExpression('* * * * * 0').weekdays).toEqual([0])
-    expect(parseCronExpression('* * * * * 7').weekdays).toEqual([0])
+    expect(parseCronExpression('* * * * * 0').weekdays).toStrictEqual([0])
+    expect(parseCronExpression('* * * * * 7').weekdays).toStrictEqual([0])
   })
 
   test('Should parse @yearly', () => {
