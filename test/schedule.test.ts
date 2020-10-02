@@ -1,3 +1,4 @@
+import { parseCronExpression } from '../src/cron-parser'
 import { Schedule } from '../src/schedule'
 
 describe('constructor', () => {
@@ -68,20 +69,49 @@ describe('constructor', () => {
   })
 })
 
-describe('getNextDate', () => {
-  // TODO
+describe('getNextDate(s)', () => {
+  const startDate = new Date(2001, 2, 12, 0, 37, 48)
+  const schedule = parseCronExpression('*/5 * * * *')
+
+  test('Should correctly get the next date', () => {
+    expect(schedule.getNextDate(startDate)).toStrictEqual(
+      new Date(2001, 2, 12, 0, 40, 0)
+    )
+  })
+
+  test('Should correctly get the next 5 dates', () => {
+    expect(schedule.getNextDates(5, startDate)).toStrictEqual([
+      new Date(2001, 2, 12, 0, 40, 0),
+      new Date(2001, 2, 12, 0, 45, 0),
+      new Date(2001, 2, 12, 0, 50, 0),
+      new Date(2001, 2, 12, 0, 55, 0),
+      new Date(2001, 2, 12, 1, 0, 0),
+    ])
+  })
 })
 
-describe('getNextDates', () => {
-  // TODO
-})
+describe('getPrevDate(s)', () => {
+  const startDate = new Date(2001, 2, 12, 0, 37, 48)
+  const schedule = parseCronExpression('*/5 * * * *')
 
-describe('getPrevDate', () => {
-  // TODO
-})
+  test('Should correctly get the previous date', () => {
+    expect(schedule.getPrevDate(startDate)).toStrictEqual(
+      new Date(2001, 2, 12, 0, 30, 0)
+    )
+  })
 
-describe('getPrevDates', () => {
-  // TODO
+  test('Should correctly get the previous 8 dates', () => {
+    expect(schedule.getPrevDates(8, startDate)).toStrictEqual([
+      new Date(2001, 2, 12, 0, 30, 0),
+      new Date(2001, 2, 12, 0, 25, 0),
+      new Date(2001, 2, 12, 0, 20, 0),
+      new Date(2001, 2, 12, 0, 15, 0),
+      new Date(2001, 2, 12, 0, 10, 0),
+      new Date(2001, 2, 12, 0, 5, 0),
+      new Date(2001, 2, 12, 0, 0, 0),
+      new Date(2001, 2, 11, 23, 55, 0),
+    ])
+  })
 })
 
 describe('matchDate', () => {
@@ -124,14 +154,20 @@ describe('matchDate', () => {
   })
 })
 
-describe('setTimeout', () => {
-  // TODO
-})
-
-describe('setInterval', () => {
-  // TODO
-})
-
 describe('clearTimeoutOrInterval', () => {
-  // TODO
+  test('Should call clearTimeout with the timeoutId in the handle', () => {
+    jest.useFakeTimers()
+
+    const schedule = parseCronExpression('* * * * *')
+    const callback = jest.fn()
+    const handle = schedule.setTimeout(callback)
+
+    expect(jest.getTimerCount()).toBe(1)
+    schedule.clearTimeoutOrInterval(handle)
+    expect(clearTimeout).toBeCalledWith(handle.timeoutId)
+    expect(jest.getTimerCount()).toBe(0)
+    expect(callback).not.toBeCalled()
+
+    jest.clearAllTimers()
+  })
 })
