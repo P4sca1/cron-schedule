@@ -68,6 +68,22 @@ describe('constructor', () => {
   })
 })
 
+describe('getNextDate', () => {
+  // TODO
+})
+
+describe('getNextDates', () => {
+  // TODO
+})
+
+describe('getPrevDate', () => {
+  // TODO
+})
+
+describe('getPrevDates', () => {
+  // TODO
+})
+
 describe('matchDate', () => {
   test('Should return true for a matching date', () => {
     const schedule1 = new Schedule({
@@ -106,4 +122,16 @@ describe('matchDate', () => {
     expect(schedule1.matchDate(new Date(2001, 2, 12, 0, 38, 48))).toBeFalsy()
     expect(schedule1.matchDate(new Date(2001, 2, 12, 0, 37, 50))).toBeFalsy()
   })
+})
+
+describe('setTimeout', () => {
+  // TODO
+})
+
+describe('setInterval', () => {
+  // TODO
+})
+
+describe('clearTimeoutOrInterval', () => {
+  // TODO
 })
