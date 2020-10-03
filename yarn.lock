@@ -1812,10 +1812,10 @@ es-to-primitive@^1.2.1:
     is-date-object "^1.0.1"
     is-symbol "^1.0.2"
 
-esbuild@0.7.8:
-  version "0.7.8"
-  resolved "https://registry.yarnpkg.com/esbuild/-/esbuild-0.7.8.tgz#7bac177181efe0c8939a7b15536682afe32d1b73"
-  integrity sha512-6UT1nZB+8ja5avctUC6d3kGOUAhy6/ZYHljL4nk3++1ipadghBhUCAcwsTHsmUvdu04CcGKzo13mE+ZQ2O3zrA==
+esbuild@0.7.9:
+  version "0.7.9"
+  resolved "https://registry.yarnpkg.com/esbuild/-/esbuild-0.7.9.tgz#d54dabc5ec11c4c8d894d8d5f8528e15b39ae629"
+  integrity sha512-ksQ5GclWlswKrggWLPW9OHpRnMQZyWhonRCDbS/EoOYnG5g+1bsZVUvodBB2PJ8haiOEdmx0hWNJXEErvWIJeg==
 
 escape-string-regexp@^1.0.2, escape-string-regexp@^1.0.5:
   version "1.0.5"
