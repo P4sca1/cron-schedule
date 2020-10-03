@@ -4,6 +4,8 @@ Feel free to press the Watch button to get notified, when this project becomes u
 # cron-schedule
 A zero-dependency cron scheduler for Node.js and the browser.
 
+[![CircleCI](https://circleci.com/gh/P4sca1/cron-schedule.svg?style=svg)](https://circleci.com/gh/P4sca1/cron-schedule)
+
 ## Features
 * Parse cron expressions.
 * Get next or previous schedules from a specific starting date.
@@ -19,7 +21,8 @@ Via yarn:
 
 `$ yarn add cron-schedule`
 
-**Requires at least Node.js 10.13.0**
+**We test our code against active Node.js LTS releases (`10.22`, `12.18`, `14.13`).**
+Other versions of node.js may also work, but this is not tested.
 
 ## Installation for usage in the browser without a bundler
 `<script src="https://unpkg.com/cron-schedule@:version"></script>`
