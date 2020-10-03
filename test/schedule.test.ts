@@ -314,38 +314,43 @@ describe('constructor', () => {
 
 describe('getNextDate(s)', () => {
   test('Should correctly get the next date', () => {
-    const startDate = new Date(2001, 2, 12, 0, 37, 48)
-    const schedule = parseCronExpression('*/5 * * * *')
+    expect(
+      parseCronExpression('*/5 * * * *').getNextDate(
+        new Date(2001, 2, 12, 0, 37, 48)
+      )
+    ).toStrictEqual(new Date(2001, 2, 12, 0, 40, 0))
 
-    expect(schedule.getNextDate(startDate)).toStrictEqual(
-      new Date(2001, 2, 12, 0, 40, 0)
-    )
+    expect(
+      parseCronExpression('10,20 5,15 * * *').getNextDate(
+        new Date(2020, 9, 3, 10, 15)
+      )
+    ).toStrictEqual(new Date(2020, 9, 3, 15, 10))
+
+    expect(
+      parseCronExpression('@weekly').getNextDate(new Date(2020, 9, 2, 20, 5, 7))
+    ).toStrictEqual(new Date(2020, 9, 4, 0, 0, 0))
   })
 
-  test('Should correctly get the next 5 dates', () => {
-    const startDate = new Date(2001, 2, 12, 0, 37, 48)
-    const schedule = parseCronExpression('*/5 * * * *')
-
-    expect(schedule.getNextDates(5, startDate)).toStrictEqual([
+  test('Should correctly get the next dates', () => {
+    expect(
+      parseCronExpression('*/5 * * * *').getNextDates(
+        5,
+        new Date(2001, 2, 12, 0, 37, 48)
+      )
+    ).toStrictEqual([
       new Date(2001, 2, 12, 0, 40, 0),
       new Date(2001, 2, 12, 0, 45, 0),
       new Date(2001, 2, 12, 0, 50, 0),
       new Date(2001, 2, 12, 0, 55, 0),
       new Date(2001, 2, 12, 1, 0, 0),
     ])
-  })
 
-  test('Should work with weekdays', () => {
-    const startDate = new Date(2020, 9, 2, 20, 5, 7)
-    expect(parseCronExpression('@weekly').getNextDate(startDate)).toStrictEqual(
-      new Date(2020, 9, 4, 0, 0, 0)
-    )
-  })
-
-  test('Should only get months with sufficient days', () => {
-    const startDate = new Date(2020, 0, 1, 0, 0, 0)
-    const schedule = parseCronExpression('0 0 31 * *')
-    expect(schedule.getNextDates(6, startDate)).toStrictEqual([
+    expect(
+      parseCronExpression('0 0 31 * *').getNextDates(
+        6,
+        new Date(2020, 0, 1, 0, 0, 0)
+      )
+    ).toStrictEqual([
       new Date(2020, 0, 31, 0, 0, 0),
       new Date(2020, 2, 31, 0, 0, 0),
       new Date(2020, 5, 31, 0, 0, 0),
@@ -368,19 +373,30 @@ describe('getNextDate(s)', () => {
 
 describe('getPrevDate(s)', () => {
   test('Should correctly get the previous date', () => {
-    const startDate = new Date(2001, 2, 12, 0, 37, 48)
-    const schedule = parseCronExpression('*/5 * * * *')
+    expect(
+      parseCronExpression('*/5 * * * *').getPrevDate(
+        new Date(2001, 2, 12, 0, 37, 48)
+      )
+    ).toStrictEqual(new Date(2001, 2, 12, 0, 35, 0))
 
-    expect(schedule.getPrevDate(startDate)).toStrictEqual(
-      new Date(2001, 2, 12, 0, 35, 0)
-    )
+    expect(
+      parseCronExpression('10,20 5,15 * * *').getNextDate(
+        new Date(2020, 9, 3, 10, 15)
+      )
+    ).toStrictEqual(new Date(2020, 9, 3, 5, 20))
+
+    expect(
+      parseCronExpression('@weekly').getNextDate(new Date(2020, 9, 2, 20, 5, 7))
+    ).toStrictEqual(new Date(2020, 8, 26, 0, 0, 0))
   })
 
-  test('Should correctly get the previous 9 dates', () => {
-    const startDate = new Date(2001, 2, 12, 0, 37, 48)
-    const schedule = parseCronExpression('*/5 * * * *')
-
-    expect(schedule.getPrevDates(9, startDate)).toStrictEqual([
+  test('Should correctly get the previous dates', () => {
+    expect(
+      parseCronExpression('*/5 * * * *').getPrevDates(
+        9,
+        new Date(2001, 2, 12, 0, 37, 48)
+      )
+    ).toStrictEqual([
       new Date(2001, 2, 12, 0, 35, 0),
       new Date(2001, 2, 12, 0, 30, 0),
       new Date(2001, 2, 12, 0, 25, 0),
@@ -391,19 +407,13 @@ describe('getPrevDate(s)', () => {
       new Date(2001, 2, 12, 0, 0, 0),
       new Date(2001, 2, 11, 23, 55, 0),
     ])
-  })
 
-  test('Should work with weekdays', () => {
-    const startDate = new Date(2020, 9, 2, 20, 5, 7)
-    expect(parseCronExpression('@weekly').getNextDate(startDate)).toStrictEqual(
-      new Date(2020, 8, 26, 0, 0, 0)
-    )
-  })
-
-  test('Should only get months with sufficient days', () => {
-    const startDate = new Date(2020, 0, 1, 0, 0, 0)
-    const schedule = parseCronExpression('0 0 31 * *')
-    expect(schedule.getPrevDates(6, startDate)).toStrictEqual([
+    expect(
+      parseCronExpression('0 0 31 * *').getPrevDates(
+        6,
+        new Date(2020, 0, 1, 0, 0, 0)
+      )
+    ).toStrictEqual([
       new Date(2019, 11, 31, 0, 0, 0),
       new Date(2019, 9, 31, 0, 0, 0),
       new Date(2019, 7, 31, 0, 0, 0),
