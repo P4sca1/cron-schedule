@@ -9,6 +9,7 @@
   "contributors": [
     "Airfooox <konstantin.zisiadis@st.ovgu.de>"
   ],
+  "keywords": ["cron", "schedule", "parser", "job"],
   "main": "dist/index.js",
   "browser": "dist/cron-schedule.min.js",
   "unpkg": "dist/cron-schedule.min.js",
