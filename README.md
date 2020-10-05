@@ -1,6 +1,3 @@
-**This project is still work in progress and is not usable at the moment.**
-Feel free to press the Watch button to get notified, when this project becomes usable.
-
 # cron-schedule ![CircleCI](https://circleci.com/gh/P4sca1/cron-schedule.svg?style=svg)
 A zero-dependency cron scheduler for Node.js and the browser.
 
