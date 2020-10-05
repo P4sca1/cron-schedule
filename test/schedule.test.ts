@@ -381,14 +381,14 @@ describe('getPrevDate(s)', () => {
     ).toStrictEqual(new Date(2001, 2, 12, 0, 35, 0))
 
     expect(
-      parseCronExpression('10,20 5,15 * * *').getNextDate(
+      parseCronExpression('10,20 5,15 * * *').getPrevDate(
         new Date(2020, 9, 3, 10, 15)
       )
     ).toStrictEqual(new Date(2020, 9, 3, 5, 20))
 
     expect(
-      parseCronExpression('@weekly').getNextDate(new Date(2020, 9, 2, 20, 5, 7))
-    ).toStrictEqual(new Date(2020, 8, 26, 0, 0, 0))
+      parseCronExpression('@weekly').getPrevDate(new Date(2020, 9, 2, 20, 5, 7))
+    ).toStrictEqual(new Date(2020, 8, 27, 0, 0, 0))
   })
 
   test('Should correctly get the previous dates', () => {
