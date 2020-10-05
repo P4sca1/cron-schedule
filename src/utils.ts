@@ -60,3 +60,20 @@ export function extractDateElements(
     year: date.getFullYear(),
   }
 }
+
+/* Gets the amount of days in the given month (indexed by 0) of the given year. */
+export function getDaysInMonth(year: number, month: number): number {
+  return new Date(year, month + 1, 0).getDate()
+}
+
+/* Gets the amount of days from weekday1 to weekday2. */
+export function getDaysBetweenWeekdays(
+  weekday1: number,
+  weekday2: number
+): number {
+  if (weekday1 <= weekday2) {
+    return weekday2 - weekday1
+  }
+
+  return 6 - weekday1 + weekday2 + 1
+}
