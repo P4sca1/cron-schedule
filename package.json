@@ -14,15 +14,19 @@
   "keywords": [
     "cron",
     "schedule",
+    "typescript",
+    "job",
     "parser",
-    "job"
+    "cron-schedule",
+    "interval"
   ],
   "main": "dist/index.js",
   "browser": "dist/cron-schedule.min.js",
   "unpkg": "dist/cron-schedule.min.js",
   "files": [
     "dist/**/*.js",
-    "dist/**/*.js.map"
+    "dist/**/*.js.map",
+    "dist/**/*.d.ts"
   ],
   "types": "dist/index.d.ts",
   "scripts": {
