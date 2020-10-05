@@ -329,6 +329,18 @@ describe('getNextDate(s)', () => {
     expect(
       parseCronExpression('@weekly').getNextDate(new Date(2020, 9, 2, 20, 5, 7))
     ).toStrictEqual(new Date(2020, 9, 4, 0, 0, 0))
+
+    expect(
+      parseCronExpression('@yearly').getNextDate(
+        new Date(2020, 9, 5, 18, 50, 2)
+      )
+    ).toStrictEqual(new Date(2021, 0, 1, 0, 0, 0))
+
+    expect(
+      parseCronExpression('0 0 31 12 *').getNextDate(
+        new Date(2020, 9, 5, 18, 50, 2)
+      )
+    ).toStrictEqual(new Date(2020, 11, 31, 0, 0, 0))
   })
 
   test('Should correctly get the next dates', () => {
@@ -389,6 +401,18 @@ describe('getPrevDate(s)', () => {
     expect(
       parseCronExpression('@weekly').getPrevDate(new Date(2020, 9, 2, 20, 5, 7))
     ).toStrictEqual(new Date(2020, 8, 27, 0, 0, 0))
+
+    expect(
+      parseCronExpression('@yearly').getPrevDate(
+        new Date(2021, 9, 5, 18, 50, 2)
+      )
+    ).toStrictEqual(new Date(2021, 0, 1, 0, 0, 0))
+
+    expect(
+      parseCronExpression('0 0 31 12 *').getPrevDate(
+        new Date(2020, 9, 5, 18, 50, 2)
+      )
+    ).toStrictEqual(new Date(2019, 11, 31, 0, 0, 0))
   })
 
   test('Should correctly get the previous dates', () => {
