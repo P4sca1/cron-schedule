@@ -21,7 +21,8 @@
   "browser": "dist/cron-schedule.min.js",
   "unpkg": "dist/cron-schedule.min.js",
   "files": [
-    "dist/**/*.js"
+    "dist/**/*.js",
+    "dist/**/*.js.map"
   ],
   "types": "dist/index.d.ts",
   "scripts": {
