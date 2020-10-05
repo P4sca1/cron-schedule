@@ -347,13 +347,14 @@ describe('getNextDate(s)', () => {
 
     expect(
       parseCronExpression('0 0 31 * *').getNextDates(
-        6,
+        7,
         new Date(2020, 0, 1, 0, 0, 0)
       )
     ).toStrictEqual([
       new Date(2020, 0, 31, 0, 0, 0),
       new Date(2020, 2, 31, 0, 0, 0),
-      new Date(2020, 5, 31, 0, 0, 0),
+      new Date(2020, 4, 31, 0, 0, 0),
+      new Date(2020, 6, 31, 0, 0, 0),
       new Date(2020, 7, 31, 0, 0, 0),
       new Date(2020, 9, 31, 0, 0, 0),
       new Date(2020, 11, 31, 0, 0, 0),
@@ -362,7 +363,7 @@ describe('getNextDate(s)', () => {
 
   test('Should work with leap years', () => {
     const startDate = new Date(2020, 0, 1, 0, 0, 0)
-    const schedule = parseCronExpression('0 0 29 1 *')
+    const schedule = parseCronExpression('0 0 29 2 *')
     expect(schedule.getNextDates(3, startDate)).toStrictEqual([
       new Date(2020, 1, 29, 0, 0, 0),
       new Date(2024, 1, 29, 0, 0, 0),
@@ -410,14 +411,15 @@ describe('getPrevDate(s)', () => {
 
     expect(
       parseCronExpression('0 0 31 * *').getPrevDates(
-        6,
+        7,
         new Date(2020, 0, 1, 0, 0, 0)
       )
     ).toStrictEqual([
       new Date(2019, 11, 31, 0, 0, 0),
       new Date(2019, 9, 31, 0, 0, 0),
       new Date(2019, 7, 31, 0, 0, 0),
-      new Date(2019, 5, 31, 0, 0, 0),
+      new Date(2019, 6, 31, 0, 0, 0),
+      new Date(2019, 4, 31, 0, 0, 0),
       new Date(2019, 2, 31, 0, 0, 0),
       new Date(2019, 0, 31, 0, 0, 0),
     ])
@@ -425,8 +427,8 @@ describe('getPrevDate(s)', () => {
 
   test('Should work with leap years', () => {
     const startDate = new Date(2020, 0, 1, 0, 0, 0)
-    const schedule = parseCronExpression('0 0 29 1 *')
-    expect(schedule.getNextDates(3, startDate)).toStrictEqual([
+    const schedule = parseCronExpression('0 0 29 2 *')
+    expect(schedule.getPrevDates(3, startDate)).toStrictEqual([
       new Date(2016, 1, 29, 0, 0, 0),
       new Date(2012, 1, 29, 0, 0, 0),
       new Date(2008, 1, 29, 0, 0, 0),
