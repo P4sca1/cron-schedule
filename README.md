@@ -84,6 +84,16 @@ schedule.clearTimeoutOrInterval(handle: ITimerHandle): void
 _cron_schedule_ uses the linux cron syntax as described [here](https://man7.org/linux/man-pages/man5/crontab.5.html) with the addition that you can optionally
 specify seconds by prepending the minute field with another field.
 
+```
+┌───────────── second (0 - 59, optional)
+│ ┌───────────── minute (0 - 59)
+│ │ ┌───────────── hour (0 - 23)
+│ │ │ ┌───────────── day of month (1 - 31)
+│ │ │ │ ┌───────────── month (1 - 12)
+│ │ │ │ │ ┌───────────── weekday (0 - 7)
+* * * * * *
+```
+
 All linux cron features are supported, including
 
 * lists
