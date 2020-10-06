@@ -66,7 +66,7 @@ export class Schedule {
     this.weekdays = Array.from(weekdays).sort((a, b) => a - b)
 
     // Validate that all values are integers within the constraint.
-    const validateDate = (
+    const validateData = (
       name: string,
       data: ReadonlyArray<number>,
       constraint: { min: number; max: number }
@@ -86,12 +86,12 @@ export class Schedule {
       }
     }
 
-    validateDate('seconds', this.seconds, { min: 0, max: 59 })
-    validateDate('minutes', this.minutes, { min: 0, max: 59 })
-    validateDate('hours', this.hours, { min: 0, max: 23 })
-    validateDate('days', this.days, { min: 1, max: 31 })
-    validateDate('months', this.months, { min: 0, max: 11 })
-    validateDate('weekdays', this.weekdays, { min: 0, max: 6 })
+    validateData('seconds', this.seconds, { min: 0, max: 59 })
+    validateData('minutes', this.minutes, { min: 0, max: 59 })
+    validateData('hours', this.hours, { min: 0, max: 23 })
+    validateData('days', this.days, { min: 1, max: 31 })
+    validateData('months', this.months, { min: 0, max: 11 })
+    validateData('weekdays', this.weekdays, { min: 0, max: 6 })
 
     // For each element, store a reversed copy in the reversed attribute for finding prev dates.
     this.reversed = {
