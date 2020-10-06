@@ -100,7 +100,7 @@ All linux cron features are supported, including
 * ranges
 * ranges in lists
 * step values
-* month names (fan,feb,... - case insensitive)
+* month names (jan,feb,... - case insensitive)
 * weekday names (mon,tue,... - case insensitive)
 * time nicknames (@yearly, @annually, @monthly, @weekly, @daily, @hourly - case insensitive)
 
