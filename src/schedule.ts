@@ -145,7 +145,7 @@ export class Schedule {
 
   /**
    * Find the next or previous time, starting from the given start time that matches the hour, minute
-   * and second constrainst. startTime itself might also be allowed.
+   * and second constraints. startTime itself might also be allowed.
    */
   private findAllowedTime(
     dir: 'next' | 'prev',
@@ -190,21 +190,21 @@ export class Schedule {
             }
           }
         }
-      } else {
-        // We found an allowed hour which is not the start hour. Return that hour together with the first / last allowed minutes / seconds.
-        return {
-          hour,
-          minute: dir === 'next' ? this.minutes[0] : this.reversed.minutes[0],
-          second: dir === 'next' ? this.seconds[0] : this.reversed.seconds[0],
-        }
-      }
 
-      // We did not find an allowed minute / second combination inside the start hour. Try to find the next / previous allowed hour.
-      hour = this.findAllowedHour(
-        dir,
-        dir === 'next' ? startTime.hour + 1 : startTime.hour - 1
-      )
-      if (hour !== undefined) {
+        // We did not find an allowed minute / second combination inside the start hour. Try to find the next / previous allowed hour.
+        hour = this.findAllowedHour(
+          dir,
+          dir === 'next' ? startTime.hour + 1 : startTime.hour - 1
+        )
+        if (hour !== undefined) {
+          // We found an allowed hour which is not the start hour. Return that hour together with the first / last allowed minutes / seconds.
+          return {
+            hour,
+            minute: dir === 'next' ? this.minutes[0] : this.reversed.minutes[0],
+            second: dir === 'next' ? this.seconds[0] : this.reversed.seconds[0],
+          }
+        }
+      } else {
         // We found an allowed hour which is not the start hour. Return that hour together with the first / last allowed minutes / seconds.
         return {
           hour,
