@@ -29,56 +29,94 @@ After the script has been loaded, you can use the global `cronSchedule` object t
 
 **Requires ES6 (ES2015) browser support. Internet Explorer is not supported.** If you need to support older browsers, get _cron-schedule_ via npm or yarn and transpile it with your bundler.
 
-## Usage
-### Parse a cron expression to return an instance of `Schedule`
+## Parse cron expressions
 ```ts
+// Import method to parse a cron expression. In the browser: cronSchedule.parseCronExpression
 import { parseCronExpression } from 'cron-schedule'
-const schedule = parseCronExpression('0 * * * * *') // In the browser: cronSchedule.parseCronExpression
+
+// Parse a cron expression to return a Cron instance.
+const cron = parseCronExpression('0 * * * * *')
+
+// Get the next date starting from the given start date or now.
+cron.getNextDate(startDate?: Date): Date
+
+// Get the specified amount of future dates starting from the given start date or now.
+cron.getNextDates(amount: number, startDate?: Date): Date[]
+
+// Get the previou date starting from the given start date or now.
+cron.getPrevDate(startDate: Date = new Date()): Date
+
+// Get the specified amount of previous dates starting from the given start date or now.
+cron.getPrevDates(amount: number, startDate?: Date): Date[]
+
+// Check whether there is a cron date at the given date.
+cron.matchDate(date: Date): boolean
 ```
 
-### Get the next scheduled date starting from the given start date or now.
+## Schedule tasks based on cron expressions
+You can schedule tasks to be executed based on a cron expression. _cron-schedule_ comes with 2 different schedulers.
+
+### 1. Timer based scheduler
+The timer based cron scheduler creates one timer for every scheduled cron.
+When the node timeout limit of ~24 days would be exceeded, it uses multiple consecutive timeouts.
+
 ```ts
-schedule.getNextDate(startDate?: Date): Date
+// Import the scheduler. In the browser: cronSchedule.TimerBasedScheduler
+import { TimerBasedScheduler as scheduler } from 'cron-schedule'
+
+// Create a timeout, which fill fire the task on the next cron date.
+// Returns a handle which can be used to clear the timeout using clearTimeoutOrInterval.
+scheduler.setTimeout(cron: Cron, task: () => unknown): ITimerHandle
+
+// Create an interval, which will fire the given task on every future cron date.
+// This uses consecutive calls to scheduler.setTimeout under the hood.
+// Returns a handle which can be used to clear the timeout using clearTimeoutOrInterval.
+scheduler.setInterval(cron: Cron, task: () => unknown): ITimerHandle
+
+// Clear a timeout or interval, making sure that the task will no longer execute.
+scheduler.clearTimeoutOrInterval(handle: ITimerHandle): void
 ```
 
-### Get the specified amount of future scheduled dates starting from the given start date or now.
-```ts
-schedule.getNextDates(amount: number, startDate?: Date): Date[]
-```
+**Pros:**
+* A task is scheduled exactly to the second of the next cron date.
 
-### Get the previously scheduled date starting from the given start date or now.
-```ts
-schedule.getPrevDate(startDate: Date = new Date()): Date
-```
+**Cons:**
+* There is one timer per task, which could lead to lower performance compared to the interval based scheduler if you have many scheduled tasks.
 
-### Get the specified amount of previously scheduled dates starting from the given start date or now.
+### 2. Interval based scheduler
+The interval based scheduler checks for due task in a fixed interval. So there is only one interval for all tasks assigned to a scheduler.
+You can have multiple instances of an interval based scheduler. 
 ```ts
-schedule.getPrevDates(amount: number, startDate?: Date): Date[]
-```
+// Import the scheduler. In the browser: cronSchedule.IntervalBasedScheduler
+import { IntervalBasedScheduler } from 'cron-schedule'
 
-### Check whether there is a schedule on a given date.
-Returns true when there is a schedule at the given date.
-```ts
-schedule.matchDate(date: Date): boolean
-```
+// Instantiate a new instance of the scheduler with the given interval. In this example, the scheduler would check every 60 seconds.
+const scheduler = new IntervalBasedScheduler(60 * 1000)
 
-### Create a timeout, which will fire the given function on the next schedule.
-Returns a `handle` which can be used to clear the timeout using `clearTimeoutOrInterval`.
-```ts
-schedule.setTimeout(fn: () => void): ITimerHandle
-```
+// Register a new task that will be executed on every future cron date, or only on the next cron date if isOneTimeTask is true.
+// Returns an id to be used with unregisterTask.
+// Tasks are at max executed only once per interval.
+scheduler.registerTask(cron: Cron, task: () => unknown, isOneTimeTask: boolean): number
 
-### Create an interval, which will fire the given function on every future schedule.
-Returns a `handle` which can be used to clear the interval using `clearTimeoutOrInterval`.
-The `handle` parameter can be ignored. It is used internally to keep the timeoutId in the handle up to date.
-```ts
-schedule.setInterval(fn: () => void, handle?: ITimerHandle): ITimerHandle
-```
+// Unregister a task causing it to no longer be executed.
+scheduler.unregisterTask(id: number): void
 
-### Clear a timeout or interval, making sure that the function will no longer execute.
-```ts
-schedule.clearTimeoutOrInterval(handle: ITimerHandle): void
+// You can stop the scheduler, which clears the interval.
+scheduler.stop()
+
+// You can start the scheduler after stopping it again. A newly created scheduler is started by default.
+// Tasks that were due while the scheduler was stopped will be executed on the next interval tick (but only a single time).
+scheduler.start()
 ```
+**Pros:**
+* Only one interval for all tasks, which is quite performant.
+
+**Cons:**
+* Tasks are not executed exactly on the cron date.
+* Tasks can only be executed once per interval.
+
+**For most people, the timer based scheduler should be a good option. When you have problems with long timeouts / intervals being skipped, or have performance problems because of many scheduled tasks, you should consider the interval based scheduler.**
+
 
 ## Cron expression format
 _cron_schedule_ uses the linux cron syntax as described [here](https://man7.org/linux/man-pages/man5/crontab.5.html) with the addition that you can optionally
@@ -104,7 +142,7 @@ All linux cron features are supported, including
 * weekday names (mon,tue,... - case insensitive)
 * time nicknames (@yearly, @annually, @monthly, @weekly, @daily, @hourly - case insensitive)
 
-**Instead of using * * * * * * for a job that runs every second, you should consider using `setInterval(cb, 1000)` which is more suitable for such a simple timing task, because due to the calculation overhead, there would likely be delays when using cron.**
+**For simple timing tasks like every x seconds, you should consider using `setInterval` which is more suitable for simple timing tasks, as it does not have the calculation overhead.**
 
 ## Cron validation
 Looking for a way to validate cron expressions in your backend (node.js) or in the browser with support for multiple presets? Check out [cron-validate](https://github.com/airfooox/cron-validate)!

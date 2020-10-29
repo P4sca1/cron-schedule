@@ -1,9 +1,9 @@
 import { parseCronExpression } from '../src/cron-parser'
-import { Schedule } from '../src/schedule'
+import { Cron } from '../src/cron'
 
 describe('parseCronExpression', () => {
   test('Should parse a cron expression into a schedule instance', () => {
-    expect(parseCronExpression('* * * * * *')).toBeInstanceOf(Schedule)
+    expect(parseCronExpression('* * * * * *')).toBeInstanceOf(Cron)
   })
 
   test('Should parse asterix to all allowed values', () => {

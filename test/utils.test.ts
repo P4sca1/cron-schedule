@@ -10,7 +10,7 @@ describe('longTimeout', () => {
 
     expect(setTimeout).toHaveBeenCalledTimes(1)
     expect(callback).not.toBeCalled()
-    jest.runAllTimers()
+    jest.runOnlyPendingTimers()
     expect(setTimeout).toHaveBeenCalledTimes(1)
     expect(callback).toHaveBeenCalledTimes(1)
 
@@ -29,7 +29,7 @@ describe('longTimeout', () => {
     jest.runOnlyPendingTimers()
     expect(setTimeout).toHaveBeenCalledTimes(2)
     expect(callback).not.toBeCalled()
-    jest.runAllTimers()
+    jest.runOnlyPendingTimers()
     expect(setTimeout).toHaveBeenCalledTimes(2)
     expect(callback).toHaveBeenCalledTimes(1)
 
@@ -51,7 +51,7 @@ describe('longTimeout', () => {
     jest.runOnlyPendingTimers()
     expect(setTimeout).toHaveBeenCalledTimes(3)
     expect(callback).not.toBeCalled()
-    jest.runAllTimers()
+    jest.runOnlyPendingTimers()
     expect(setTimeout).toHaveBeenCalledTimes(3)
     expect(callback).toHaveBeenCalledTimes(1)
 

@@ -2,15 +2,13 @@ import {
   extractDateElements,
   getDaysBetweenWeekdays,
   getDaysInMonth,
-  ITimerHandle,
-  longTimeout,
 } from './utils'
 
 /**
  * An object with contains for each element of a date, which values are allowed.
  * Everything starting at 0, except for days.
  */
-export interface IScheduleDefinition {
+export interface ICronDefinition {
   readonly seconds: Set<number>
   readonly minutes: Set<number>
   readonly hours: Set<number>
@@ -19,7 +17,7 @@ export interface IScheduleDefinition {
   readonly weekdays: Set<number>
 }
 
-export class Schedule {
+export class Cron {
   // Everything starting at 0, except for days.
   public readonly seconds: ReadonlyArray<number>
   public readonly minutes: ReadonlyArray<number>
@@ -44,7 +42,7 @@ export class Schedule {
     days,
     months,
     weekdays,
-  }: IScheduleDefinition) {
+  }: ICronDefinition) {
     // Validate that there are values provided.
     if (!seconds || seconds.size === 0)
       throw new Error('There must be at least one allowed second.')
@@ -313,7 +311,7 @@ export class Schedule {
     return undefined
   }
 
-  /** Gets the next scheduled date starting from the given start date or now. */
+  /** Gets the next date starting from the given start date or now. */
   public getNextDate(startDate: Date = new Date()): Date {
     const startDateElements = extractDateElements(startDate)
     let minYear = startDateElements.year
@@ -382,10 +380,10 @@ export class Schedule {
       // No allowed day has been found for this month. Continue to search in next month.
     }
 
-    throw new Error('No valid next date was found for this schedule.')
+    throw new Error('No valid next date was found.')
   }
 
-  /** Gets the specified amount of future scheduled dates starting from the given start date or now. */
+  /** Gets the specified amount of future dates starting from the given start date or now. */
   public getNextDates(amount: number, startDate?: Date): Date[] {
     const dates = []
     let nextDate
@@ -398,7 +396,7 @@ export class Schedule {
     return dates
   }
 
-  /** Gets the previously scheduled date starting from the given start date or now. */
+  /** Gets the previous date starting from the given start date or now. */
   public getPrevDate(startDate: Date = new Date()): Date {
     const startDateElements = extractDateElements(startDate)
     let maxYear = startDateElements.year
@@ -470,10 +468,10 @@ export class Schedule {
       // No allowed day has been found for this month. Continue to search in previous month.
     }
 
-    throw new Error('No valid previous date was found for this schedule.')
+    throw new Error('No valid previous date was found.')
   }
 
-  /** Gets the specified amount of previously scheduled dates starting from the given start date or now. */
+  /** Gets the specified amount of previous dates starting from the given start date or now. */
   public getPrevDates(amount: number, startDate?: Date): Date[] {
     const dates = []
     let prevDate
@@ -486,7 +484,7 @@ export class Schedule {
     return dates
   }
 
-  /** Returns true when there is a schedule at the given date. */
+  /** Returns true when there is a cron date at the given date. */
   public matchDate(date: Date): boolean {
     const { second, minute, hour, day, month, weekday } = extractDateElements(
       date
@@ -499,42 +497,5 @@ export class Schedule {
       this.months.indexOf(month) !== -1 &&
       (this.days.indexOf(day) !== -1 || this.weekdays.indexOf(weekday) !== -1)
     )
-  }
-
-  /**
-   * Creates a timeout, which will fire the given function on the next schedule.
-   * Returns a handle which can be used to clear the timeout using clearTimeoutOrInterval.
-   */
-  public setTimeout(fn: () => void): ITimerHandle {
-    const nextSchedule = this.getNextDate()
-    const timeout = nextSchedule.getTime() - Date.now()
-
-    return longTimeout(fn, timeout)
-  }
-
-  /**
-   * Creates an interval, which will fire the given function on every future schedule.
-   * Returns a handle which can be used to clear the interval using clearTimeoutOrInterval.
-   * The handle parameter can be ignored. It is used internally to keep the timeoutId
-   * in the handle up to date.
-   */
-  public setInterval(fn: () => void, handle?: ITimerHandle): ITimerHandle {
-    handle ??= { timeoutId: undefined }
-
-    const { timeoutId } = this.setTimeout(() => {
-      fn()
-      this.setInterval(fn, handle)
-    })
-
-    handle.timeoutId = timeoutId
-
-    return handle
-  }
-
-  /** Clears a timeout or interval, making sure that the function will no longer execute. */
-  public clearTimeoutOrInterval(handle: ITimerHandle): void {
-    if (handle.timeoutId) {
-      clearTimeout(handle.timeoutId)
-    }
   }
 }
