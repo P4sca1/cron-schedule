@@ -1825,10 +1825,10 @@ es-to-primitive@^1.2.1:
     is-date-object "^1.0.1"
     is-symbol "^1.0.2"
 
-esbuild@0.7.9:
-  version "0.7.9"
-  resolved "https://registry.yarnpkg.com/esbuild/-/esbuild-0.7.9.tgz#d54dabc5ec11c4c8d894d8d5f8528e15b39ae629"
-  integrity sha512-ksQ5GclWlswKrggWLPW9OHpRnMQZyWhonRCDbS/EoOYnG5g+1bsZVUvodBB2PJ8haiOEdmx0hWNJXEErvWIJeg==
+esbuild@0.8.0:
+  version "0.8.0"
+  resolved "https://registry.yarnpkg.com/esbuild/-/esbuild-0.8.0.tgz#3173e851303dce0682ebbcbaf6072b991dd6f60e"
+  integrity sha512-xCHJpLRlU0NIANQHNsiMDNC/HlrKoye7iH5YOcoZNurauUZgMhjmm9PCal+Oo9ARYZrWxN15mykbfCX//UEvng==
 
 escalade@^3.0.2, escalade@^3.1.0:
   version "3.1.0"
