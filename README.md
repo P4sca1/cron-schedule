@@ -61,8 +61,8 @@ The timer based cron scheduler creates one timer for every scheduled cron.
 When the node timeout limit of ~24 days would be exceeded, it uses multiple consecutive timeouts.
 
 ```ts
-// Import the scheduler. In the browser: cronSchedule.TimerBasedScheduler
-import { TimerBasedScheduler as scheduler } from 'cron-schedule'
+// Import the scheduler. In the browser: cronSchedule.TimerBasedCronScheduler
+import { TimerBasedCronScheduler as scheduler } from 'cron-schedule'
 
 // Create a timeout, which fill fire the task on the next cron date.
 // Returns a handle which can be used to clear the timeout using clearTimeoutOrInterval.
@@ -87,11 +87,11 @@ scheduler.clearTimeoutOrInterval(handle: ITimerHandle): void
 The interval based scheduler checks for due task in a fixed interval. So there is only one interval for all tasks assigned to a scheduler.
 You can have multiple instances of an interval based scheduler. 
 ```ts
-// Import the scheduler. In the browser: cronSchedule.IntervalBasedScheduler
-import { IntervalBasedScheduler } from 'cron-schedule'
+// Import the scheduler. In the browser: cronSchedule.IntervalBasedCronScheduler
+import { IntervalBasedCronScheduler } from 'cron-schedule'
 
 // Instantiate a new instance of the scheduler with the given interval. In this example, the scheduler would check every 60 seconds.
-const scheduler = new IntervalBasedScheduler(60 * 1000)
+const scheduler = new IntervalBasedCronScheduler(60 * 1000)
 
 // Register a new task that will be executed on every future cron date, or only on the next cron date if isOneTimeTask is true.
 // Returns an id to be used with unregisterTask.

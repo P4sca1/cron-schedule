@@ -2,8 +2,8 @@
 
 ## 2.0.0
 * Renamed `Schedule` to `Cron`
-* New `IntervalBasedScheduler`
-* Moved `setTimeout`, `setInterval` and `clearTimeoutOrInterval` to `TimerBasedScheduler`
+* New `IntervalBasedCronScheduler`
+* Moved `setTimeout`, `setInterval` and `clearTimeoutOrInterval` to `TimerBasedCronScheduler`
 
 See `README.md` for instructions on how to use the new scheduler.
 
@@ -19,7 +19,7 @@ schedule.clearTimeoutOrInterval(id)
 
 
 // v2.x
-import { parseCronExpression, TimerBasedScheduler as scheduler } from 'cron-schedule'
+import { parseCronExpression, TimerBasedCronScheduler as scheduler } from 'cron-schedule'
 
 const cron = parseCronExpression('* * * * *')
 scheduler.setTimeout(cron, fn)
