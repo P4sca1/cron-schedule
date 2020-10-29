@@ -1,7 +1,34 @@
 # Changelog
 
-# 1.0.2
-* Publich type declarations to npm
+## 2.0.0
+* Renamed `Schedule` to `Cron`
+* New `IntervalBasedScheduler`
+* Moved `setTimeout`, `setInterval` and `clearTimeoutOrInterval` to `TimerBasedScheduler`
+
+See `README.md` for instructions on how to use the new scheduler.
+
+**Quick migration guide:**
+```ts
+// v1.x
+import { parseCronExpression } from 'cron-schedule'
+
+const schedule = parseCronExpression('* * * * *')
+schedule.setTimeout(fn)
+schedule.setInterval(fn)
+schedule.clearTimeoutOrInterval(id)
+
+
+// v2.x
+import { parseCronExpression, TimerBasedScheduler as scheduler } from 'cron-schedule'
+
+const cron = parseCronExpression('* * * * *')
+scheduler.setTimeout(cron, fn)
+scheduler.setInterval(cron, fn)
+scheduler.clearTimeoutOrInterval(id)
+```
+
+## 1.0.2
+* Publish type declarations to npm
 
 ## 1.0.1
 * Publish source maps to npm
