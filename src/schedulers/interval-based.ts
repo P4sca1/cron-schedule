@@ -31,15 +31,13 @@ export class IntervalBasedCronScheduler {
     this.start()
   }
 
-  /* Starts the scheduler and returns the id of the created nterval. */
-  public start(): ReturnType<typeof setInterval> {
+  /* Starts the scheduler. */
+  public start(): void {
     if (this.#intervalId !== undefined) {
       throw new Error('Scheduler already started.')
     }
 
     this.#intervalId = setInterval(this.processTasks.bind(this), this.#interval)
-
-    return this.#intervalId
   }
 
   /* Ensures the scheduler is stopped. */
