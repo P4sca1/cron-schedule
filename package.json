@@ -21,7 +21,6 @@
     "interval"
   ],
   "main": "dist/index.js",
-  "browser": "dist/cron-schedule.min.js",
   "unpkg": "dist/cron-schedule.min.js",
   "files": [
     "dist/**/*.js",
