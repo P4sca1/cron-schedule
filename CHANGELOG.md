@@ -1,5 +1,8 @@
 # Changelog
 
+## 2.0.1
+* Improved compatibility with bundlers like webpack.
+
 ## 2.0.0
 * Renamed `Schedule` to `Cron`
 * New `IntervalBasedCronScheduler`
