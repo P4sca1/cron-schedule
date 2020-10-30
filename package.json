@@ -28,6 +28,7 @@
     "dist/**/*.d.ts"
   ],
   "types": "dist/index.d.ts",
+  "sideEffects": false,
   "scripts": {
     "build:node": "tsc --project ./tsconfig.json",
     "build:browser": "esbuild --bundle --outfile=dist/cron-schedule.min.js --sourcemap --target=es6 --platform=browser --format=iife --global-name=cronSchedule --minify src/index.ts",
