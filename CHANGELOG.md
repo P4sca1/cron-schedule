@@ -1,5 +1,8 @@
 # Changelog
 
+## 2.0.2
+* Mark library as side effect free to support tree shaking.
+
 ## 2.0.1
 * Improved compatibility with bundlers like webpack.
 
