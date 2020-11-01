@@ -390,10 +390,14 @@ export class Cron {
     return dates
   }
 
+  /**
+   * Get an ES6 compatible iterator which iterates over the next dates starting from startDate or now.
+   * The iterator runs until the optional endDate is reached or forever.
+   */
   public *getNextDatesIterator(
     startDate?: Date,
     endDate?: Date
-  ): Iterable<Date> {
+  ): Generator<Date, undefined, undefined> {
     let nextDate
 
     while (true) {
@@ -498,10 +502,14 @@ export class Cron {
     return dates
   }
 
+  /**
+   * Get an ES6 compatible iterator which iterates over the previous dates starting from startDate or now.
+   * The iterator runs until the optional endDate is reached or forever.
+   */
   public *getPrevDatesIterator(
     startDate?: Date,
     endDate?: Date
-  ): Iterable<Date> {
+  ): Generator<Date, undefined, undefined> {
     let prevDate
 
     while (true) {
