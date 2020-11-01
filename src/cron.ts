@@ -232,13 +232,13 @@ export class Cron {
     // If both are restricted: allow day based on both day and weekday constraint. pick day that is closer to startDay.
     // If none are restricted: return the day closest to startDay (respecting dir) that is allowed (or startDay itself).
 
-    const daysInNextMonth = getDaysInMonth(year, month)
+    const daysInMonth = getDaysInMonth(year, month)
     const daysRestricted = this.days.length !== 31
     const weekdaysRestricted = this.weekdays.length !== 7
 
     if (!daysRestricted && !weekdaysRestricted) {
-      if (startDay > daysInNextMonth) {
-        return dir === 'next' ? undefined : daysInNextMonth
+      if (startDay > daysInMonth) {
+        return dir === 'next' ? undefined : daysInMonth
       }
 
       return startDay
@@ -253,10 +253,7 @@ export class Cron {
           : this.reversed.days.find((x) => x <= startDay)
 
       // Make sure the day does not exceed the amount of days in month.
-      if (
-        allowedDayByDays !== undefined &&
-        allowedDayByDays > daysInNextMonth
-      ) {
+      if (allowedDayByDays !== undefined && allowedDayByDays > daysInMonth) {
         allowedDayByDays = undefined
       }
     }
@@ -283,10 +280,7 @@ export class Cron {
             : startDay - daysBetweenWeekdays
 
         // Make sure the day does not exceed the month boundaries.
-        if (
-          allowedDayByWeekdays > daysInNextMonth ||
-          allowedDayByWeekdays < 1
-        ) {
+        if (allowedDayByWeekdays > daysInMonth || allowedDayByWeekdays < 1) {
           allowedDayByWeekdays = undefined
         }
       }
