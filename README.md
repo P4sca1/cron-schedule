@@ -45,6 +45,7 @@ cron.getNextDates(amount: number, startDate?: Date): Date[]
 
 // Get an ES6 compatible iterator which iterates over the next dates starting from startDate or now.
 // The iterator runs until the optional endDate is reached or forever.
+// The advantage of an iterator is that you can get more further dates on demand by using iterator.next().
 cron.getNextDatesIterator(startDate: Date = new Date(), endDate?: Date): Generator<Date, undefined, undefined>
 
 // Get the previou date starting from the given start date or now.
@@ -55,6 +56,7 @@ cron.getPrevDates(amount: number, startDate?: Date): Date[]
 
 // Get an ES6 compatible iterator which iterates over the previous dates starting from startDate or now.
 // The iterator runs until the optional endDate is reached or forever.
+// The advantage of an iterator is that you can get more previous dates on demand by using iterator.next().
 cron.getPrevDatesIterator(startDate: Date = new Date(), endDate?: Date): Generator<Date, undefined, undefined>
 
 // Check whether there is a cron date at the given date.
