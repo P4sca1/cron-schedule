@@ -516,27 +516,6 @@ export class Cron {
     }
   }
 
-  /** Get an ES6 compatible iterator which iterates over the next dates until endDate is reached or forever.  */
-  public iterator(
-    startDate: Date = new Date(),
-    endDate?: Date
-  ): Iterator<Date, undefined, undefined> {
-    let nextDate
-
-    return {
-      next: () => {
-        nextDate = this.getNextDate(startDate)
-        startDate = nextDate
-
-        if (endDate && endDate.getTime() < nextDate.getTime()) {
-          return { done: true }
-        }
-
-        return { value: nextDate, done: false }
-      },
-    }
-  }
-
   /** Returns true when there is a cron date at the given date. */
   public matchDate(date: Date): boolean {
     const { second, minute, hour, day, month, weekday } = extractDateElements(
