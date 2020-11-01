@@ -384,6 +384,21 @@ describe('getNextDate(s)', () => {
   })
 })
 
+describe('getNextDatesIterator', () => {
+  test('Should yield the correct next dates', () => {
+    const nextDates = parseCronExpression('* * * * *').getNextDatesIterator(
+      new Date(2020, 10, 1, 0, 0, 0),
+      new Date(2020, 10, 1, 0, 59, 0)
+    )
+
+    let i = 1
+    for (const date of nextDates) {
+      expect(date).toStrictEqual(new Date(2020, 10, 1, 0, i, 0))
+      i += 1
+    }
+  })
+})
+
 describe('getPrevDate(s)', () => {
   test('Should correctly get the previous date', () => {
     expect(
@@ -457,6 +472,21 @@ describe('getPrevDate(s)', () => {
       new Date(2012, 1, 29, 0, 0, 0),
       new Date(2008, 1, 29, 0, 0, 0),
     ])
+  })
+})
+
+describe('getPrevDatesIterator', () => {
+  test('Should yield the correct previous dates', () => {
+    const nextDates = parseCronExpression('* * * * *').getPrevDatesIterator(
+      new Date(2020, 10, 1, 0, 59, 0),
+      new Date(2020, 10, 1, 0, 0, 0)
+    )
+
+    let i = 1
+    for (const date of nextDates) {
+      expect(date).toStrictEqual(new Date(2020, 10, 1, 0, 59 - i, 0))
+      i += 1
+    }
   })
 })
 

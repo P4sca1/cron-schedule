@@ -390,6 +390,24 @@ export class Cron {
     return dates
   }
 
+  public *getNextDatesIterator(
+    startDate?: Date,
+    endDate?: Date
+  ): Iterable<Date> {
+    let nextDate
+
+    while (true) {
+      nextDate = this.getNextDate(startDate)
+      startDate = nextDate
+
+      if (endDate && endDate.getTime() < nextDate.getTime()) {
+        return
+      }
+
+      yield nextDate
+    }
+  }
+
   /** Gets the previous date starting from the given start date or now. */
   public getPrevDate(startDate: Date = new Date()): Date {
     const startDateElements = extractDateElements(startDate)
@@ -478,6 +496,45 @@ export class Cron {
     }
 
     return dates
+  }
+
+  public *getPrevDatesIterator(
+    startDate?: Date,
+    endDate?: Date
+  ): Iterable<Date> {
+    let prevDate
+
+    while (true) {
+      prevDate = this.getPrevDate(startDate)
+      startDate = prevDate
+
+      if (endDate && endDate.getTime() > prevDate.getTime()) {
+        return
+      }
+
+      yield prevDate
+    }
+  }
+
+  /** Get an ES6 compatible iterator which iterates over the next dates until endDate is reached or forever.  */
+  public iterator(
+    startDate: Date = new Date(),
+    endDate?: Date
+  ): Iterator<Date, undefined, undefined> {
+    let nextDate
+
+    return {
+      next: () => {
+        nextDate = this.getNextDate(startDate)
+        startDate = nextDate
+
+        if (endDate && endDate.getTime() < nextDate.getTime()) {
+          return { done: true }
+        }
+
+        return { value: nextDate, done: false }
+      },
+    }
   }
 
   /** Returns true when there is a cron date at the given date. */

@@ -43,11 +43,19 @@ cron.getNextDate(startDate?: Date): Date
 // Get the specified amount of future dates starting from the given start date or now.
 cron.getNextDates(amount: number, startDate?: Date): Date[]
 
+// Get an ES6 compatible iterator which iterates over the next dates starting from startDate or now.
+// The iterator runs until the optional endDate is reached or forever.
+cron.getNextDatesIterator(startDate: Date = new Date(), endDate?: Date): Iterable<Date>
+
 // Get the previou date starting from the given start date or now.
 cron.getPrevDate(startDate: Date = new Date()): Date
 
 // Get the specified amount of previous dates starting from the given start date or now.
 cron.getPrevDates(amount: number, startDate?: Date): Date[]
+
+// Get an ES6 compatible iterator which iterates over the previous dates starting from startDate or now.
+// The iterator runs until the optional endDate is reached or forever.
+cron.getPrevDatesIterator(startDate: Date = new Date(), endDate?: Date): Iterable<Date>
 
 // Check whether there is a cron date at the given date.
 cron.matchDate(date: Date): boolean
