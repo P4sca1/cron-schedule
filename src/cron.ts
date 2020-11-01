@@ -448,8 +448,10 @@ export class Cron {
         }
 
         // If no valid time has been found for the start date, try the previous day.
-        day = this.findAllowedDayInMonth('prev', year, month, day - 1)
-        isStartDay = false
+        if (day > 1) {
+          day = this.findAllowedDayInMonth('prev', year, month, day - 1)
+          isStartDay = false
+        }
       }
 
       // If we found a previous day and it is not the start day, just use the previous day with the first allowed values
