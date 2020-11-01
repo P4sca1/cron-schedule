@@ -1,5 +1,9 @@
 # Changelog
 
+## 2.1.0
+* Slightly improve performance of the interval based scheduler.
+* Add methods to iterate over next and previous dates.
+
 ## 2.0.2
 * Mark library as side effect free to support tree shaking.
 
