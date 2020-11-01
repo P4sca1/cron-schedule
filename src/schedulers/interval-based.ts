@@ -102,9 +102,9 @@ export class IntervalBasedCronScheduler {
 
       if (task.nextExecution.getTime() <= now) {
         task.task()
-        taskExecuted = true
 
         if (!task.isOneTimeTask) {
+          taskExecuted = true
           task.nextExecution = task.cron.getNextDate()
         } else {
           oneTimeTaskExecuted = true
@@ -121,8 +121,9 @@ export class IntervalBasedCronScheduler {
       )
     }
 
+    // When at least one nextExecution time got updated (at least one non-one-time-task ran),
+    // we need to resort the tasks based on nextExecution.
     if (taskExecuted) {
-      // Sort tasks based on nextExecution again.
       this.sortTasks()
     }
   }
