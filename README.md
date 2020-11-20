@@ -6,8 +6,11 @@ A zero-dependency cron scheduler for Node.js and the browser.
 * Get next or previous schedules from a specific starting date.
 * Check if a date matches a cron expression.
 * Schedule a function call based on a cron expression.
+* Supports Node.js, Deno and the browser (IIFE or ESM, ES6 required)
+* [Lightweight](https://bundlephobia.com/result?p=cron-schedule@latest) and tree-shakeable.
 
-## Installation for usage in Node.js or in the browser via bundlers
+## Installation and usage
+### Node.js (CommonJS)
 Via npm:
 
 `$ npm install cron-schedule`
@@ -19,23 +22,64 @@ Via yarn:
 **We test our code against active Node.js LTS releases (`10.22`, `12.18`, `14.13`).**
 Other versions of node.js may also work, but this is not tested.
 
-## Installation for usage in the browser without a bundler
-`<script src="https://unpkg.com/cron-schedule@:version"></script>`
+##### Usage
+```ts
+import { parseCronExpression } from 'cron-schedule'
+const cron = parseCronExpression('*/5 * * * *')
+console.log(cron.getNextDate(new Date(2020, 10, 20, 18, 32)))
+// 2020-11-20T17:35:00.000Z
+```
 
-Replace `:version` with the desired version. Semver ranges are supported. To always use the latest `1.x` version use `^1.0.0`.
-See [Releases](https://github.com/P4sca1/cron-schedule/releases) for a list of available versions.
+## Browser (IIFE)
+```html
+<script src="https://unpkg.com/cron-schedule@:version"></script>
+```
 
 After the script has been loaded, you can use the global `cronSchedule` object to access the API.
 
+##### Usage
+```html
+<script>
+  const cron = cronSchedule.parseCronExpression('*/5 * * * *')
+  console.log(cron.getNextDate(new Date(2020, 10, 20, 18, 32)))
+  // 2020-11-20T17:35:00.000Z
+</script>
+```
+
 **Requires ES6 (ES2015) browser support. Internet Explorer is not supported.** If you need to support older browsers, get _cron-schedule_ via npm or yarn and transpile it with your bundler.
 
-## Parse cron expressions
+### Browser (ECMAScript module)
+```html
+<script type="module">
+  import { parseCronExpression } from 'https://cdn.skypack.dev/cron-schedule@:version'
+  const cron = parseCronExpression('*/5 * * * *')
+  console.log(cron.getNextDate(new Date(2020, 10, 20, 18, 32)))
+  // 2020-11-20T17:35:00.000Z
+</script>
+```
+
+### Deno
 ```ts
-// Import method to parse a cron expression. In the browser: cronSchedule.parseCronExpression
+import { parseCronExpression } from 'https://cdn.skypack.dev/cron-schedule@:version?dts'
+// TypeScript types are automatically shipped with the X-TypeScript-Types http header.
+const cron = parseCronExpression('*/5 * * * *')
+console.log(cron.getNextDate(new Date(2020, 10, 20, 18, 32)))
+// 2020-11-20T17:35:00.000Z
+```
+
+### Note on CDN usage
+The examples above use [unpkg](http://unpkg.com) for IIFE and [Skypack](https://www.skypack.dev) for ESM.
+
+The urls contain `:version` placeholder. Replace `:version` with the desired version. Semver ranges are supported. To always use the latest `2.x` version use `^2.0.0`.
+See https://www.npmjs.com/package/cron-schedule for a list of available versions.
+
+## Work with cron expressions
+```ts
+// Import method to parse a cron expression. In the browser with IIFE: cronSchedule.parseCronExpression
 import { parseCronExpression } from 'cron-schedule'
 
 // Parse a cron expression to return a Cron instance.
-const cron = parseCronExpression('0 * * * * *')
+const cron = parseCronExpression('*/5 * * * *')
 
 // Get the next date starting from the given start date or now.
 cron.getNextDate(startDate?: Date): Date
@@ -71,7 +115,7 @@ The timer based cron scheduler creates one timer for every scheduled cron.
 When the node timeout limit of ~24 days would be exceeded, it uses multiple consecutive timeouts.
 
 ```ts
-// Import the scheduler. In the browser: cronSchedule.TimerBasedCronScheduler
+// Import the scheduler. In the browser with IIFE: cronSchedule.TimerBasedCronScheduler
 import { TimerBasedCronScheduler as scheduler } from 'cron-schedule'
 
 // Create a timeout, which fill fire the task on the next cron date.
@@ -97,7 +141,7 @@ scheduler.clearTimeoutOrInterval(handle: ITimerHandle): void
 The interval based scheduler checks for due task in a fixed interval. So there is only one interval for all tasks assigned to a scheduler.
 You can have multiple instances of an interval based scheduler. 
 ```ts
-// Import the scheduler. In the browser: cronSchedule.IntervalBasedCronScheduler
+// Import the scheduler. In the browser with IIFE: cronSchedule.IntervalBasedCronScheduler
 import { IntervalBasedCronScheduler } from 'cron-schedule'
 
 // Instantiate a new instance of the scheduler with the given interval. In this example, the scheduler would check every 60 seconds.

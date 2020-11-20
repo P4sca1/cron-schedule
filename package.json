@@ -20,19 +20,22 @@
     "interval",
     "iterator"
   ],
-  "main": "dist/index.js",
-  "unpkg": "dist/cron-schedule.min.js",
+  "main": "./dist/cron-schedule.cjs.min.js",
+  "module": "./dist/cron-schedule.esm.min.js",
+  "unpkg": "dist/cron-schedule.iife.min.js",
+  "exports": {
+    "require": "./dist/cron-schedule.cjs.min.js",
+    "import": "./dist/cron-schedule.esm.min.js"
+  },
   "files": [
-    "dist/**/*.js",
-    "dist/**/*.js.map",
-    "dist/**/*.d.ts"
+    "./dist/**/*.js",
+    "./dist/**/*.js.map",
+    "./dist/**/*.d.ts"
   ],
-  "types": "dist/index.d.ts",
+  "types": "./dist/index.d.ts",
   "sideEffects": false,
   "scripts": {
-    "build:node": "tsc --project ./tsconfig.json",
-    "build:browser": "esbuild --bundle --outfile=dist/cron-schedule.min.js --sourcemap --target=es6 --platform=browser --format=iife --global-name=cronSchedule --minify src/index.ts",
-    "build": "rimraf ./dist && yarn build:node && yarn build:browser",
+    "build": "rimraf ./dist && tsc -p ./tsconfig.json --emitDeclarationOnly && node build.js",
     "ts-check": "tsc --project ./tsconfig.json --noEmit",
     "lint": "eslint \"src/**/*.ts\"",
     "lint-fix": "eslint --fix \"src/**/*.ts\"",
