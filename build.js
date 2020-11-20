@@ -34,4 +34,5 @@ build({
 build({
   outfile: 'dist/cron-schedule.esm.min.js',
   format: 'esm',
+  target: 'es6',
 })
