@@ -33,6 +33,26 @@
     "require": "./dist/cron-schedule.cjs.min.js",
     "import": "./dist/cron-schedule.esm.min.js"
   },
+  "release": {
+    "branches": [
+      "master"
+    ],
+    "preset": "angular",
+    "plugins": [
+      "@semantic-release/commit-analyzer",
+      "@semantic-release/release-notes-generator",
+      "@semantic-release/changelog",
+      "@semantic-release/npm",
+      [
+        "@semantic-release/github",
+        {
+          "assets": [
+            "./dist/*.js"
+          ]
+        }
+      ]
+    ]
+  },
   "files": [
     "./dist/**/*.js",
     "./dist/**/*.js.map",
@@ -53,9 +73,10 @@
     "@commitlint/cli": "11.0.0",
     "@commitlint/config-conventional": "11.0.0",
     "@commitlint/prompt-cli": "11.0.0",
-    "@typescript-eslint/eslint-plugin": "4.8.1",
-    "@typescript-eslint/parser": "4.8.1",
-    "@typescript-eslint/typescript-estree": "4.8.1",
+    "@semantic-release/changelog": "5.0.1",
+    "@typescript-eslint/eslint-plugin": "4.6.0",
+    "@typescript-eslint/parser": "4.6.0",
+    "@typescript-eslint/typescript-estree": "4.6.0",
     "esbuild": "0.8.1",
     "eslint": "7.13.0",
     "eslint-config-prettier": "6.15.0",
@@ -66,6 +87,7 @@
     "jest": "26.6.1",
     "prettier": "2.1.2",
     "rimraf": "3.0.2",
+    "semantic-release": "17.2.4",
     "ts-jest": "26.4.3",
     "tslib": "2.0.3",
     "typescript": "4.0.5"
