@@ -35,7 +35,11 @@
   },
   "release": {
     "branches": [
-      "master"
+      "master",
+      {
+        "name": "next",
+        "prelease": true
+      }
     ],
     "preset": "angular",
     "plugins": [
@@ -50,7 +54,8 @@
             "./dist/*.js"
           ]
         }
-      ]
+      ],
+      "@semantic-release/git"
     ]
   },
   "files": [
