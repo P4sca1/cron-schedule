@@ -1,3 +1,10 @@
+## [2.2.2](https://github.com/P4sca1/cron-schedule/compare/v2.2.1...v2.2.2) (2020-11-20)
+
+
+### Bug Fixes
+
+* **deps:** update yarn.lock ([e22b7cc](https://github.com/P4sca1/cron-schedule/commit/e22b7cc5d2c87b30c6f72625a7803951b4eddb14))
+
 ## [2.2.1](https://github.com/P4sca1/cron-schedule/compare/v2.2.0...v2.2.1) (2020-11-20)
 
 
