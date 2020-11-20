@@ -1,3 +1,10 @@
+## [2.2.3](https://github.com/P4sca1/cron-schedule/compare/v2.2.2...v2.2.3) (2020-11-20)
+
+
+### Bug Fixes
+
+* fix typo in comment ([499afc2](https://github.com/P4sca1/cron-schedule/commit/499afc2d1b91ae0e5250ba4b78ef8c274a942db6))
+
 ## [2.2.2](https://github.com/P4sca1/cron-schedule/compare/v2.2.1...v2.2.2) (2020-11-20)
 
 
