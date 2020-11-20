@@ -26,12 +26,12 @@
     "schedule-tasks",
     "nodejs"
   ],
-  "main": "./dist/cron-schedule.cjs.min.js",
-  "module": "./dist/cron-schedule.esm.min.js",
+  "main": "dist/cron-schedule.cjs.min.js",
+  "module": "dist/cron-schedule.esm.min.js",
   "unpkg": "dist/cron-schedule.iife.min.js",
   "exports": {
-    "require": "./dist/cron-schedule.cjs.min.js",
-    "import": "./dist/cron-schedule.esm.min.js"
+    "require": "dist/cron-schedule.cjs.min.js",
+    "import": "dist/cron-schedule.esm.min.js"
   },
   "release": {
     "branches": [
@@ -51,7 +51,7 @@
         "@semantic-release/github",
         {
           "assets": [
-            "./dist/*.js"
+            "dist/*.js"
           ]
         }
       ],
@@ -59,11 +59,11 @@
     ]
   },
   "files": [
-    "./dist/**/*.js",
-    "./dist/**/*.js.map",
-    "./dist/**/*.d.ts"
+    "dist/**/*.js",
+    "dist/**/*.js.map",
+    "dist/**/*.d.ts"
   ],
-  "types": "./dist/index.d.ts",
+  "types": "dist/index.d.ts",
   "sideEffects": false,
   "scripts": {
     "build": "rimraf ./dist && tsc -p ./tsconfig.json --emitDeclarationOnly && node build.js",
