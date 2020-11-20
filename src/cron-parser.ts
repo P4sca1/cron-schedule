@@ -186,7 +186,7 @@ export function parseCronExpression(cronExpression: string): Cron {
     minutes: parseElement(rawMinutes, minuteConstraint),
     hours: parseElement(rawHours, hourConstraint),
     days: parseElement(rawDays, dayConstraint),
-    // months in cron are indexed by 1, but schedule expects indexes by 0, so we need to reduce all set values by one.
+    // months in cron are indexed by 1, but Cron expects indexes by 0, so we need to reduce all set values by one.
     months: new Set(
       Array.from(parseElement(rawMonths, monthConstraint)).map((x) => x - 1)
     ),
