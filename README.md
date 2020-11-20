@@ -1,5 +1,5 @@
 # cron-schedule ![CircleCI](https://circleci.com/gh/P4sca1/cron-schedule.svg?style=svg)
-A zero-dependency cron scheduler for Node.js and the browser.
+A zero-dependency cron parser and scheduler for Node.js, Deno and the browser.
 
 ## Features
 * Parse cron expressions.

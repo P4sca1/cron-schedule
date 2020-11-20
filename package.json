@@ -1,6 +1,6 @@
 {
   "name": "cron-schedule",
-  "description": "A zero-dependency cron parser and scheduler for Node.js and the browser.",
+  "description": "A zero-dependency cron parser and scheduler for Node.js, Deno and the browser.",
   "version": "2.1.0",
   "license": "MIT",
   "repository": {
@@ -15,10 +15,16 @@
     "cron",
     "schedule",
     "typescript",
-    "job",
-    "parser",
+    "job parser",
     "interval",
-    "iterator"
+    "iterator",
+    "deno",
+    "javascript",
+    "timer",
+    "cron-schedule",
+    "cron-expression",
+    "schedule-tasks",
+    "nodejs"
   ],
   "main": "./dist/cron-schedule.cjs.min.js",
   "module": "./dist/cron-schedule.esm.min.js",
