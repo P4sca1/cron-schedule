@@ -21,7 +21,7 @@ jobs:
           key: yarn-packages-{{ checksum "yarn.lock" }}
           paths:
             - ~/.cache/yarn
-      - run: yarn semantic-release
+      - run: npx semantic-release
 
 workflows:
   test_and_release:
