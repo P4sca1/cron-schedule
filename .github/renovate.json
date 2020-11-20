@@ -1,5 +1,6 @@
 {
   "enabled": true,
+  "baseBranches": ["dev"],
   "extends": [
     ":pinVersions",
     ":separateMultipleMajorReleases",
