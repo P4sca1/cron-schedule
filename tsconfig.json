@@ -17,6 +17,5 @@
 
     "importsNotUsedAsValues": "error"
   },
-  "include": ["src/**/*.ts"],
+  "include": ["src/**/*.ts"]
 }
-  
