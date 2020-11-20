@@ -5,8 +5,6 @@
 
 * **deps:** regenerate yarn.lock ([ef1e3fe](https://github.com/P4sca1/cron-schedule/commit/ef1e3fe414bbcc5fd6ee974f300c6d1960382f7a))
 
-# Changelog
-
 ## 2.1.0
 * Slightly improve performance of the interval based scheduler.
 * Add methods to iterate over next and previous dates: `cron.getNextDatesIterator` and `cron.getPrevdatesIterator()`
