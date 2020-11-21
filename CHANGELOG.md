@@ -1,3 +1,10 @@
+## [2.2.4](https://github.com/P4sca1/cron-schedule/compare/v2.2.3...v2.2.4) (2020-11-21)
+
+
+### Bug Fixes
+
+* fix package.json exports ([c172cdc](https://github.com/P4sca1/cron-schedule/commit/c172cdcc4a6bf14aef3e32831a921c0725336263))
+
 ## [2.2.3](https://github.com/P4sca1/cron-schedule/compare/v2.2.2...v2.2.3) (2020-11-20)
 
 
