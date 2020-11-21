@@ -30,8 +30,8 @@
   "module": "dist/cron-schedule.esm.min.js",
   "unpkg": "dist/cron-schedule.iife.min.js",
   "exports": {
-    "require": "dist/cron-schedule.cjs.min.js",
-    "import": "dist/cron-schedule.esm.min.js"
+    "require": "./dist/cron-schedule.cjs.min.js",
+    "import": "./dist/cron-schedule.esm.min.js"
   },
   "release": {
     "branches": [
