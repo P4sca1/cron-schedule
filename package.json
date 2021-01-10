@@ -50,7 +50,7 @@
     "@typescript-eslint/eslint-plugin": "4.12.0",
     "@typescript-eslint/parser": "4.12.0",
     "@typescript-eslint/typescript-estree": "4.12.0",
-    "esbuild": "0.8.1",
+    "esbuild": "0.8.31",
     "eslint": "7.17.0",
     "eslint-config-prettier": "7.1.0",
     "eslint-plugin-import": "2.22.1",
