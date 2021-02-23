@@ -124,13 +124,16 @@ When the node timeout limit of ~24 days would be exceeded, it uses multiple cons
 import { TimerBasedCronScheduler as scheduler } from 'cron-schedule'
 
 // Create a timeout, which fill fire the task on the next cron date.
+// An optional errorHandler can be provided, which is called when the task throws an error or returns a promise that gets rejected.
 // Returns a handle which can be used to clear the timeout using clearTimeoutOrInterval.
-scheduler.setTimeout(cron: Cron, task: () => unknown): ITimerHandle
+scheduler.setTimeout(cron: Cron, task: () => unknown, opts?: { errorHandler?: (err: Error) => unknown }): ITimerHandle
 
 // Create an interval, which will fire the given task on every future cron date.
 // This uses consecutive calls to scheduler.setTimeout under the hood.
+// An optional errorHandler can be provided, which is called when the task throws an error or returns a promise that gets rejected.
+// The task remains scheduled when an error occurs.
 // Returns a handle which can be used to clear the timeout using clearTimeoutOrInterval.
-scheduler.setInterval(cron: Cron, task: () => unknown): ITimerHandle
+scheduler.setInterval(cron: Cron, task: () => unknown, opts?: { errorHandler?: (err: Error) => unknown }): ITimerHandle
 
 // Clear a timeout or interval, making sure that the task will no longer execute.
 scheduler.clearTimeoutOrInterval(handle: ITimerHandle): void
@@ -153,9 +156,10 @@ import { IntervalBasedCronScheduler } from 'cron-schedule'
 const scheduler = new IntervalBasedCronScheduler(60 * 1000)
 
 // Register a new task that will be executed on every future cron date, or only on the next cron date if isOneTimeTask is true.
+// An optional errorHandler can be provided, which is called when the task throws an error or returns a promise that gets rejected.
+// The task remains scheduled when an error occurs (if not a one time task). Tasks are at max executed only once per interval.
 // Returns an id to be used with unregisterTask.
-// Tasks are at max executed only once per interval.
-scheduler.registerTask(cron: Cron, task: () => unknown, isOneTimeTask: boolean): number
+scheduler.registerTask(cron: Cron, task: () => unknown, opts?: { isOneTimeTask?: boolean, errorHandler?: (err: Error) => unknown }): number
 
 // Unregister a task causing it to no longer be executed.
 scheduler.unregisterTask(id: number): void
