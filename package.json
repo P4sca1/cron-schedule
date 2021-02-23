@@ -44,9 +44,9 @@
     "prepare": "yarn build"
   },
   "devDependencies": {
-    "@commitlint/cli": "11.0.0",
-    "@commitlint/config-conventional": "11.0.0",
-    "@commitlint/prompt-cli": "11.0.0",
+    "@commitlint/cli": "12.0.0",
+    "@commitlint/config-conventional": "12.0.0",
+    "@commitlint/prompt-cli": "12.0.0",
     "@typescript-eslint/eslint-plugin": "4.15.2",
     "@typescript-eslint/parser": "4.15.2",
     "@typescript-eslint/typescript-estree": "4.15.2",
