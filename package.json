@@ -72,7 +72,7 @@
     "lint:fix": "eslint --fix \"src/**/*.ts\"",
     "test": "jest -c jest.config.js",
     "test:watch": "jest -c jest.config.js --watchAll",
-    "prepare": "yarn build"
+    "prepack": "yarn build"
   },
   "devDependencies": {
     "@commitlint/cli": "12.0.0",
