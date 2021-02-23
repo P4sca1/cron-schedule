@@ -36,9 +36,9 @@
   "sideEffects": false,
   "scripts": {
     "build": "rimraf ./dist && tsc -p ./tsconfig.json --emitDeclarationOnly && node build.js",
-    "ts-check": "tsc --project ./tsconfig.json --noEmit",
+    "tsc:check": "tsc --project ./tsconfig.json --noEmit",
     "lint": "eslint \"src/**/*.ts\"",
-    "lint-fix": "eslint --fix \"src/**/*.ts\"",
+    "lint:fix": "eslint --fix \"src/**/*.ts\"",
     "test": "jest -c jest.config.js",
     "test:watch": "jest -c jest.config.js --watchAll",
     "prepare": "yarn build"
