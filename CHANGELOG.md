@@ -1,3 +1,10 @@
+## [3.0.1](https://github.com/P4sca1/cron-schedule/compare/v3.0.0...v3.0.1) (2021-02-23)
+
+
+### Bug Fixes
+
+* fix files missing in npm bundle ([00c173b](https://github.com/P4sca1/cron-schedule/commit/00c173bd818a884e223a58ec5a675774775e1813))
+
 # [3.0.0](https://github.com/P4sca1/cron-schedule/compare/v2.2.4...v3.0.0) (2021-02-23)
 
 
