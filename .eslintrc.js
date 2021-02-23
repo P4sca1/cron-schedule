@@ -3,6 +3,8 @@ module.exports = {
     'plugin:security/recommended',
     'plugin:import/errors',
     'plugin:import/warnings',
+    'plugin:prettier/recommended',
+    'prettier',
   ],
   ignorePatterns: ['node_modules/', 'dist/'],
   root: true,
@@ -11,14 +13,13 @@ module.exports = {
     browser: false,
     node: false,
   },
-  plugins: ['security', 'prettier'],
+  plugins: ['security'],
   rules: {
     'no-console': 'error',
     'no-bitwise': 'error',
     'import/order': 'error',
     // Allow unresolved imports. TypeScript already checks this and nuxt webpack aliases are not supported.
     'import/no-unresolved': 'off',
-    'prettier/prettier': 'error',
     'security/detect-object-injection': 'off',
   },
   overrides: [
@@ -27,7 +28,6 @@ module.exports = {
       extends: [
         'plugin:@typescript-eslint/recommended',
         'plugin:@typescript-eslint/recommended-requiring-type-checking',
-        'prettier/@typescript-eslint',
       ],
       plugins: ['@typescript-eslint'],
       parser: '@typescript-eslint/parser',
@@ -35,12 +35,6 @@ module.exports = {
         ecmaVersion: 2020,
         sourceType: 'module',
         project: './tsconfig.eslint.json',
-      },
-    },
-    {
-      files: ['rollup.config.js'],
-      parserOptions: {
-        sourceType: 'module',
       },
     },
   ],

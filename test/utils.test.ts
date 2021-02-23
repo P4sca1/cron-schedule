@@ -1,4 +1,9 @@
-import { TIMEOUT_MAX, longTimeout, extractDateElements } from '../src/utils'
+import {
+  TIMEOUT_MAX,
+  longTimeout,
+  extractDateElements,
+  wrapFunction,
+} from '../src/utils'
 
 describe('longTimeout', () => {
   test('Works with short timeouts', () => {
@@ -80,5 +85,33 @@ describe('extractDateElements', () => {
       second,
       weekday: 1,
     })
+  })
+})
+
+describe('wrapFunction', function () {
+  test('Should call errorHandler on error', () => {
+    const errorHandler = jest.fn()
+    const err = new Error('Test.')
+    wrapFunction(() => {
+      throw err
+    }, errorHandler)()
+
+    expect(errorHandler).toHaveBeenCalledWith(err)
+  })
+
+  test('Should catch promise rejections', async () => {
+    jest.useFakeTimers()
+
+    const errorHandler = jest.fn()
+    const err = new Error('Test.')
+    wrapFunction(() => {
+      return new Promise((resolve, reject) => {
+        reject(err)
+      })
+    }, errorHandler)()
+    await new Promise(setImmediate) // Wait for promises to be handled.
+    expect(errorHandler).toHaveBeenCalledWith(err)
+
+    jest.clearAllTimers()
   })
 })

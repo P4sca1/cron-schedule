@@ -1,5 +1,5 @@
 import type { Cron } from '../cron'
-import { ITimerHandle, longTimeout } from '../utils'
+import { ITimerHandle, longTimeout, wrapFunction } from '../utils'
 
 /**
  * A cron scheduler that is based on timers.
@@ -12,29 +12,31 @@ export class TimerBasedCronScheduler {
    * Creates a timeout, which will fire the given task on the next cron date.
    * Returns a handle which can be used to clear the timeout using clearTimeoutOrInterval.
    */
-  public static setTimeout(cron: Cron, task: () => unknown): ITimerHandle {
+  public static setTimeout(
+    cron: Cron,
+    task: () => unknown,
+    opts?: { errorHandler?: (err: Error) => unknown }
+  ): ITimerHandle {
     const nextSchedule = cron.getNextDate()
     const timeout = nextSchedule.getTime() - Date.now()
 
-    return longTimeout(task, timeout)
+    return longTimeout(wrapFunction(task, opts?.errorHandler), timeout)
   }
 
   /**
    * Creates an interval, which will fire the given task on every future cron date.
    * Returns a handle which can be used to clear the interval using clearTimeoutOrInterval.
-   * The handle parameter can be ignored. It is used internally to keep the timeoutId
-   * in the handle up to date.
    */
   public static setInterval(
     cron: Cron,
     task: () => unknown,
-    handle?: ITimerHandle
+    opts?: { errorHandler?: (err: Error) => unknown; handle?: ITimerHandle }
   ): ITimerHandle {
-    handle ??= { timeoutId: undefined }
+    const handle = opts?.handle ?? { timeoutId: undefined }
 
     const { timeoutId } = this.setTimeout(cron, () => {
-      task()
-      this.setInterval(cron, task, handle)
+      wrapFunction(task, opts?.errorHandler)()
+      this.setInterval(cron, task, { ...opts, handle })
     })
 
     handle.timeoutId = timeoutId

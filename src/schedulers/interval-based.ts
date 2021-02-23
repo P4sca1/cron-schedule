@@ -1,11 +1,13 @@
 import type { Cron } from '../cron'
+import { wrapFunction } from '../utils'
 
 interface ITaskWrapper {
   id: number
   cron: Cron
   nextExecution: Date
-  isOneTimeTask: boolean
   task: () => unknown
+  isOneTimeTask: boolean
+  errorHandler?: (err: Error) => unknown
 }
 
 /**
@@ -61,7 +63,10 @@ export class IntervalBasedCronScheduler {
   public registerTask(
     cron: Cron,
     task: () => unknown,
-    isOneTimeTask = false
+    opts?: {
+      isOneTimeTask: boolean
+      errorHandler?: (err: Error) => unknown
+    }
   ): number {
     const id = this.#nextTaskId
 
@@ -69,8 +74,9 @@ export class IntervalBasedCronScheduler {
       id,
       cron,
       nextExecution: cron.getNextDate(),
-      isOneTimeTask,
       task,
+      isOneTimeTask: opts?.isOneTimeTask ?? false,
+      errorHandler: opts?.errorHandler,
     })
 
     this.#nextTaskId += 1
@@ -101,7 +107,7 @@ export class IntervalBasedCronScheduler {
       const task = this.#tasks[i]
 
       if (task.nextExecution.getTime() <= now) {
-        task.task()
+        wrapFunction(task.task, task.errorHandler)()
 
         if (!task.isOneTimeTask) {
           taskExecuted = true
