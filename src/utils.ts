@@ -77,3 +77,26 @@ export function getDaysBetweenWeekdays(
 
   return 6 - weekday1 + weekday2 + 1
 }
+
+export function wrapFunction(
+  fn: () => unknown,
+  errorHandler?: (err: Error) => unknown
+) {
+  return () => {
+    try {
+      const res = fn()
+
+      if (res instanceof Promise) {
+        res.catch((err) => {
+          if (errorHandler) {
+            errorHandler(err)
+          }
+        })
+      }
+    } catch (err) {
+      if (errorHandler) {
+        errorHandler(err)
+      }
+    }
+  }
+}
