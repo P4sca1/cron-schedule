@@ -1,3 +1,19 @@
+# [3.0.0](https://github.com/P4sca1/cron-schedule/compare/v2.2.4...v3.0.0) (2021-02-23)
+
+
+### Features
+
+* add error handling to tasks ([375a6b8](https://github.com/P4sca1/cron-schedule/commit/375a6b8ce211af6ec09ad280899e129eb89d9289)), closes [#80](https://github.com/P4sca1/cron-schedule/issues/80)
+* expose ECMAScript module ([e73fadc](https://github.com/P4sca1/cron-schedule/commit/e73fadc2a031cb768f4212d06dd39f2a44b023dd))
+
+
+### BREAKING CHANGES
+
+* The third argument to IntervalBasedScheduler.registerTask is no longer isOneTimeTask.
+Instead it is an object where one attribute is the old isOneTimeTask parameter.
+
+Signed-off-by: Pascal Sthamer <sthamer.pascal@gmail.com>
+
 ## [2.2.4](https://github.com/P4sca1/cron-schedule/compare/v2.2.3...v2.2.4) (2020-11-21)
 
 
