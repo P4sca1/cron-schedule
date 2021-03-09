@@ -2877,7 +2877,7 @@ __metadata:
     "@typescript-eslint/eslint-plugin": 4.17.0
     "@typescript-eslint/parser": 4.17.0
     "@typescript-eslint/typescript-estree": 4.17.0
-    esbuild: 0.8.51
+    esbuild: 0.9.0
     eslint: 7.21.0
     eslint-config-prettier: 8.1.0
     eslint-plugin-import: 2.22.1
@@ -3481,12 +3481,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"esbuild@npm:0.8.51":
-  version: 0.8.51
-  resolution: "esbuild@npm:0.8.51"
+"esbuild@npm:0.9.0":
+  version: 0.9.0
+  resolution: "esbuild@npm:0.9.0"
   bin:
     esbuild: bin/esbuild
-  checksum: 857d40db1ddaf0a0a941131322332f7e583420b294835e2d9750644652ce3b73919a8238d18cd3fbd4cf5b53c16c764e14891e1a0703763b48335fe5d17e49ae
+  checksum: 28f63aa3ced9a6ae97ae27f6e57662fbfd23625b9290b9ffa1db97c39001d8991e1744024348ae50d4de2a17dcd2c6810a31ce9150dc1c19e11abb9a0cda3de2
   languageName: node
   linkType: hard
 
