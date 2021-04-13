@@ -2879,7 +2879,7 @@ __metadata:
     "@typescript-eslint/typescript-estree": 4.22.0
     esbuild: 0.8.51
     eslint: 7.24.0
-    eslint-config-prettier: 8.1.0
+    eslint-config-prettier: 8.2.0
     eslint-plugin-import: 2.22.1
     eslint-plugin-prettier: 3.3.1
     eslint-plugin-security: 1.4.0
@@ -3530,14 +3530,14 @@ __metadata:
   languageName: node
   linkType: hard
 
-"eslint-config-prettier@npm:8.1.0":
-  version: 8.1.0
-  resolution: "eslint-config-prettier@npm:8.1.0"
+"eslint-config-prettier@npm:8.2.0":
+  version: 8.2.0
+  resolution: "eslint-config-prettier@npm:8.2.0"
   peerDependencies:
     eslint: ">=7.0.0"
   bin:
     eslint-config-prettier: bin/cli.js
-  checksum: 409d3a071f8228d4c958a6a9be9d5ec2b357ce21b7b6cbb137096cade2c31f008a0a3c3533dee8979c0cd944f220a959710b30fd86f8b96f0ef1f4f557d740b3
+  checksum: 0fe60cc42dd84fd878ee437dfe73340ba8b18f41ba2538878c54ff15f24a6855bf7e048b36290022b21e0e050ee6cf61d66bfdf39bedb5ccc15c28997cda7016
   languageName: node
   linkType: hard
 
