@@ -2883,7 +2883,7 @@ __metadata:
     esbuild: 0.8.51
     eslint: 7.26.0
     eslint-config-prettier: 8.3.0
-    eslint-plugin-import: 2.23.0
+    eslint-plugin-import: 2.23.1
     eslint-plugin-prettier: 3.4.0
     eslint-plugin-security: 1.4.0
     husky: 4.3.8
@@ -3563,9 +3563,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"eslint-plugin-import@npm:2.23.0":
-  version: 2.23.0
-  resolution: "eslint-plugin-import@npm:2.23.0"
+"eslint-plugin-import@npm:2.23.1":
+  version: 2.23.1
+  resolution: "eslint-plugin-import@npm:2.23.1"
   dependencies:
     array-includes: ^3.1.3
     array.prototype.flat: ^1.2.4
@@ -3585,7 +3585,7 @@ __metadata:
     tsconfig-paths: ^3.9.0
   peerDependencies:
     eslint: ^2 || ^3 || ^4 || ^5 || ^6 || ^7.2.0
-  checksum: b4ed8f1225f28090d5b3be6c0be291d7098cdf64bd0aceb460fac80fe2e038f86da092be4114be1b0ad3befda0a100ccd40774544c963171c90aa00e13910e0c
+  checksum: e063ea32506453cc8c906f1faec18807646117781bcc02d2f2f80341c3fc938778918bba20daacdf5ec30fdab9c43e0339ee0e4379c9036c110fdd5083826849
   languageName: node
   linkType: hard
 
