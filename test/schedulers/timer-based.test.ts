@@ -1,12 +1,12 @@
 import { parseCronExpression, TimerBasedCronScheduler } from '../../src'
 
-describe('TimerBasedCronScheduler', () => {
-  beforeEach(() => {
-    jest.useFakeTimers()
-  })
+jest.useFakeTimers()
+const clearTimeoutSpy = jest.spyOn(global, 'clearTimeout')
 
+describe('TimerBasedCronScheduler', () => {
   afterEach(() => {
     jest.clearAllTimers()
+    clearTimeoutSpy.mockClear()
   })
 
   test('setTimeout', () => {

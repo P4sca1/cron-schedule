@@ -8,6 +8,7 @@ import {
 describe('longTimeout', () => {
   test('Works with short timeouts', () => {
     jest.useFakeTimers()
+    const setTimeoutSpy = jest.spyOn(global, 'setTimeout')
 
     const callback = jest.fn()
 
@@ -19,11 +20,13 @@ describe('longTimeout', () => {
     expect(setTimeout).toHaveBeenCalledTimes(1)
     expect(callback).toHaveBeenCalledTimes(1)
 
-    jest.clearAllTimers()
+    setTimeoutSpy.mockRestore()
+    jest.useRealTimers()
   })
 
   test('Works with long timeouts (1 extra iteration)', () => {
     jest.useFakeTimers()
+    const setTimeoutSpy = jest.spyOn(global, 'setTimeout')
 
     const callback = jest.fn()
 
@@ -38,11 +41,13 @@ describe('longTimeout', () => {
     expect(setTimeout).toHaveBeenCalledTimes(2)
     expect(callback).toHaveBeenCalledTimes(1)
 
-    jest.clearAllTimers()
+    setTimeoutSpy.mockRestore()
+    jest.useRealTimers()
   })
 
   test('Works with long timeouts (2 extra iterations)', () => {
     jest.useFakeTimers()
+    const setTimeoutSpy = jest.spyOn(global, 'setTimeout')
 
     const callback = jest.fn()
 
@@ -60,7 +65,8 @@ describe('longTimeout', () => {
     expect(setTimeout).toHaveBeenCalledTimes(3)
     expect(callback).toHaveBeenCalledTimes(1)
 
-    jest.clearAllTimers()
+    setTimeoutSpy.mockRestore()
+    jest.useRealTimers()
   })
 })
 
@@ -100,8 +106,6 @@ describe('wrapFunction', function () {
   })
 
   test('Should catch promise rejections', async () => {
-    jest.useFakeTimers()
-
     const errorHandler = jest.fn()
     const err = new Error('Test.')
     wrapFunction(() => {
@@ -111,7 +115,5 @@ describe('wrapFunction', function () {
     }, errorHandler)()
     await new Promise(setImmediate) // Wait for promises to be handled.
     expect(errorHandler).toHaveBeenCalledWith(err)
-
-    jest.clearAllTimers()
   })
 })
