@@ -1,3 +1,10 @@
+## [3.0.2](https://github.com/P4sca1/cron-schedule/compare/v3.0.1...v3.0.2) (2021-06-25)
+
+
+### Bug Fixes
+
+* detect step values smaller than 1 ([8f53df9](https://github.com/P4sca1/cron-schedule/commit/8f53df946fc6decc709cbeb77740541b84920d30)), closes [#134](https://github.com/P4sca1/cron-schedule/issues/134)
+
 ## [3.0.1](https://github.com/P4sca1/cron-schedule/compare/v3.0.0...v3.0.1) (2021-02-23)
 
 
