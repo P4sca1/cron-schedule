@@ -75,9 +75,9 @@
     "prepack": "yarn build"
   },
   "devDependencies": {
-    "@commitlint/cli": "12.0.0",
-    "@commitlint/config-conventional": "12.0.0",
-    "@commitlint/prompt-cli": "12.0.0",
+    "@commitlint/cli": "12.1.4",
+    "@commitlint/config-conventional": "12.1.4",
+    "@commitlint/prompt-cli": "12.1.4",
     "@semantic-release/changelog": "5.0.1",
     "@semantic-release/git": "9.0.0",
     "@typescript-eslint/eslint-plugin": "4.28.0",
