@@ -149,6 +149,10 @@ function parseElement(element: string, constraint: IConstraint): Set<number> {
     parsedStep = parseInt(step, 10)
     if (Number.isNaN(parsedStep)) {
       throw new Error(`Failed to parse step: ${step} is NaN.`)
+    } else if (parsedStep < 1) {
+      throw new Error(
+        `Failed to parse step: Expected ${step} to be greater than 0.`
+      )
     }
   }
 

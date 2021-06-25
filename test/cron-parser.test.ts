@@ -512,5 +512,8 @@ describe('parseCronExpression', () => {
         'Failed to parse 0-10: 0 is outside of constraint range of 1 - 31.'
       )
     )
+    expect(() => parseCronExpression('*/0 * * * *')).toThrow(
+      new Error('Failed to parse step: Expected 0 to be greater than 0.')
+    )
   })
 })
