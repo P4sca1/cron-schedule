@@ -2859,7 +2859,7 @@ __metadata:
     semantic-release: 17.4.4
     ts-jest: 26.5.1
     tslib: 2.3.0
-    typescript: 4.1.5
+    typescript: 4.3.4
   languageName: unknown
   linkType: soft
 
@@ -9267,23 +9267,23 @@ fsevents@^2.1.2:
   languageName: node
   linkType: hard
 
-typescript@4.1.5:
-  version: 4.1.5
-  resolution: "typescript@npm:4.1.5"
+typescript@4.3.4:
+  version: 4.3.4
+  resolution: "typescript@npm:4.3.4"
   bin:
     tsc: bin/tsc
     tsserver: bin/tsserver
-  checksum: 29157c84426ac94ce97aac836264f303a26bd9fb30865650229e3406a36ca2e89735ef4b8878075ba1b95fa4d3ff9810057b64888700c28e20b4034a6db4da83
+  checksum: 9791c5fe98db6cb70ec0efad8d3d2eb957b9643ee600b90bff49267de69768d0d5f59c41a8fd731cfd63df1ccfb2cb25505a2015d7b39ac10ea51f605a058e16
   languageName: node
   linkType: hard
 
-"typescript@patch:typescript@4.1.5#builtin<compat/typescript>":
-  version: 4.1.5
-  resolution: "typescript@patch:typescript@npm%3A4.1.5#builtin<compat/typescript>::version=4.1.5&hash=ddfc1b"
+"typescript@patch:typescript@4.3.4#builtin<compat/typescript>":
+  version: 4.3.4
+  resolution: "typescript@patch:typescript@npm%3A4.3.4#builtin<compat/typescript>::version=4.3.4&hash=ddfc1b"
   bin:
     tsc: bin/tsc
     tsserver: bin/tsserver
-  checksum: 9c57e19536e978f130694888fbda2f8fe60f92c388c6b2945881dd7c912078bf52663dcb3278100cf9f4689805fbaec86b3de42ef600fb9672545b24fc1b7b15
+  checksum: c8766e84a4f71e925cc059af8286cc7f41819fe821d433b90c83e9b36729cbda7a8e4be3292d8a1433cd717d529c93217d58d173418f43862290b206bd88b284
   languageName: node
   linkType: hard
 
