@@ -421,32 +421,31 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@commitlint/cli@npm:12.0.0":
-  version: 12.0.0
-  resolution: "@commitlint/cli@npm:12.0.0"
+"@commitlint/cli@npm:12.1.4":
+  version: 12.1.4
+  resolution: "@commitlint/cli@npm:12.1.4"
   dependencies:
-    "@commitlint/format": ^12.0.0
-    "@commitlint/lint": ^12.0.0
-    "@commitlint/load": ^12.0.0
-    "@commitlint/read": ^12.0.0
-    "@commitlint/types": ^12.0.0
-    get-stdin: 8.0.0
+    "@commitlint/format": ^12.1.4
+    "@commitlint/lint": ^12.1.4
+    "@commitlint/load": ^12.1.4
+    "@commitlint/read": ^12.1.4
+    "@commitlint/types": ^12.1.4
     lodash: ^4.17.19
     resolve-from: 5.0.0
     resolve-global: 1.0.0
-    yargs: ^16.0.0
+    yargs: ^16.2.0
   bin:
     commitlint: cli.js
-  checksum: 40b09ba3dd973b96510677e09760554ebf6289d9d6bfcbb5aedf3b2efc2a535c9d36e73fa1f2192e44ccf587bf0a6c20d073029b370ac57e0cde1a6dbb0b9cd6
+  checksum: 3c00e43e7594961232e553b4cdff56f48f722a89e76ccaf2f8bd666e7679912e8a4e8d4906d20f8a376db13b85c0de610b69c8b8fa1d8e0d099eef5482c80e4d
   languageName: node
   linkType: hard
 
-"@commitlint/config-conventional@npm:12.0.0":
-  version: 12.0.0
-  resolution: "@commitlint/config-conventional@npm:12.0.0"
+"@commitlint/config-conventional@npm:12.1.4":
+  version: 12.1.4
+  resolution: "@commitlint/config-conventional@npm:12.1.4"
   dependencies:
     conventional-changelog-conventionalcommits: ^4.3.1
-  checksum: de46bfc585400676707dd4f9d8e533c3eb6c292578c36b15dd63f13511642c554bfc5f424ab7287f9c1dbfb29111b180c2dd8f0f8ff7acb40c9dcb08bc81e9b9
+  checksum: 3bcc963d88a130f50d3d2b12a29a11eff6c0a553ad945595fe1d9d36052be662a011c2a6784ce88ede8c91b5aaadf5517c3f533747e91c799e0fe3281338d98c
   languageName: node
   linkType: hard
 
@@ -467,7 +466,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@commitlint/format@npm:^12.0.0":
+"@commitlint/format@npm:^12.1.4":
   version: 12.1.4
   resolution: "@commitlint/format@npm:12.1.4"
   dependencies:
@@ -487,7 +486,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@commitlint/lint@npm:^12.0.0":
+"@commitlint/lint@npm:^12.1.4":
   version: 12.1.4
   resolution: "@commitlint/lint@npm:12.1.4"
   dependencies:
@@ -499,7 +498,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@commitlint/load@npm:^12.0.0, @commitlint/load@npm:^12.1.4":
+"@commitlint/load@npm:^12.1.4":
   version: 12.1.4
   resolution: "@commitlint/load@npm:12.1.4"
   dependencies:
@@ -532,19 +531,19 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@commitlint/prompt-cli@npm:12.0.0":
-  version: 12.0.0
-  resolution: "@commitlint/prompt-cli@npm:12.0.0"
+"@commitlint/prompt-cli@npm:12.1.4":
+  version: 12.1.4
+  resolution: "@commitlint/prompt-cli@npm:12.1.4"
   dependencies:
-    "@commitlint/prompt": ^12.0.0
+    "@commitlint/prompt": ^12.1.4
     execa: ^5.0.0
   bin:
     commit: cli.js
-  checksum: 06564248853375695b00d0213e99ff185556e8dc5407ba36576ad4ab5b361673c20c81b15adf34dcdd40d3207508e7f3ebdb11e3a28319990f3e9c636bfcf04f
+  checksum: 6b60ae2c94fca8fe39c454b86b9fb7abb12e16050a9845d5b81c82e75b871d7c63794922d851c2d315af65568b8bcdec3f129e687fa30d83254a6c57608b8917
   languageName: node
   linkType: hard
 
-"@commitlint/prompt@npm:^12.0.0":
+"@commitlint/prompt@npm:^12.1.4":
   version: 12.1.4
   resolution: "@commitlint/prompt@npm:12.1.4"
   dependencies:
@@ -558,7 +557,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@commitlint/read@npm:^12.0.0":
+"@commitlint/read@npm:^12.1.4":
   version: 12.1.4
   resolution: "@commitlint/read@npm:12.1.4"
   dependencies:
@@ -610,7 +609,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@commitlint/types@npm:^12.0.0, @commitlint/types@npm:^12.1.4":
+"@commitlint/types@npm:^12.1.4":
   version: 12.1.4
   resolution: "@commitlint/types@npm:12.1.4"
   dependencies:
@@ -2838,9 +2837,9 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "cron-schedule@workspace:."
   dependencies:
-    "@commitlint/cli": 12.0.0
-    "@commitlint/config-conventional": 12.0.0
-    "@commitlint/prompt-cli": 12.0.0
+    "@commitlint/cli": 12.1.4
+    "@commitlint/config-conventional": 12.1.4
+    "@commitlint/prompt-cli": 12.1.4
     "@semantic-release/changelog": 5.0.1
     "@semantic-release/git": 9.0.0
     "@typescript-eslint/eslint-plugin": 4.28.0
@@ -4129,13 +4128,6 @@ fsevents@^2.1.2:
   version: 0.1.0
   resolution: "get-package-type@npm:0.1.0"
   checksum: a5b8beaf68d8bcdb507e23b3d2b6458e54b9061e84e2a8a94b846c8e1d794beb47fdcbda895da16ae59225bb3ea1608c0719e4f986e8a987ec2f228eaf00d78b
-  languageName: node
-  linkType: hard
-
-"get-stdin@npm:8.0.0":
-  version: 8.0.0
-  resolution: "get-stdin@npm:8.0.0"
-  checksum: 009a4c42484cc30fe0f353d0a8c593dda0cdef46f4fb8c1668860d8e2fd6ca53faa2a08a85fdf3a4a56dfbe38f940772fd8b66e0ecba333a8f055c56cda72537
   languageName: node
   linkType: hard
 
@@ -9806,7 +9798,7 @@ typescript@4.1.5:
   languageName: node
   linkType: hard
 
-"yargs@npm:^16.0.0, yargs@npm:^16.2.0":
+"yargs@npm:^16.2.0":
   version: 16.2.0
   resolution: "yargs@npm:16.2.0"
   dependencies:
