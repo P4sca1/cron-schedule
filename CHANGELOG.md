@@ -1,3 +1,10 @@
+## [3.0.3](https://github.com/P4sca1/cron-schedule/compare/v3.0.2...v3.0.3) (2021-08-17)
+
+
+### Bug Fixes
+
+* rename module file extension to .mjs ([53993b1](https://github.com/P4sca1/cron-schedule/commit/53993b193689943be50f7b2ec39d396d1d14fa65)), closes [#159](https://github.com/P4sca1/cron-schedule/issues/159)
+
 ## [3.0.2](https://github.com/P4sca1/cron-schedule/compare/v3.0.1...v3.0.2) (2021-06-25)
 
 
