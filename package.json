@@ -27,11 +27,11 @@
     "nodejs"
   ],
   "main": "dist/cron-schedule.cjs.min.js",
-  "module": "dist/cron-schedule.esm.min.js",
+  "module": "dist/cron-schedule.esm.min.mjs",
   "unpkg": "dist/cron-schedule.iife.min.js",
   "exports": {
     "require": "./dist/cron-schedule.cjs.min.js",
-    "import": "./dist/cron-schedule.esm.min.js"
+    "import": "./dist/cron-schedule.esm.min.mjs"
   },
   "release": {
     "branches": [
@@ -72,41 +72,40 @@
     "lint:fix": "eslint --fix \"src/**/*.ts\"",
     "test": "jest -c jest.config.js",
     "test:watch": "jest -c jest.config.js --watchAll",
-    "prepack": "yarn build"
+    "prepack": "yarn build",
+    "postinstall": "husky install",
+    "prepublishOnly": "pinst --disable",
+    "postpublish": "pinst --enable"
   },
   "devDependencies": {
-    "@commitlint/cli": "12.1.4",
-    "@commitlint/config-conventional": "12.1.4",
-    "@commitlint/prompt-cli": "12.1.4",
+    "@commitlint/cli": "13.1.0",
+    "@commitlint/config-conventional": "13.1.0",
+    "@commitlint/prompt-cli": "13.1.0",
     "@semantic-release/changelog": "5.0.1",
     "@semantic-release/git": "9.0.0",
-    "@types/jest": "26.0.23",
-    "@typescript-eslint/eslint-plugin": "4.28.0",
-    "@typescript-eslint/parser": "4.28.0",
-    "@typescript-eslint/typescript-estree": "4.28.0",
-    "esbuild": "0.12.9",
-    "eslint": "7.29.0",
+    "@types/jest": "27.0.1",
+    "@typescript-eslint/eslint-plugin": "4.29.2",
+    "@typescript-eslint/parser": "4.29.2",
+    "@typescript-eslint/typescript-estree": "4.29.2",
+    "esbuild": "0.12.20",
+    "eslint": "7.32.0",
     "eslint-config-prettier": "8.3.0",
-    "eslint-plugin-import": "2.23.4",
+    "eslint-plugin-import": "2.24.0",
     "eslint-plugin-prettier": "3.4.0",
     "eslint-plugin-security": "1.4.0",
-    "husky": "4.3.8",
-    "jest": "27.0.5",
-    "prettier": "2.3.1",
+    "husky": "7.0.1",
+    "jest": "27.0.6",
+    "pinst": "2.1.6",
+    "prettier": "2.3.2",
     "rimraf": "3.0.2",
-    "semantic-release": "17.4.4",
-    "ts-jest": "27.0.3",
-    "tslib": "2.3.0",
-    "typescript": "4.3.4"
+    "semantic-release": "17.4.5",
+    "ts-jest": "27.0.5",
+    "tslib": "2.3.1",
+    "typescript": "4.3.5"
   },
   "commitlint": {
     "extends": [
       "@commitlint/config-conventional"
     ]
-  },
-  "husky": {
-    "hooks": {
-      "commit-msg": "commitlint -E HUSKY_GIT_PARAMS"
-    }
   }
 }
