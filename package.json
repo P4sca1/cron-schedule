@@ -72,7 +72,10 @@
     "lint:fix": "eslint --fix \"src/**/*.ts\"",
     "test": "jest -c jest.config.js",
     "test:watch": "jest -c jest.config.js --watchAll",
-    "prepack": "yarn build"
+    "prepack": "yarn build",
+    "postinstall": "husky install",
+    "prepublishOnly": "pinst --disable",
+    "postpublish": "pinst --enable"
   },
   "devDependencies": {
     "@commitlint/cli": "13.1.0",
@@ -92,6 +95,7 @@
     "eslint-plugin-security": "1.4.0",
     "husky": "7.0.1",
     "jest": "27.0.5",
+    "pinst": "2.0.0",
     "prettier": "2.3.2",
     "rimraf": "3.0.2",
     "semantic-release": "17.4.5",
@@ -103,10 +107,5 @@
     "extends": [
       "@commitlint/config-conventional"
     ]
-  },
-  "husky": {
-    "hooks": {
-      "commit-msg": "commitlint -E HUSKY_GIT_PARAMS"
-    }
   }
 }
