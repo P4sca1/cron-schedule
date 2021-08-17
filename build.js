@@ -32,7 +32,7 @@ build({
 })
 
 build({
-  outfile: 'dist/cron-schedule.esm.min.js',
+  outfile: 'dist/cron-schedule.esm.min.mjs',
   format: 'esm',
   target: 'es6',
 })
