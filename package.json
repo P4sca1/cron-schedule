@@ -90,7 +90,7 @@
     "esbuild": "0.12.20",
     "eslint": "8.0.0",
     "eslint-config-prettier": "8.3.0",
-    "eslint-plugin-import": "2.25.1",
+    "eslint-plugin-import": "2.25.2",
     "eslint-plugin-prettier": "4.0.0",
     "eslint-plugin-security": "1.4.0",
     "husky": "7.0.1",
