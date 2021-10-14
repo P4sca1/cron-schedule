@@ -609,9 +609,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@eslint/eslintrc@npm:^1.0.2":
-  version: 1.0.2
-  resolution: "@eslint/eslintrc@npm:1.0.2"
+"@eslint/eslintrc@npm:^1.0.3":
+  version: 1.0.3
+  resolution: "@eslint/eslintrc@npm:1.0.3"
   dependencies:
     ajv: ^6.12.4
     debug: ^4.3.2
@@ -622,7 +622,7 @@ __metadata:
     js-yaml: ^3.13.1
     minimatch: ^3.0.4
     strip-json-comments: ^3.1.1
-  checksum: bb6a97ce188b1440faf7e004f5ebeffd59a4a9d67d0104d67adcaa65517321cced4e36ce8aee637f6708f19746f313eac78a64382f9a5ba83ce52edb87d2b2a1
+  checksum: 34d5a29c6faa6a978f78ba22039afdf5d2503e225dd5fc520e7690fa3a2a1ecd45cbc1a521abdf6662bcd79e3fecebeb896230de8834a32ea5aaf13593635034
   languageName: node
   linkType: hard
 
@@ -2713,7 +2713,7 @@ __metadata:
     "@typescript-eslint/parser": 5.0.0
     "@typescript-eslint/typescript-estree": 5.0.0
     esbuild: 0.12.20
-    eslint: 8.0.0
+    eslint: 8.0.1
     eslint-config-prettier: 8.3.0
     eslint-plugin-import: 2.25.2
     eslint-plugin-prettier: 4.0.0
@@ -3351,11 +3351,11 @@ __metadata:
   languageName: node
   linkType: hard
 
-"eslint@npm:8.0.0":
-  version: 8.0.0
-  resolution: "eslint@npm:8.0.0"
+"eslint@npm:8.0.1":
+  version: 8.0.1
+  resolution: "eslint@npm:8.0.1"
   dependencies:
-    "@eslint/eslintrc": ^1.0.2
+    "@eslint/eslintrc": ^1.0.3
     "@humanwhocodes/config-array": ^0.6.0
     ajv: ^6.10.0
     chalk: ^4.0.0
@@ -3395,7 +3395,7 @@ __metadata:
     v8-compile-cache: ^2.0.3
   bin:
     eslint: bin/eslint.js
-  checksum: f2b587b85aa8aaef88b623a68522a248a491e91b7eb38ae4c897da3fa56b3d7e939d23b7cbe7a4368ef09dbafbce06ea7ea0e7fb03c49740a48f607ac62e26e5
+  checksum: 06fa7b38da74091f7fbf13de951ec30afc8617600bf689b5a9555061be247220c9d17e3ba61d73795ed98b3027939ae546c9eac85721c58d0bc7648430a641eb
   languageName: node
   linkType: hard
 
