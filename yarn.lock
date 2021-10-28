@@ -2738,7 +2738,7 @@ __metadata:
     eslint-plugin-import: 2.25.2
     eslint-plugin-prettier: 4.0.0
     eslint-plugin-security: 1.4.0
-    husky: 7.0.1
+    husky: 7.0.4
     jest: 27.3.1
     pinst: 2.1.6
     prettier: 2.4.1
@@ -4407,12 +4407,12 @@ fsevents@^2.3.2:
   languageName: node
   linkType: hard
 
-"husky@npm:7.0.1":
-  version: 7.0.1
-  resolution: "husky@npm:7.0.1"
+"husky@npm:7.0.4":
+  version: 7.0.4
+  resolution: "husky@npm:7.0.4"
   bin:
     husky: lib/bin.js
-  checksum: 1f6d87cab4339551615080664347b60168d81f3c3b84b9dc1f888068d3fe946d8b5513db5ea53bc086f235e6cc617b0aba903552e959596a49f2153ffac33cb4
+  checksum: 4052668d7cc948d722cafbd9194adc0726d2f29d0139a552394f1983357bf2eaf3205923753ba6b1cfc9bb5eb6fcaac5db0dea900ccd9150c1620edb30496b85
   languageName: node
   linkType: hard
 

@@ -93,7 +93,7 @@
     "eslint-plugin-import": "2.25.2",
     "eslint-plugin-prettier": "4.0.0",
     "eslint-plugin-security": "1.4.0",
-    "husky": "7.0.1",
+    "husky": "7.0.4",
     "jest": "27.3.1",
     "pinst": "2.1.6",
     "prettier": "2.4.1",
