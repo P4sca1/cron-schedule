@@ -15,7 +15,7 @@ export class TimerBasedCronScheduler {
   public static setTimeout(
     cron: Cron,
     task: () => unknown,
-    opts?: { errorHandler?: (err: Error) => unknown }
+    opts?: { errorHandler?: (err: unknown) => unknown }
   ): ITimerHandle {
     const nextSchedule = cron.getNextDate()
     const timeout = nextSchedule.getTime() - Date.now()
@@ -30,7 +30,7 @@ export class TimerBasedCronScheduler {
   public static setInterval(
     cron: Cron,
     task: () => unknown,
-    opts?: { errorHandler?: (err: Error) => unknown; handle?: ITimerHandle }
+    opts?: { errorHandler?: (err: unknown) => unknown; handle?: ITimerHandle }
   ): ITimerHandle {
     const handle = opts?.handle ?? { timeoutId: undefined }
 

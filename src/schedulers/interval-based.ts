@@ -7,7 +7,7 @@ interface ITaskWrapper {
   nextExecution: Date
   task: () => unknown
   isOneTimeTask: boolean
-  errorHandler?: (err: Error) => unknown
+  errorHandler?: (err: unknown) => unknown
 }
 
 /**
@@ -65,7 +65,7 @@ export class IntervalBasedCronScheduler {
     task: () => unknown,
     opts?: {
       isOneTimeTask: boolean
-      errorHandler?: (err: Error) => unknown
+      errorHandler?: (err: unknown) => unknown
     }
   ): number {
     const id = this.#nextTaskId

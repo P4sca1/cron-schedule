@@ -27,11 +27,11 @@
     "nodejs"
   ],
   "main": "dist/cron-schedule.cjs.min.js",
-  "module": "dist/cron-schedule.esm.min.mjs",
+  "module": "dist/cron-schedule.min.mjs",
   "unpkg": "dist/cron-schedule.iife.min.js",
   "exports": {
     "require": "./dist/cron-schedule.cjs.min.js",
-    "import": "./dist/cron-schedule.esm.min.mjs"
+    "import": "./dist/cron-schedule.min.mjs"
   },
   "release": {
     "branches": [
@@ -61,6 +61,8 @@
   "files": [
     "dist/**/*.js",
     "dist/**/*.js.map",
+    "dist/**/*.mjs",
+    "dist/**/*.mjs.map",
     "dist/**/*.d.ts"
   ],
   "types": "./dist/index.d.ts",
@@ -78,30 +80,30 @@
     "postpublish": "pinst --enable"
   },
   "devDependencies": {
-    "@commitlint/cli": "13.1.0",
-    "@commitlint/config-conventional": "13.1.0",
-    "@commitlint/prompt-cli": "13.1.0",
-    "@semantic-release/changelog": "5.0.1",
-    "@semantic-release/git": "9.0.0",
-    "@types/jest": "27.0.1",
-    "@typescript-eslint/eslint-plugin": "4.29.2",
-    "@typescript-eslint/parser": "4.29.2",
-    "@typescript-eslint/typescript-estree": "4.29.2",
-    "esbuild": "0.12.20",
-    "eslint": "7.32.0",
+    "@commitlint/cli": "13.2.1",
+    "@commitlint/config-conventional": "13.2.0",
+    "@commitlint/prompt-cli": "13.2.1",
+    "@semantic-release/changelog": "6.0.0",
+    "@semantic-release/git": "9.0.1",
+    "@types/jest": "27.0.2",
+    "@typescript-eslint/eslint-plugin": "5.2.0",
+    "@typescript-eslint/parser": "5.2.0",
+    "@typescript-eslint/typescript-estree": "5.2.0",
+    "esbuild": "0.13.10",
+    "eslint": "8.1.0",
     "eslint-config-prettier": "8.3.0",
-    "eslint-plugin-import": "2.24.0",
-    "eslint-plugin-prettier": "3.4.0",
+    "eslint-plugin-import": "2.25.2",
+    "eslint-plugin-prettier": "4.0.0",
     "eslint-plugin-security": "1.4.0",
-    "husky": "7.0.1",
-    "jest": "27.0.6",
+    "husky": "7.0.4",
+    "jest": "27.3.1",
     "pinst": "2.1.6",
-    "prettier": "2.3.2",
+    "prettier": "2.4.1",
     "rimraf": "3.0.2",
-    "semantic-release": "17.4.5",
-    "ts-jest": "27.0.5",
+    "semantic-release": "18.0.0",
+    "ts-jest": "27.0.7",
     "tslib": "2.3.1",
-    "typescript": "4.3.5"
+    "typescript": "4.4.4"
   },
   "commitlint": {
     "extends": [
