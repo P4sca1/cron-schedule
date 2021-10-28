@@ -27,11 +27,11 @@
     "nodejs"
   ],
   "main": "dist/cron-schedule.cjs.min.js",
-  "module": "dist/cron-schedule.esm.min.mjs",
+  "module": "dist/cron-schedule.min.mjs",
   "unpkg": "dist/cron-schedule.iife.min.js",
   "exports": {
     "require": "./dist/cron-schedule.cjs.min.js",
-    "import": "./dist/cron-schedule.esm.min.mjs"
+    "import": "./dist/cron-schedule.min.mjs"
   },
   "release": {
     "branches": [
