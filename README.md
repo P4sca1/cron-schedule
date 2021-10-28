@@ -24,7 +24,7 @@ Via yarn:
 
 `$ yarn add cron-schedule`
 
-**We test our code against active Node.js LTS releases (`12.18`, `14.13`, `16.13`).**
+**We test our code against the following Node.js releases (`12.18`, `14.13`, `16.12`).**
 Other versions of node.js may also work, but this is not tested.
 
 ##### Usage
