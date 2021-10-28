@@ -80,7 +80,7 @@ export function getDaysBetweenWeekdays(
 
 export function wrapFunction(
   fn: () => unknown,
-  errorHandler?: (err: Error) => unknown
+  errorHandler?: (err: unknown) => unknown
 ) {
   return () => {
     try {
