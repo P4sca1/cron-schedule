@@ -1,3 +1,11 @@
+## [3.0.4](https://github.com/P4sca1/cron-schedule/compare/v3.0.3...v3.0.4) (2021-10-28)
+
+
+### Bug Fixes
+
+* include mjs files in npm build ([1985874](https://github.com/P4sca1/cron-schedule/commit/19858745af5d1827db9453eddca5ef4a775b3ed1))
+* use unknown for error type ([5623e65](https://github.com/P4sca1/cron-schedule/commit/5623e652aa5dd1265db220708f26c2de0f7e96ae))
+
 ## [3.0.3](https://github.com/P4sca1/cron-schedule/compare/v3.0.2...v3.0.3) (2021-08-17)
 
 
