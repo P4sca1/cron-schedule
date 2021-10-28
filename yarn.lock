@@ -1261,9 +1261,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@semantic-release/git@npm:9.0.1":
-  version: 9.0.1
-  resolution: "@semantic-release/git@npm:9.0.1"
+"@semantic-release/git@npm:10.0.0":
+  version: 10.0.0
+  resolution: "@semantic-release/git@npm:10.0.0"
   dependencies:
     "@semantic-release/error": ^2.1.0
     aggregate-error: ^3.0.0
@@ -1274,8 +1274,8 @@ __metadata:
     micromatch: ^4.0.0
     p-reduce: ^2.0.0
   peerDependencies:
-    semantic-release: ">=16.0.0 <18.0.0"
-  checksum: 924c874a4d34933219c90c301c99daab8fd94d1b9868ea82a0bdcfd4a22a0cd7e1e76a9890b190ba369199b39c5158df9b76d117413e8659878bee91e44b1e3e
+    semantic-release: ">=18.0.0"
+  checksum: bea4d883edbfb2be6117aa2f5b5e55822a8611ca2109ebd783836b74fb7248fccd579bc4442e7a9507fba97aa8ea8c3cf09bbf83e6f4ff82ffad638732a0c0ec
   languageName: node
   linkType: hard
 
@@ -2727,7 +2727,7 @@ __metadata:
     "@commitlint/config-conventional": 13.1.0
     "@commitlint/prompt-cli": 13.1.0
     "@semantic-release/changelog": 5.0.1
-    "@semantic-release/git": 9.0.1
+    "@semantic-release/git": 10.0.0
     "@types/jest": 27.0.2
     "@typescript-eslint/eslint-plugin": 5.2.0
     "@typescript-eslint/parser": 5.2.0
