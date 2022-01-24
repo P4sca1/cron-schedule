@@ -1239,34 +1239,34 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@semantic-release/changelog@npm:6.0.0":
-  version: 6.0.0
-  resolution: "@semantic-release/changelog@npm:6.0.0"
+"@semantic-release/changelog@npm:6.0.1":
+  version: 6.0.1
+  resolution: "@semantic-release/changelog@npm:6.0.1"
   dependencies:
-    "@semantic-release/error": ^2.1.0
+    "@semantic-release/error": ^3.0.0
     aggregate-error: ^3.0.0
     fs-extra: ^9.0.0
     lodash: ^4.17.4
   peerDependencies:
     semantic-release: ">=18.0.0"
-  checksum: b3a942132dd6109e98ec537e8253728570fe02227573a3ba6d50263ea9b41127dc7e28271e744c03dfec2f0c7f4a79eebb606dadc5f16bb1f6ef62ffb8e07bcf
+  checksum: a7c999f20297f229ebb32dc65f56c3aee237d941b478a1c75f5e904382c66fc4054bf3da93b1f5382e0b689147a825665500332f70807bfed952d312d2f501ac
   languageName: node
   linkType: hard
 
-"@semantic-release/commit-analyzer@npm:^9.0.0":
-  version: 9.0.1
-  resolution: "@semantic-release/commit-analyzer@npm:9.0.1"
+"@semantic-release/commit-analyzer@npm:^9.0.2":
+  version: 9.0.2
+  resolution: "@semantic-release/commit-analyzer@npm:9.0.2"
   dependencies:
     conventional-changelog-angular: ^5.0.0
     conventional-commits-filter: ^2.0.0
-    conventional-commits-parser: ^3.0.7
+    conventional-commits-parser: ^3.2.3
     debug: ^4.0.0
     import-from: ^4.0.0
     lodash: ^4.17.4
     micromatch: ^4.0.2
   peerDependencies:
     semantic-release: ">=18.0.0-beta.1"
-  checksum: 4b38f235c7f3c424717693663e7ceac48319687b62d0a28429d04f03add183632fb64905847bdc499d0cee306b8d5e228018a0b495d260c09fd9f1209c40c100
+  checksum: f7f759e608c0c044ba8ec1b3aabad4305ac057cc45156b60a2f8dc355f5193b84ff7c661aefd4522659172f4d6ecf80219b8b28714bd76e4eb32e734b2e6ead9
   languageName: node
   linkType: hard
 
@@ -2728,7 +2728,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"conventional-commits-parser@npm:^3.0.0, conventional-commits-parser@npm:^3.0.7":
+"conventional-commits-parser@npm:^3.0.0":
   version: 3.2.1
   resolution: "conventional-commits-parser@npm:3.2.1"
   dependencies:
@@ -2758,6 +2758,22 @@ __metadata:
   bin:
     conventional-commits-parser: cli.js
   checksum: 0f57b5cb7cb359eb49e6807cfd82b27cbe9ac30ec580b20ad7e79575561183110532a6c2e6328ce6c4cd05c01458b9bb781f1f6653b14560f7c509b87b0e9ac7
+  languageName: node
+  linkType: hard
+
+"conventional-commits-parser@npm:^3.2.3":
+  version: 3.2.4
+  resolution: "conventional-commits-parser@npm:3.2.4"
+  dependencies:
+    JSONStream: ^1.0.4
+    is-text-path: ^1.0.1
+    lodash: ^4.17.15
+    meow: ^8.0.0
+    split2: ^3.0.0
+    through2: ^4.0.0
+  bin:
+    conventional-commits-parser: cli.js
+  checksum: 1627ff203bc9586d89e47a7fe63acecf339aba74903b9114e23d28094f79d4e2d6389bf146ae561461dcba8fc42e7bc228165d2b173f15756c43f1d32bc50bfd
   languageName: node
   linkType: hard
 
@@ -2811,7 +2827,7 @@ __metadata:
     "@commitlint/cli": 13.2.1
     "@commitlint/config-conventional": 13.2.0
     "@commitlint/prompt-cli": 13.2.1
-    "@semantic-release/changelog": 6.0.0
+    "@semantic-release/changelog": 6.0.1
     "@semantic-release/git": 9.0.1
     "@types/jest": 27.0.3
     "@typescript-eslint/eslint-plugin": 5.10.0
@@ -2828,7 +2844,7 @@ __metadata:
     pinst: 2.1.6
     prettier: 2.4.1
     rimraf: 3.0.2
-    semantic-release: 18.0.0
+    semantic-release: 18.0.1
     ts-jest: 27.0.7
     tslib: 2.3.1
     typescript: 4.4.4
@@ -7904,11 +7920,11 @@ fsevents@^2.3.2:
   languageName: node
   linkType: hard
 
-"semantic-release@npm:18.0.0":
-  version: 18.0.0
-  resolution: "semantic-release@npm:18.0.0"
+"semantic-release@npm:18.0.1":
+  version: 18.0.1
+  resolution: "semantic-release@npm:18.0.1"
   dependencies:
-    "@semantic-release/commit-analyzer": ^9.0.0
+    "@semantic-release/commit-analyzer": ^9.0.2
     "@semantic-release/error": ^3.0.0
     "@semantic-release/github": ^8.0.0
     "@semantic-release/npm": ^8.0.0
@@ -7938,7 +7954,7 @@ fsevents@^2.3.2:
     yargs: ^16.2.0
   bin:
     semantic-release: bin/semantic-release.js
-  checksum: 3fee100afea9f5285329a782ba7d89b4119ac164dec12f746eb905ff9cd06e69a117911400b005060db7860612a28eb7b96e5ae5fbd8e1119659b6474b6a5693
+  checksum: e99634d2fd392d007cd83cc28318cd4b0781825b550e75486676941b8f67a32c1b907c53de2761440b38ead220629cc3778c22373aacce4ee291dba43971b0d6
   languageName: node
   linkType: hard
 
