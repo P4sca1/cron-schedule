@@ -97,7 +97,7 @@
     "eslint-plugin-security": "1.4.0",
     "husky": "7.0.4",
     "jest": "27.3.1",
-    "pinst": "2.1.6",
+    "pinst": "3.0.0",
     "prettier": "2.4.1",
     "rimraf": "3.0.2",
     "semantic-release": "18.0.0",
