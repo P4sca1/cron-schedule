@@ -39,9 +39,7 @@ export function longTimeout(
 }
 
 /* Extracts second, minute, hour, date, month and the weekday from a date. */
-export function extractDateElements(
-  date: Date
-): {
+export function extractDateElements(date: Date): {
   second: number
   minute: number
   hour: number
