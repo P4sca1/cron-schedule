@@ -135,7 +135,7 @@ function parseElement(element: string, constraint: IConstraint): Set<number> {
       ? constraint.max
       : parseSingleElement(rangeSegments[4])
 
-  if (parsedStart >= parsedEnd - 1) {
+  if (parsedStart > parsedEnd) {
     throw new Error(
       `Failed to parse ${element}: Invalid range (start: ${parsedStart}, end: ${parsedEnd}).`
     )
