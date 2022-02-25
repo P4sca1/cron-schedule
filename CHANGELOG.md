@@ -1,3 +1,10 @@
+## [3.0.5](https://github.com/P4sca1/cron-schedule/compare/v3.0.4...v3.0.5) (2022-02-25)
+
+
+### Bug Fixes
+
+* relax allowed ranges to be compatible with linux spec ([34466d4](https://github.com/P4sca1/cron-schedule/commit/34466d4fe25f0a170a65266b3741371db95f382b))
+
 ## [3.0.4](https://github.com/P4sca1/cron-schedule/compare/v3.0.3...v3.0.4) (2021-10-28)
 
 
