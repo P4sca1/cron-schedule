@@ -42,10 +42,10 @@ describe('parseCronExpression', () => {
 
   test('Should correctly parse ranges', () => {
     const { seconds, minutes, hours, days, months, weekdays } =
-      parseCronExpression('1-3 2-6 3-22 4-10 5-11 0-6')
+      parseCronExpression('1-1 2-3 3-22 4-10 5-11 0-6')
 
-    expect(seconds).toStrictEqual([1, 2, 3])
-    expect(minutes).toStrictEqual([2, 3, 4, 5, 6])
+    expect(seconds).toStrictEqual([1])
+    expect(minutes).toStrictEqual([2, 3])
     expect(hours).toStrictEqual([
       3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22,
     ])
@@ -430,11 +430,8 @@ describe('parseCronExpression', () => {
     expect(() => parseCronExpression('*/* * * * * *')).toThrow(
       new Error('Failed to parse */*: */* is NaN.')
     )
-    expect(() => parseCronExpression('1-2 * * * * *')).toThrow(
-      new Error('Failed to parse 1-2: Invalid range (start: 1, end: 2).')
-    )
-    expect(() => parseCronExpression('* * * * * sun-mon')).toThrow(
-      new Error('Failed to parse sun-mon: Invalid range (start: 0, end: 1).')
+    expect(() => parseCronExpression('* * * * * tue-mon')).toThrow(
+      new Error('Failed to parse tue-mon: Invalid range (start: 2, end: 1).')
     )
     expect(() => parseCronExpression('3-1 * * * * *')).toThrow(
       new Error('Failed to parse 3-1: Invalid range (start: 3, end: 1).')
