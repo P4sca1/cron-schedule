@@ -434,9 +434,10 @@ export class Cron {
       const year =
         maxYear -
         Math.floor((startIndexMonth + i) / this.reversed.months.length)
-      const month = this.reversed.months[
-        (startIndexMonth + i) % this.reversed.months.length
-      ]
+      const month =
+        this.reversed.months[
+          (startIndexMonth + i) % this.reversed.months.length
+        ]
       const isStartMonth =
         year === startDateElements.year && month === startDateElements.month
 
@@ -526,9 +527,8 @@ export class Cron {
 
   /** Returns true when there is a cron date at the given date. */
   public matchDate(date: Date): boolean {
-    const { second, minute, hour, day, month, weekday } = extractDateElements(
-      date
-    )
+    const { second, minute, hour, day, month, weekday } =
+      extractDateElements(date)
 
     return (
       this.seconds.indexOf(second) !== -1 &&

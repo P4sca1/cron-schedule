@@ -113,10 +113,10 @@ function parseElement(element: string, constraint: IConstraint): Set<number> {
   }
 
   // Detect if the element is a range.
-  // eslint-disable-next-line security/detect-unsafe-regex
-  const rangeSegments = /^((([0-9a-zA-Z]+)-([0-9a-zA-Z]+))|\*)(\/([0-9]+))?$/.exec(
-    element
-  )
+  /* eslint-disable security/detect-unsafe-regex */
+  const rangeSegments =
+    /^((([0-9a-zA-Z]+)-([0-9a-zA-Z]+))|\*)(\/([0-9]+))?$/.exec(element)
+  /* eslint-enable security/detect-unsafe-regex */
 
   // If not, it must be a single element.
   if (rangeSegments === null) {
