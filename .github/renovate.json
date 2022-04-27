@@ -1,31 +1,5 @@
 {
-  "enabled": true,
-  "baseBranches": ["dev"],
-  "extends": [
-    ":pinVersions",
-    ":separateMultipleMajorReleases",
-    ":combinePatchMinorReleases",
-    ":ignoreUnstable",
-    ":semanticCommits",
-    ":semanticPrefixFixDepsChoreOthers",
-    ":updateNotScheduled",
-    ":ignoreModulesAndTests",
-    ":prImmediately",
-    ":prHourlyLimitNone",
-    ":prConcurrentLimit20",
-    ":label(dependencies)",
-    ":enableVulnerabilityAlertsWithLabel(security)",
-    ":npm",
-    ":automergeTypes",
-    ":automergeLinters",
-    "group:monorepos",
-    "group:recommended",
-    "helpers:disableTypesNodeMajor"
-  ],
-  "packageRules": [
-    {
-      "depTypeList": ["peerDependencies"],
-      "rangeStrategy": "widen"
-    }
-  ]
+	"enabled": true,
+	"baseBranches": ["dev"],
+	"extends": ["github>IPS-Hosting/renovate-config"]
 }
