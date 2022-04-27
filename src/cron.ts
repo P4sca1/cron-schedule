@@ -227,7 +227,7 @@ export class Cron {
     startDay: number
   ): number | undefined {
     if (startDay < 1) throw new Error('startDay must not be smaller than 1.')
-    // If only days are restricted: allow day based on day constraint only..
+    // If only days are restricted: allow day based on day constraint only.
     // If only weekdays are restricted: allow day based on weekday constraint only.
     // If both are restricted: allow day based on both day and weekday constraint. pick day that is closer to startDay.
     // If none are restricted: return the day closest to startDay (respecting dir) that is allowed (or startDay itself).
