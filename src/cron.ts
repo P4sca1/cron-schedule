@@ -530,12 +530,19 @@ export class Cron {
     const { second, minute, hour, day, month, weekday } =
       extractDateElements(date)
 
-    return (
-      this.seconds.indexOf(second) !== -1 &&
-      this.minutes.indexOf(minute) !== -1 &&
-      this.hours.indexOf(hour) !== -1 &&
-      this.months.indexOf(month) !== -1 &&
-      (this.days.indexOf(day) !== -1 || this.weekdays.indexOf(weekday) !== -1)
-    )
+    if (
+      this.seconds.indexOf(second) === -1 ||
+      this.minutes.indexOf(minute) === -1 ||
+      this.hours.indexOf(hour) === -1 ||
+      this.months.indexOf(month) === -1
+    ) {
+      return false
+    }
+
+    if (this.days.length == 31 && this.weekdays.length == 7) {
+      return true
+    }
+
+    return this.days.indexOf(day) !== -1 || this.weekdays.indexOf(weekday) !== -1
   }
 }
