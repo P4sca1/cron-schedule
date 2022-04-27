@@ -1,3 +1,10 @@
+## [3.0.6](https://github.com/P4sca1/cron-schedule/compare/v3.0.5...v3.0.6) (2022-04-27)
+
+
+### Bug Fixes
+
+* cron.matchDate always returning true for day of month, when either weekday or day of month is unrestricted ([#271](https://github.com/P4sca1/cron-schedule/issues/271)) ([8ebd6a6](https://github.com/P4sca1/cron-schedule/commit/8ebd6a63acc2ea2bb1f77f23bf9158010258ed44)), closes [#270](https://github.com/P4sca1/cron-schedule/issues/270) [#270](https://github.com/P4sca1/cron-schedule/issues/270)
+
 ## [3.0.5](https://github.com/P4sca1/cron-schedule/compare/v3.0.4...v3.0.5) (2022-02-25)
 
 
