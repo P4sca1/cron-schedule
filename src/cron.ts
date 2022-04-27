@@ -540,9 +540,13 @@ export class Cron {
     }
 
     if (this.days.length !== 31 && this.weekdays.length !== 7) {
-      return this.days.indexOf(day) !== -1 || this.weekdays.indexOf(weekday) !== -1
+      return (
+        this.days.indexOf(day) !== -1 || this.weekdays.indexOf(weekday) !== -1
+      )
     }
 
-    return this.days.indexOf(day) !== -1 && this.weekdays.indexOf(weekday) !== -1
+    return (
+      this.days.indexOf(day) !== -1 && this.weekdays.indexOf(weekday) !== -1
+    )
   }
 }

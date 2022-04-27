@@ -532,13 +532,13 @@ describe('matchDate', () => {
   // https://github.com/P4sca1/cron-schedule/issues/270
   test('It should only match on weekday, when day of month is not restricted', () => {
     const cron = parseCronExpression('* * * * 6') // Only match on Saturdays.
-    expect(cron.matchDate(new Date(2022, 4, 18))).toBeFalsy() // Monday
-    expect(cron.matchDate(new Date(2022, 4, 19))).toBeFalsy()
-    expect(cron.matchDate(new Date(2022, 4, 20))).toBeFalsy()
-    expect(cron.matchDate(new Date(2022, 4, 21))).toBeFalsy()
-    expect(cron.matchDate(new Date(2022, 4, 22))).toBeFalsy()
-    expect(cron.matchDate(new Date(2022, 4, 23))).toBeTruthy()
-    expect(cron.matchDate(new Date(2022, 4, 24))).toBeFalsy()
+    expect(cron.matchDate(new Date(2022, 3, 18))).toBeFalsy() // Monday
+    expect(cron.matchDate(new Date(2022, 3, 19))).toBeFalsy()
+    expect(cron.matchDate(new Date(2022, 3, 20))).toBeFalsy()
+    expect(cron.matchDate(new Date(2022, 3, 21))).toBeFalsy()
+    expect(cron.matchDate(new Date(2022, 3, 22))).toBeFalsy()
+    expect(cron.matchDate(new Date(2022, 3, 23))).toBeTruthy()
+    expect(cron.matchDate(new Date(2022, 3, 24))).toBeFalsy()
   })
 
   test('It should only match on day of month, when weekday is not restricted', () => {
