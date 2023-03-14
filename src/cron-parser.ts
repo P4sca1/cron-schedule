@@ -193,6 +193,8 @@ export function parseCronExpression(cronExpression: string): Cron {
     months: new Set(
       Array.from(parseElement(rawMonths, monthConstraint)).map((x) => x - 1)
     ),
-    weekdays: new Set(Array.from(parseElement(rawWeekdays, weekdayConstraint)).map((x) => x % 7)),
+    weekdays: new Set(
+      Array.from(parseElement(rawWeekdays, weekdayConstraint)).map((x) => x % 7)
+    ),
   })
 }
