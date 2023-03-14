@@ -17,6 +17,17 @@ describe('parseCronExpression', () => {
     })
   })
 
+  test('Should correctly parse weekday range with 7', () => {
+    expect(parseCronExpression('1 2 3 4 5 6-7')).toMatchObject({
+      seconds: [1],
+      minutes: [2],
+      hours: [3],
+      days: [4],
+      months: [4],
+      weekdays: [0, 6],
+    })
+  })
+
   test('Should correctly parse single numbers', () => {
     expect(parseCronExpression('1 2 3 4 5 6')).toMatchObject({
       seconds: [1],
@@ -408,11 +419,11 @@ describe('parseCronExpression', () => {
       )
     )
     expect(() => parseCronExpression('* * * * * 8')).toThrow(
-      new Error('Failed to parse 8: 8 is outside of constraint range of 0 - 6.')
+      new Error('Failed to parse 8: 8 is outside of constraint range of 0 - 7.')
     )
     expect(() => parseCronExpression('* * * * * -1')).toThrow(
       new Error(
-        'Failed to parse -1: -1 is outside of constraint range of 0 - 6.'
+        'Failed to parse -1: -1 is outside of constraint range of 0 - 7.'
       )
     )
     expect(() => parseCronExpression('** * * * * *')).toThrow(
