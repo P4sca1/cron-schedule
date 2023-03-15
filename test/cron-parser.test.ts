@@ -220,7 +220,16 @@ describe('parseCronExpression', () => {
     })
   })
 
-  test('Should correctly parse weekday names', () => {
+  test('Should correctly parse weekday names with range', () => {
+    expect(parseCronExpression('0 0 0 1 1 sat-sun')).toMatchObject({
+      seconds: [0],
+      minutes: [0],
+      hours: [0],
+      days: [1],
+      months: [0],
+      weekdays: [0,6],
+    })
+
     expect(parseCronExpression('0 0 0 1 1 sun')).toMatchObject({
       seconds: [0],
       minutes: [0],
