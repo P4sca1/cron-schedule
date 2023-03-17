@@ -105,7 +105,7 @@
     "typescript": "4.6.3"
   },
   "resolutions": {
-    "npm/chalk": "4.1.2"
+    "npm/chalk": "5.2.0"
   },
   "commitlint": {
     "extends": [
