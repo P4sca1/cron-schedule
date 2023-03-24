@@ -99,7 +99,7 @@
     "jest": "28.0.3",
     "pinst": "3.0.0",
     "prettier": "2.6.2",
-    "rimraf": "3.0.2",
+    "rimraf": "4.4.1",
     "semantic-release": "19.0.2",
     "ts-jest": "28.0.0",
     "typescript": "4.6.3"
