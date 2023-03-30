@@ -47,16 +47,15 @@ const monthConstraint: IConstraint = {
 
 const weekdayConstraint: IConstraint = {
   min: 0,
-  max: 6,
+  max: 7,
   aliases: {
-    '7': '0',
-    'sun': '0',
     'mon': '1',
     'tue': '2',
     'wed': '3',
     'thu': '4',
     'fri': '5',
     'sat': '6',
+    'sun': '7'
   },
 }
 
@@ -194,6 +193,8 @@ export function parseCronExpression(cronExpression: string): Cron {
     months: new Set(
       Array.from(parseElement(rawMonths, monthConstraint)).map((x) => x - 1)
     ),
-    weekdays: parseElement(rawWeekdays, weekdayConstraint),
+    weekdays: new Set(
+      Array.from(parseElement(rawWeekdays, weekdayConstraint)).map((x) => x % 7)
+    ),
   })
 }

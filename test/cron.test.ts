@@ -306,7 +306,7 @@ describe('constructor', () => {
           hours: new Set([1]),
           days: new Set([1]),
           months: new Set([1]),
-          weekdays: new Set([7]),
+          weekdays: new Set([8]),
         })
     ).toThrow()
   })
