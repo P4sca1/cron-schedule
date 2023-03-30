@@ -6,7 +6,7 @@ orbs:
 jobs:
   release:
     docker:
-      - image: circleci/node:18.15
+      - image: cimg/node:18.15
     steps:
       - checkout
       - run:
