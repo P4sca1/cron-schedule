@@ -1,7 +1,7 @@
 {
   "name": "cron-schedule",
   "description": "A zero-dependency cron parser and scheduler for Node.js, Deno and the browser.",
-  "version": "4.0.0-next.2",
+  "version": "4.0.0-next.3",
   "license": "MIT",
   "repository": {
     "type": "git",

@@ -1,3 +1,10 @@
+# [4.0.0-next.3](https://github.com/P4sca1/cron-schedule/compare/v4.0.0-next.2...v4.0.0-next.3) (2023-03-30)
+
+
+### Bug Fixes
+
+* correctly parse weekday ranges that include sunday ([#283](https://github.com/P4sca1/cron-schedule/issues/283)) ([2fb78b5](https://github.com/P4sca1/cron-schedule/commit/2fb78b57e7382f3c2bbde529f80bf8de5843062b))
+
 # [4.0.0-next.2](https://github.com/P4sca1/cron-schedule/compare/v4.0.0-next.1...v4.0.0-next.2) (2023-03-30)
 
 
