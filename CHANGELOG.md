@@ -1,3 +1,40 @@
+# [4.0.0](https://github.com/P4sca1/cron-schedule/compare/v3.0.6...v4.0.0) (2023-03-30)
+
+
+### Bug Fixes
+
+* correctly parse weekday ranges that include sunday ([#283](https://github.com/P4sca1/cron-schedule/issues/283)) ([2fb78b5](https://github.com/P4sca1/cron-schedule/commit/2fb78b57e7382f3c2bbde529f80bf8de5843062b))
+* specify types for legacy support ([7288c13](https://github.com/P4sca1/cron-schedule/commit/7288c132d40b2270fa4d6aada2e31c345dfc3810))
+
+
+### chore
+
+* drop support for node14 ([d47ac6a](https://github.com/P4sca1/cron-schedule/commit/d47ac6aeeb439be73bf646455350c7d91d5b19f6))
+
+
+### Features
+
+* esm only build ([58cbdd7](https://github.com/P4sca1/cron-schedule/commit/58cbdd7af9ecf521093d5532ad174c8d69933cd7))
+
+
+### BREAKING CHANGES
+
+* If your environment does not support conditional exports, you have to import the schedulers from cron-schedule/dist/schedulers instead of cron-schedule/schedulers.
+
+Signed-off-by: Pascal Sthamer <10992664+P4sca1@users.noreply.github.com>
+* Support for node14 is dropped,
+due to its EOL in the next month and missing ESM module support
+
+Signed-off-by: Pascal Sthamer <10992664+P4sca1@users.noreply.github.com>
+* The package is now ESM only. A CommonJS or IIFE build is no longer provided.
+* The minimum required version of Node.js is now 14
+* utils are no longer exposed
+* schedulers are no longer exposed in the default entry point.
+Import them from `cron-schedule/schedulers/interval-based.js` and
+`cron-schedule/schedulers/timer-based.js` instead.
+
+Signed-off-by: Pascal Sthamer <10992664+P4sca1@users.noreply.github.com>
+
 # [4.0.0-next.3](https://github.com/P4sca1/cron-schedule/compare/v4.0.0-next.2...v4.0.0-next.3) (2023-03-30)
 
 
