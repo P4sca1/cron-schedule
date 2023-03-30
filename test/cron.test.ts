@@ -1,5 +1,5 @@
-import { parseCronExpression } from '../src/cron-parser'
-import { Cron } from '../src/cron'
+import { describe, test, expect } from 'vitest'
+import { Cron, parseCronExpression } from '../src/index.js'
 
 describe('constructor', () => {
   test('should create an array from the set in ascending order', () => {

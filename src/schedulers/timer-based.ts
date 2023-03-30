@@ -1,5 +1,5 @@
-import type { Cron } from '../cron'
-import { ITimerHandle, longTimeout, wrapFunction } from '../utils'
+import type { Cron } from '../cron.js'
+import { ITimerHandle, longTimeout, wrapFunction } from '../utils.js'
 
 /**
  * A cron scheduler that is based on timers.

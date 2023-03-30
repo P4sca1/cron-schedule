@@ -1,72 +1,73 @@
+import { describe, test, expect, vi } from 'vitest'
 import {
   TIMEOUT_MAX,
   longTimeout,
   extractDateElements,
   wrapFunction,
-} from '../src/utils'
+} from '../src/utils.js'
 
 describe('longTimeout', () => {
   test('Works with short timeouts', () => {
-    jest.useFakeTimers()
-    const setTimeoutSpy = jest.spyOn(global, 'setTimeout')
+    vi.useFakeTimers()
+    const setTimeoutSpy = vi.spyOn(global, 'setTimeout')
 
-    const callback = jest.fn()
+    const callback = vi.fn()
 
     longTimeout(callback, 10000)
 
     expect(setTimeout).toHaveBeenCalledTimes(1)
     expect(callback).not.toBeCalled()
-    jest.runOnlyPendingTimers()
+    vi.runOnlyPendingTimers()
     expect(setTimeout).toHaveBeenCalledTimes(1)
     expect(callback).toHaveBeenCalledTimes(1)
 
     setTimeoutSpy.mockRestore()
-    jest.useRealTimers()
+    vi.useRealTimers()
   })
 
   test('Works with long timeouts (1 extra iteration)', () => {
-    jest.useFakeTimers()
-    const setTimeoutSpy = jest.spyOn(global, 'setTimeout')
+    vi.useFakeTimers()
+    const setTimeoutSpy = vi.spyOn(global, 'setTimeout')
 
-    const callback = jest.fn()
+    const callback = vi.fn()
 
     longTimeout(callback, TIMEOUT_MAX + 1)
 
     expect(setTimeout).toHaveBeenCalledTimes(1)
     expect(callback).not.toBeCalled()
-    jest.runOnlyPendingTimers()
+    vi.runOnlyPendingTimers()
     expect(setTimeout).toHaveBeenCalledTimes(2)
     expect(callback).not.toBeCalled()
-    jest.runOnlyPendingTimers()
+    vi.runOnlyPendingTimers()
     expect(setTimeout).toHaveBeenCalledTimes(2)
     expect(callback).toHaveBeenCalledTimes(1)
 
     setTimeoutSpy.mockRestore()
-    jest.useRealTimers()
+    vi.useRealTimers()
   })
 
   test('Works with long timeouts (2 extra iterations)', () => {
-    jest.useFakeTimers()
-    const setTimeoutSpy = jest.spyOn(global, 'setTimeout')
+    vi.useFakeTimers()
+    const setTimeoutSpy = vi.spyOn(global, 'setTimeout')
 
-    const callback = jest.fn()
+    const callback = vi.fn()
 
     longTimeout(callback, TIMEOUT_MAX * 2 + 1)
 
     expect(setTimeout).toHaveBeenCalledTimes(1)
     expect(callback).not.toBeCalled()
-    jest.runOnlyPendingTimers()
+    vi.runOnlyPendingTimers()
     expect(setTimeout).toHaveBeenCalledTimes(2)
     expect(callback).not.toBeCalled()
-    jest.runOnlyPendingTimers()
+    vi.runOnlyPendingTimers()
     expect(setTimeout).toHaveBeenCalledTimes(3)
     expect(callback).not.toBeCalled()
-    jest.runOnlyPendingTimers()
+    vi.runOnlyPendingTimers()
     expect(setTimeout).toHaveBeenCalledTimes(3)
     expect(callback).toHaveBeenCalledTimes(1)
 
     setTimeoutSpy.mockRestore()
-    jest.useRealTimers()
+    vi.useRealTimers()
   })
 })
 
@@ -96,7 +97,7 @@ describe('extractDateElements', () => {
 
 describe('wrapFunction', function () {
   test('Should call errorHandler on error', () => {
-    const errorHandler = jest.fn()
+    const errorHandler = vi.fn()
     const err = new Error('Test.')
     wrapFunction(() => {
       throw err
@@ -106,7 +107,7 @@ describe('wrapFunction', function () {
   })
 
   test('Should catch promise rejections', async () => {
-    const errorHandler = jest.fn()
+    const errorHandler = vi.fn()
     const err = new Error('Test.')
     wrapFunction(() => {
       return new Promise((resolve, reject) => {

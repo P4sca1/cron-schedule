@@ -1,23 +1,25 @@
-import { parseCronExpression, TimerBasedCronScheduler } from '../../src'
+import { describe, test, expect, afterEach, vi } from 'vitest'
+import { parseCronExpression } from '../../src/index.js'
+import { TimerBasedCronScheduler } from '../../src/schedulers/timer-based.js'
 
-jest.useFakeTimers()
-const clearTimeoutSpy = jest.spyOn(global, 'clearTimeout')
+vi.useFakeTimers()
+const clearTimeoutSpy = vi.spyOn(global, 'clearTimeout')
 
 describe('TimerBasedCronScheduler', () => {
   afterEach(() => {
-    jest.clearAllTimers()
+    vi.clearAllTimers()
     clearTimeoutSpy.mockClear()
   })
 
   test('setTimeout', () => {
     const cron = parseCronExpression('* * * * *')
-    const task = jest.fn()
+    const task = vi.fn()
     TimerBasedCronScheduler.setTimeout(cron, task)
 
-    expect(jest.getTimerCount()).toBe(1)
-    jest.runOnlyPendingTimers()
+    expect(vi.getTimerCount()).toBe(1)
+    vi.runOnlyPendingTimers()
     expect(task).toHaveBeenCalledTimes(1)
-    expect(jest.getTimerCount()).toBe(0)
+    expect(vi.getTimerCount()).toBe(0)
   })
 
   test('setTimeout shold correctly handle errors', () => {
@@ -25,27 +27,27 @@ describe('TimerBasedCronScheduler', () => {
     const task = () => {
       throw new Error('Test.')
     }
-    const errorHandler = jest.fn()
+    const errorHandler = vi.fn()
     TimerBasedCronScheduler.setTimeout(cron, task, { errorHandler })
 
-    expect(jest.getTimerCount()).toBe(1)
-    jest.runOnlyPendingTimers()
+    expect(vi.getTimerCount()).toBe(1)
+    vi.runOnlyPendingTimers()
     expect(errorHandler).toHaveBeenCalledTimes(1)
-    expect(jest.getTimerCount()).toBe(0)
+    expect(vi.getTimerCount()).toBe(0)
   })
 
   test('setInterval', () => {
     const cron = parseCronExpression('* * * * *')
-    const task = jest.fn()
+    const task = vi.fn()
     TimerBasedCronScheduler.setInterval(cron, task)
 
-    expect(jest.getTimerCount()).toBe(1)
-    jest.runOnlyPendingTimers()
+    expect(vi.getTimerCount()).toBe(1)
+    vi.runOnlyPendingTimers()
     expect(task).toHaveBeenCalledTimes(1)
-    expect(jest.getTimerCount()).toBe(1)
-    jest.runOnlyPendingTimers()
+    expect(vi.getTimerCount()).toBe(1)
+    vi.runOnlyPendingTimers()
     expect(task).toHaveBeenCalledTimes(2)
-    expect(jest.getTimerCount()).toBe(1)
+    expect(vi.getTimerCount()).toBe(1)
   })
 
   test('setInterval shold correctly handle errors', () => {
@@ -53,27 +55,27 @@ describe('TimerBasedCronScheduler', () => {
     const task = () => {
       throw new Error('Test.')
     }
-    const errorHandler = jest.fn()
+    const errorHandler = vi.fn()
     TimerBasedCronScheduler.setInterval(cron, task, { errorHandler })
 
-    expect(jest.getTimerCount()).toBe(1)
-    jest.runOnlyPendingTimers()
+    expect(vi.getTimerCount()).toBe(1)
+    vi.runOnlyPendingTimers()
     expect(errorHandler).toHaveBeenCalledTimes(1)
-    expect(jest.getTimerCount()).toBe(1)
-    jest.runOnlyPendingTimers()
+    expect(vi.getTimerCount()).toBe(1)
+    vi.runOnlyPendingTimers()
     expect(errorHandler).toHaveBeenCalledTimes(2)
-    expect(jest.getTimerCount()).toBe(1)
+    expect(vi.getTimerCount()).toBe(1)
   })
 
   test('clearTimeout', () => {
     const cron = parseCronExpression('* * * * *')
-    const task = jest.fn()
+    const task = vi.fn()
     const handle = TimerBasedCronScheduler.setTimeout(cron, task)
 
-    expect(jest.getTimerCount()).toBe(1)
+    expect(vi.getTimerCount()).toBe(1)
     TimerBasedCronScheduler.clearTimeoutOrInterval(handle)
     expect(clearTimeout).toBeCalledWith(handle.timeoutId)
-    expect(jest.getTimerCount()).toBe(0)
+    expect(vi.getTimerCount()).toBe(0)
     expect(task).not.toBeCalled()
   })
 })

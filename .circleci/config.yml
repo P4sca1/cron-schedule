@@ -1,12 +1,12 @@
 version: 2.1
 
 orbs:
-  node: circleci/node@5.0.2
+  node: circleci/node@5.0.3
 
 jobs:
   release:
     docker:
-      - image: circleci/node:16
+      - image: circleci/node:18
     steps:
       - checkout
       - run:
@@ -20,12 +20,13 @@ workflows:
       - node/test:
           pkg-manager: yarn
           override-ci-command: yarn install --immutable
+          run-command: test:run
           matrix:
             parameters:
               version:
-                - "12.18"
-                - "14.13"
-                - "16.12"
+                - "14.21"
+                - "16.20"
+                - "18.15"
       - release:
           requires:
             - node/test

@@ -6,16 +6,12 @@
     "declaration": true,
 
     "target": "es6",
-
-    "module": "commonjs",
-    "moduleResolution": "node",
-    "esModuleInterop": true,
+    "module": "es2022",
+    "moduleResolution": "nodenext",
 
     "strict": true,
     "noFallthroughCasesInSwitch": true,
     "noUnusedLocals": true,
-
-    "importsNotUsedAsValues": "error"
   },
   "include": ["src/**/*.ts"]
 }
