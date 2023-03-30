@@ -2,7 +2,7 @@ import {
   extractDateElements,
   getDaysBetweenWeekdays,
   getDaysInMonth,
-} from './utils'
+} from './utils.js'
 
 /**
  * An object with contains for each element of a date, which values are allowed.

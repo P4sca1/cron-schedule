@@ -1,5 +1,5 @@
-import type { Cron } from '../cron'
-import { wrapFunction } from '../utils'
+import type { Cron } from '../cron.js'
+import { wrapFunction } from '../utils.js'
 
 interface ITaskWrapper {
   id: number
@@ -104,7 +104,7 @@ export class IntervalBasedCronScheduler {
 
     // Execute all due tasks and update nextExecution for non-one-time tasks.
     for (let i = 0; i < this.#tasks.length; i += 1) {
-      const task = this.#tasks[i]
+      const task = this.#tasks[i] // eslint-disable-line security/detect-object-injection
 
       if (task.nextExecution.getTime() <= now) {
         wrapFunction(task.task, task.errorHandler)()

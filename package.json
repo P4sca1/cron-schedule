@@ -26,13 +26,27 @@
     "schedule-tasks",
     "nodejs"
   ],
-  "main": "dist/cron-schedule.cjs.min.js",
-  "module": "dist/cron-schedule.min.mjs",
-  "unpkg": "dist/cron-schedule.iife.min.js",
+  "type": "module",
+  "files": [
+    "dist/**/*.js",
+    "dist/**/*.js.map",
+    "dist/**/*.d.ts"
+  ],
   "exports": {
-    "require": "./dist/cron-schedule.cjs.min.js",
-    "import": "./dist/cron-schedule.min.mjs"
+    ".": {
+      "types": "./dist/index.d.ts",
+      "default": "./dist/index.js"
+    },
+    "./schedulers/interval-based.js": {
+      "type": "./dist/schedulerrs/interval-based.d.ts",
+      "default": "./dist/schedulers/interval-based.js"
+    },
+    "./schedulers/timer-based.js": {
+      "type": "./dist/schedulers/timer-based.d.ts",
+      "default": "./dist/schedulers/timer-based.js"
+    }
   },
+  "sideEffects": false,
   "release": {
     "branches": [
       "master",
@@ -58,54 +72,39 @@
       "@semantic-release/git"
     ]
   },
-  "files": [
-    "dist/**/*.js",
-    "dist/**/*.js.map",
-    "dist/**/*.mjs",
-    "dist/**/*.mjs.map",
-    "dist/**/*.d.ts"
-  ],
-  "types": "./dist/index.d.ts",
-  "sideEffects": false,
   "scripts": {
-    "build": "rimraf ./dist && tsc -p ./tsconfig.json --emitDeclarationOnly && node build.js",
+    "build": "rimraf ./dist && tsc -p ./tsconfig.json",
     "tsc:check": "tsc --project ./tsconfig.json --noEmit",
     "lint": "eslint \"src/**/*.ts\" \"test/**/*.ts\"",
     "lint:fix": "eslint --fix \"src/**/*.ts\" \"test/**/*.ts\"",
-    "test": "jest -c jest.config.js",
-    "test:watch": "jest -c jest.config.js --watchAll",
+    "test": "vitest",
+    "test:run": "vitest run",
     "prepack": "yarn build",
     "postinstall": "husky install",
     "prepublishOnly": "pinst --disable",
     "postpublish": "pinst --enable"
   },
   "devDependencies": {
-    "@commitlint/cli": "17.5.0",
+    "@commitlint/cli": "17.5.1",
     "@commitlint/config-conventional": "17.4.4",
     "@commitlint/prompt-cli": "17.5.0",
     "@semantic-release/changelog": "6.0.3",
     "@semantic-release/git": "10.0.1",
-    "@types/jest": "29.5.0",
-    "@typescript-eslint/eslint-plugin": "5.56.0",
-    "@typescript-eslint/parser": "5.56.0",
-    "@typescript-eslint/typescript-estree": "5.56.0",
-    "esbuild": "0.17.14",
-    "eslint": "8.36.0",
+    "@typescript-eslint/eslint-plugin": "5.57.0",
+    "@typescript-eslint/parser": "5.57.0",
+    "@typescript-eslint/typescript-estree": "5.57.0",
+    "eslint": "8.37.0",
     "eslint-config-prettier": "8.8.0",
     "eslint-plugin-import": "2.27.5",
     "eslint-plugin-prettier": "4.2.1",
     "eslint-plugin-security": "1.7.1",
     "husky": "8.0.3",
-    "jest": "29.5.0",
     "pinst": "3.0.0",
     "prettier": "2.8.7",
     "rimraf": "4.4.1",
     "semantic-release": "21.0.0",
-    "ts-jest": "29.0.5",
-    "typescript": "5.0.2"
-  },
-  "resolutions": {
-    "npm/chalk": "4.1.2"
+    "typescript": "5.0.2",
+    "vitest": "0.29.8"
   },
   "commitlint": {
     "extends": [
