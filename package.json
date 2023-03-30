@@ -42,14 +42,15 @@
       "default": "./dist/index.js"
     },
     "./schedulers/interval-based.js": {
-      "type": "./dist/schedulerrs/interval-based.d.ts",
+      "types": "./dist/schedulers/interval-based.d.ts",
       "default": "./dist/schedulers/interval-based.js"
     },
     "./schedulers/timer-based.js": {
-      "type": "./dist/schedulers/timer-based.d.ts",
+      "types": "./dist/schedulers/timer-based.d.ts",
       "default": "./dist/schedulers/timer-based.js"
     }
   },
+  "types": "./dist/index.d.ts",
   "sideEffects": false,
   "release": {
     "branches": [
