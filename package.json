@@ -83,15 +83,9 @@
     "lint:fix": "eslint --fix \"src/**/*.ts\" \"test/**/*.ts\"",
     "test": "vitest",
     "test:run": "vitest run",
-    "prepack": "yarn build",
-    "postinstall": "husky install",
-    "prepublishOnly": "pinst --disable",
-    "postpublish": "pinst --enable"
+    "prepack": "yarn build"
   },
   "devDependencies": {
-    "@commitlint/cli": "17.5.1",
-    "@commitlint/config-conventional": "17.4.4",
-    "@commitlint/prompt-cli": "17.5.0",
     "@semantic-release/changelog": "6.0.3",
     "@semantic-release/git": "10.0.1",
     "@typescript-eslint/eslint-plugin": "5.57.0",
@@ -102,17 +96,10 @@
     "eslint-plugin-import": "2.27.5",
     "eslint-plugin-prettier": "4.2.1",
     "eslint-plugin-security": "1.7.1",
-    "husky": "8.0.3",
-    "pinst": "3.0.0",
     "prettier": "2.8.7",
     "rimraf": "4.4.1",
     "semantic-release": "21.0.0",
     "typescript": "5.0.2",
     "vitest": "0.29.8"
-  },
-  "commitlint": {
-    "extends": [
-      "@commitlint/config-conventional"
-    ]
   }
 }
