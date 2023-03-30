@@ -9,7 +9,8 @@
   },
   "author": "P4sca1 <sthamer.pascal@gmail.com>",
   "contributors": [
-    "buffcode <l.stoetzel@meeva.de>"
+    "buffcode <l.stoetzel@meeva.de>",
+    "Shogun <josua.riha@posteo.de>"
   ],
   "keywords": [
     "cron",
