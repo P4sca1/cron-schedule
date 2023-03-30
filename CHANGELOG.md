@@ -1,3 +1,31 @@
+# [4.0.0-next.1](https://github.com/P4sca1/cron-schedule/compare/v3.0.6...v4.0.0-next.1) (2023-03-30)
+
+
+### chore
+
+* drop support for node14 ([d47ac6a](https://github.com/P4sca1/cron-schedule/commit/d47ac6aeeb439be73bf646455350c7d91d5b19f6))
+
+
+### Features
+
+* esm only build ([58cbdd7](https://github.com/P4sca1/cron-schedule/commit/58cbdd7af9ecf521093d5532ad174c8d69933cd7))
+
+
+### BREAKING CHANGES
+
+* Support for node14 is dropped,
+due to its EOL in the next month and missing ESM module support
+
+Signed-off-by: Pascal Sthamer <10992664+P4sca1@users.noreply.github.com>
+* The package is now ESM only. A CommonJS or IIFE build is no longer provided.
+* The minimum required version of Node.js is now 14
+* utils are no longer exposed
+* schedulers are no longer exposed in the default entry point.
+Import them from `cron-schedule/schedulers/interval-based.js` and
+`cron-schedule/schedulers/timer-based.js` instead.
+
+Signed-off-by: Pascal Sthamer <10992664+P4sca1@users.noreply.github.com>
+
 ## [3.0.6](https://github.com/P4sca1/cron-schedule/compare/v3.0.5...v3.0.6) (2022-04-27)
 
 
