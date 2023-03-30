@@ -25,7 +25,7 @@ workflows:
             parameters:
               version:
                 - "14.21"
-                - "16.20"
+                - "16.19"
                 - "18.15"
       - release:
           requires:
