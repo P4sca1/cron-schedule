@@ -1,3 +1,17 @@
+# [4.0.0-next.2](https://github.com/P4sca1/cron-schedule/compare/v4.0.0-next.1...v4.0.0-next.2) (2023-03-30)
+
+
+### Bug Fixes
+
+* specify types for legacy support ([7288c13](https://github.com/P4sca1/cron-schedule/commit/7288c132d40b2270fa4d6aada2e31c345dfc3810))
+
+
+### BREAKING CHANGES
+
+* If your environment does not support conditional exports, you have to import the schedulers from cron-schedule/dist/schedulers instead of cron-schedule/schedulers.
+
+Signed-off-by: Pascal Sthamer <10992664+P4sca1@users.noreply.github.com>
+
 # [4.0.0-next.1](https://github.com/P4sca1/cron-schedule/compare/v3.0.6...v4.0.0-next.1) (2023-03-30)
 
 
