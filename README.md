@@ -44,20 +44,18 @@ console.log(cron.getNextDate(new Date(2020, 10, 20, 18, 32)))
   // 2020-11-20T17:35:00.000Z
 </script>
 ```
+The examples above uses [Skypack](https://www.skypack.dev).
 
 ### Deno
 ```ts
 import { parseCronExpression } from 'npm:cron-schedule@:version'
-// TypeScript types are automatically shipped with the X-TypeScript-Types http header.
 const cron = parseCronExpression('*/5 * * * *')
 console.log(cron.getNextDate(new Date(2020, 10, 20, 18, 32)))
 // 2020-11-20T17:35:00.000Z
 ```
 
-### Note on CDN usage
-The examples above use [Skypack](https://www.skypack.dev).
-
-The urls contain `:version` placeholder. Replace `:version` with the desired version. Semver ranges are supported. To always use the latest `4.x` version use `^4.0.0`.
+### Note on :version placeholder
+The deno import and Skypack CDN urls contain a `:version` placeholder. Replace `:version` with the desired version. Semver ranges are supported. To always use the latest `4.x` version use `^4.0.0`.
 See https://www.npmjs.com/package/cron-schedule for a list of available versions.
 
 ## Work with cron expressions
