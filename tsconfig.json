@@ -1,17 +1,8 @@
 {
+  "extends": "./tsconfig-base.json",
   "compilerOptions": {
-    "rootDir": "./src",
-    "outDir": "./dist",
-    "sourceMap": true,
-    "declaration": true,
-
-    "target": "es6",
-    "module": "es2022",
-    "moduleResolution": "nodenext",
-
-    "strict": true,
-    "noFallthroughCasesInSwitch": true,
-    "noUnusedLocals": true,
-  },
-  "include": ["src/**/*.ts"]
+      "module": "esnext",
+      "outDir": "dist/mjs",
+      "target": "esnext"
+  }
 }

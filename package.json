@@ -39,16 +39,19 @@
   ],
   "exports": {
     ".": {
-      "types": "./dist/index.d.ts",
-      "default": "./dist/index.js"
+      "types": "./dist/mjs/index.d.ts",
+      "import": "./dist/mjs/index.js",
+      "require": "./dist/cjs/index.js"
     },
     "./schedulers/interval-based.js": {
-      "types": "./dist/schedulers/interval-based.d.ts",
-      "default": "./dist/schedulers/interval-based.js"
+      "types": "./dist/mjs/schedulers/interval-based.d.ts",
+      "import": "./dist/mjs/schedulers/interval-based.js",
+      "require": "./dist/cjs/schedulers/interval-based.js"
     },
     "./schedulers/timer-based.js": {
-      "types": "./dist/schedulers/timer-based.d.ts",
-      "default": "./dist/schedulers/timer-based.js"
+      "types": "./dist/mjs/schedulers/timer-based.d.ts",
+      "import": "./dist/mjs/schedulers/timer-based.js",
+      "require": "./dist/cjs/schedulers/timer-based.js"
     }
   },
   "types": "./dist/index.d.ts",
@@ -79,7 +82,7 @@
     ]
   },
   "scripts": {
-    "build": "rimraf ./dist && tsc -p ./tsconfig.json",
+    "build": "rimraf ./dist && tsc -p tsconfig.json && tsc -p tsconfig-cjs.json && ./fixup",
     "tsc:check": "tsc --project ./tsconfig.json --noEmit",
     "lint": "eslint \"src/**/*.ts\" \"test/**/*.ts\"",
     "lint:fix": "eslint --fix \"src/**/*.ts\" \"test/**/*.ts\"",
