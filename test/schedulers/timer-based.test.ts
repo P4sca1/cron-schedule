@@ -1,6 +1,8 @@
 import { describe, test, expect, afterEach, vi } from 'vitest'
-import { parseCronExpression } from '../../src/index.js'
-import { TimerBasedCronScheduler } from '../../src/schedulers/timer-based.js'
+import {
+  parseCronExpression,
+  TimerBasedCronScheduler,
+} from '../../src/index.js'
 
 vi.useFakeTimers()
 const clearTimeoutSpy = vi.spyOn(global, 'clearTimeout')

@@ -227,7 +227,7 @@ describe('parseCronExpression', () => {
       hours: [0],
       days: [1],
       months: [0],
-      weekdays: [0,6],
+      weekdays: [0, 6],
     })
 
     expect(parseCronExpression('0 0 0 1 1 sun')).toMatchObject({
