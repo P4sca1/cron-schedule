@@ -95,6 +95,8 @@ cron.matchDate(date: Date): boolean
 ## Schedule tasks based on cron expressions
 You can schedule tasks to be executed based on a cron expression. _cron-schedule_ comes with 2 different schedulers.
 
+If you use TypeScript, make sure you set `comilerOptions.nodeResolution` to `node16` or `nodenext`.
+
 ### 1. Timer based scheduler
 The timer based cron scheduler creates one timer for every scheduled cron.
 When the node timeout limit of ~24 days would be exceeded, it uses multiple consecutive timeouts.
