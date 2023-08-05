@@ -93,7 +93,7 @@
     "@typescript-eslint/parser": "6.0.0",
     "@typescript-eslint/typescript-estree": "6.0.0",
     "eslint": "8.37.0",
-    "eslint-config-prettier": "8.8.0",
+    "eslint-config-prettier": "9.0.0",
     "eslint-plugin-import": "2.27.5",
     "eslint-plugin-prettier": "5.0.0",
     "eslint-plugin-security": "1.7.1",
