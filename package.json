@@ -101,6 +101,6 @@
     "rimraf": "4.4.1",
     "semantic-release": "21.0.0",
     "typescript": "5.0.2",
-    "vitest": "0.29.8"
+    "vitest": "1.0.1"
   }
 }
