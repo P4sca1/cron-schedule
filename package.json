@@ -89,9 +89,9 @@
   "devDependencies": {
     "@semantic-release/changelog": "6.0.3",
     "@semantic-release/git": "10.0.1",
-    "@typescript-eslint/eslint-plugin": "6.0.0",
-    "@typescript-eslint/parser": "6.0.0",
-    "@typescript-eslint/typescript-estree": "6.0.0",
+    "@typescript-eslint/eslint-plugin": "7.0.1",
+    "@typescript-eslint/parser": "7.0.1",
+    "@typescript-eslint/typescript-estree": "7.0.1",
     "eslint": "8.37.0",
     "eslint-config-prettier": "9.0.0",
     "eslint-plugin-import": "2.27.5",
