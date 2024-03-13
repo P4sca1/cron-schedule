@@ -1,4 +1,5 @@
 # cron-schedule ![CircleCI](https://circleci.com/gh/P4sca1/cron-schedule.svg?style=svg)
+
 A zero-dependency cron parser and scheduler for Node.js, Deno and the browser. Published on [NPM](https://www.npmjs.com) and [JSR](https://jsr.io)
 
 ![ts](https://flat.badgen.net/badge/-/TypeScript?icon=typescript&label&labelColor=blue&color=555555)
@@ -7,15 +8,18 @@ A zero-dependency cron parser and scheduler for Node.js, Deno and the browser. P
 ![](https://img.shields.io/npm/dw/cron-schedule?style=flat-square)
 
 ## Features
-* Parse cron expressions.
-* Get next or previous schedules from a specific starting date.
-* Check if a date matches a cron expression.
-* Schedule a function call based on a cron expression.
-* Supports Node.js, Deno and the browser (ESM only)
-* [Lightweight](https://bundlephobia.com/result?p=cron-schedule@latest) and tree-shakeable.
+
+- Parse cron expressions.
+- Get next or previous schedules from a specific starting date.
+- Check if a date matches a cron expression.
+- Schedule a function call based on a cron expression.
+- Supports Node.js, Deno and the browser (ESM only)
+- [Lightweight](https://bundlephobia.com/result?p=cron-schedule@latest) and tree-shakeable.
 
 ## Installation and usage
+
 ### Node.js
+
 Via npm:
 
 `$ npm install cron-schedule`
@@ -28,10 +32,11 @@ Via pnpm:
 
 `$ pnpm add cron-schedule`
 
-**We test our code against the following Node.js releases (`16.19`, `18.15`).**
+**We test our code against the following Node.js releases (`18.19`, `20.11`).**
 Other versions of node.js may also work, but this is not tested.
 
 ##### Usage
+
 ```ts
 import { parseCronExpression } from 'cron-schedule'
 const cron = parseCronExpression('*/5 * * * *')
@@ -40,6 +45,7 @@ console.log(cron.getNextDate(new Date(2020, 10, 20, 18, 32)))
 ```
 
 ### Browser via CDN
+
 ```html
 <script type="module">
   import { parseCronExpression } from 'https://cdn.skypack.dev/cron-schedule@:version'
@@ -48,9 +54,11 @@ console.log(cron.getNextDate(new Date(2020, 10, 20, 18, 32)))
   // 2020-11-20T17:35:00.000Z
 </script>
 ```
+
 The examples above uses [Skypack](https://www.skypack.dev).
 
 ### Deno
+
 ```ts
 import { parseCronExpression } from 'npm:cron-schedule@:version'
 const cron = parseCronExpression('*/5 * * * *')
@@ -61,10 +69,12 @@ console.log(cron.getNextDate(new Date(2020, 10, 20, 18, 32)))
 Alternatively you can use `deno add @p4sca1/cron-schedule` and import from `@p4sca1/cron-schedule`, or import from `jsr:@p4sca1/cron-schedule` without an install step.
 
 ### Note on :version placeholder
+
 The deno import and Skypack CDN urls contain a `:version` placeholder. Replace `:version` with the desired version. Semver ranges are supported. To always use the latest `4.x` version use `^4.0.0`.
 See https://www.npmjs.com/package/cron-schedule for a list of available versions.
 
 ## Work with cron expressions
+
 ```ts
 // Import method to parse a cron expression.
 import { parseCronExpression } from 'cron-schedule'
@@ -99,11 +109,13 @@ cron.matchDate(date: Date): boolean
 ```
 
 ## Schedule tasks based on cron expressions
+
 You can schedule tasks to be executed based on a cron expression. _cron-schedule_ comes with 2 different schedulers.
 
 If you use TypeScript, make sure you set `comilerOptions.nodeResolution` to `node16` or `nodenext`.
 
 ### 1. Timer based scheduler
+
 The timer based cron scheduler creates one timer for every scheduled cron.
 When the node timeout limit of ~24 days would be exceeded, it uses multiple consecutive timeouts.
 
@@ -128,14 +140,18 @@ scheduler.clearTimeoutOrInterval(handle: ITimerHandle): void
 ```
 
 **Pros:**
-* A task is scheduled exactly to the second of the next cron date.
+
+- A task is scheduled exactly to the second of the next cron date.
 
 **Cons:**
-* There is one timer per task, which could lead to lower performance compared to the interval based scheduler if you have many scheduled tasks.
+
+- There is one timer per task, which could lead to lower performance compared to the interval based scheduler if you have many scheduled tasks.
 
 ### 2. Interval based scheduler
+
 The interval based scheduler checks for due task in a fixed interval. So there is only one interval for all tasks assigned to a scheduler.
-You can have multiple instances of an interval based scheduler. 
+You can have multiple instances of an interval based scheduler.
+
 ```ts
 // Import the scheduler.
 import { IntervalBasedCronScheduler } from 'cron-schedule/schedulers/interval-based.js'
@@ -159,17 +175,20 @@ scheduler.stop()
 // Tasks that were due while the scheduler was stopped will be executed on the next interval tick (but only a single time).
 scheduler.start()
 ```
+
 **Pros:**
-* Only one interval for all tasks, which is quite performant.
+
+- Only one interval for all tasks, which is quite performant.
 
 **Cons:**
-* Tasks are not executed exactly on the cron date.
-* Tasks can only be executed once per interval.
+
+- Tasks are not executed exactly on the cron date.
+- Tasks can only be executed once per interval.
 
 **For most people, the timer based scheduler should be a good option. When you have problems with long timeouts / intervals being skipped, or have performance problems because of many scheduled tasks, you should consider the interval based scheduler.**
 
-
 ## Cron expression format
+
 _cron_schedule_ uses the linux cron syntax as described [here](https://man7.org/linux/man-pages/man5/crontab.5.html) with the addition that you can optionally
 specify seconds by prepending the minute field with another field.
 
@@ -185,17 +204,18 @@ specify seconds by prepending the minute field with another field.
 
 All linux cron features are supported, including
 
-* lists
-* ranges
-* ranges in lists
-* step values
-* month names (jan,feb,... - case insensitive)
-* weekday names (mon,tue,... - case insensitive)
-* time nicknames (@yearly, @annually, @monthly, @weekly, @daily, @hourly - case insensitive)
+- lists
+- ranges
+- ranges in lists
+- step values
+- month names (jan,feb,... - case insensitive)
+- weekday names (mon,tue,... - case insensitive)
+- time nicknames (@yearly, @annually, @monthly, @weekly, @daily, @hourly - case insensitive)
 
 **For simple timing tasks like every x seconds, you should consider using `setInterval` which is more suitable for simple timing tasks, as it does not have the calculation overhead.**
 
 ## Cron validation
+
 Looking for a way to validate cron expressions in your backend (node.js) or in the browser with support for multiple presets? Check out [cron-validate](https://github.com/airfooox/cron-validate)!
 
 Use the `npm-cron-schedule` preset to validate that cron expressions are supported by _cron-schedule_.
