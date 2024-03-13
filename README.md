@@ -1,5 +1,5 @@
 # cron-schedule ![CircleCI](https://circleci.com/gh/P4sca1/cron-schedule.svg?style=svg)
-A zero-dependency cron parser and scheduler for Node.js, Deno and the browser.
+A zero-dependency cron parser and scheduler for Node.js, Deno and the browser. Published on [NPM](https://www.npmjs.com) and [JSR](https://jsr.io)
 
 ![ts](https://flat.badgen.net/badge/-/TypeScript?icon=typescript&label&labelColor=blue&color=555555)
 [![semantic-release](https://img.shields.io/badge/%20%20%F0%9F%93%A6%F0%9F%9A%80-semantic--release-e10079.svg?style=flat-square)](https://github.com/semantic-release/semantic-release)
@@ -23,6 +23,10 @@ Via npm:
 Via yarn:
 
 `$ yarn add cron-schedule`
+
+Via pnpm:
+
+`$ pnpm add cron-schedule`
 
 **We test our code against the following Node.js releases (`16.19`, `18.15`).**
 Other versions of node.js may also work, but this is not tested.
@@ -53,6 +57,8 @@ const cron = parseCronExpression('*/5 * * * *')
 console.log(cron.getNextDate(new Date(2020, 10, 20, 18, 32)))
 // 2020-11-20T17:35:00.000Z
 ```
+
+Alternatively you can use `deno add @p4sca1/cron-schedule` and import from `@p4sca1/cron-schedule`, or import from `jsr:@p4sca1/cron-schedule` without an install step.
 
 ### Note on :version placeholder
 The deno import and Skypack CDN urls contain a `:version` placeholder. Replace `:version` with the desired version. Semver ranges are supported. To always use the latest `4.x` version use `^4.0.0`.
