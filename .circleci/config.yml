@@ -23,7 +23,7 @@ jobs:
             - .pnpm-store
       - run:
           name: Release
-          command: pnpm run semantic-release
+          command: pnpm semantic-release
 
 workflows:
   test_and_release:
