@@ -29,7 +29,8 @@ workflows:
   test_and_release:
     jobs:
       - node/test:
-          override-ci-command: pnpm run test:run
+          override-ci-command: pnpm install
+          run-command: test:run
           matrix:
             parameters:
               version:
