@@ -1992,7 +1992,7 @@ __metadata:
     eslint-config-prettier: 9.0.0
     eslint-plugin-import: 2.27.5
     eslint-plugin-prettier: 5.0.0
-    eslint-plugin-security: 2.0.0
+    eslint-plugin-security: 3.0.0
     prettier: 3.0.0
     rimraf: 4.4.1
     semantic-release: 21.0.0
@@ -2522,12 +2522,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"eslint-plugin-security@npm:2.0.0":
-  version: 2.0.0
-  resolution: "eslint-plugin-security@npm:2.0.0"
+"eslint-plugin-security@npm:3.0.0":
+  version: 3.0.0
+  resolution: "eslint-plugin-security@npm:3.0.0"
   dependencies:
     safe-regex: ^2.1.1
-  checksum: d4a5cf7b3c0930a847ee31a867f68f5f088c97dadc37c79575ab50ce006ea14beef79e1f69b02abceeb63185ed31184e5422868c0f4fb0448dcf32b00833e29b
+  checksum: c3cc9452a5948cea99af83b3301f9e51d28b3ca274662d8ec13ae175036157e5a1597055cb9e98a5e346f09d4dae88e4498516146a0aa4aa178017dfd3af91a9
   languageName: node
   linkType: hard
 
