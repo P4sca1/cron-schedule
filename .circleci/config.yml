@@ -6,7 +6,7 @@ orbs:
 jobs:
   release:
     docker:
-      - image: cimg/node:18.15
+      - image: cimg/node:22.0
     steps:
       - checkout
       - run:
