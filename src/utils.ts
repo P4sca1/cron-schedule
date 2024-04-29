@@ -1,7 +1,7 @@
 export const TIMEOUT_MAX = 2147483647 // 2^31-1
 
 export interface ITimerHandle {
-  timeoutId?: ReturnType<typeof setTimeout>
+	timeoutId?: ReturnType<typeof setTimeout>
 }
 
 /**
@@ -12,89 +12,90 @@ export interface ITimerHandle {
  * in the handle after creating the next timeout.
  */
 export function longTimeout(
-  fn: () => void,
-  timeout: number,
-  handle?: ITimerHandle
+	fn: () => void,
+	timeout: number,
+	previousHandle?: ITimerHandle,
 ): ITimerHandle {
-  let after = 0
+	let nextTimeout = timeout
+	let remainingTimeout = 0
 
-  if (timeout > TIMEOUT_MAX) {
-    after = timeout - TIMEOUT_MAX
-    timeout = TIMEOUT_MAX
-  }
+	if (timeout > TIMEOUT_MAX) {
+		remainingTimeout = timeout - TIMEOUT_MAX
+		nextTimeout = TIMEOUT_MAX
+	}
 
-  handle ??= {
-    timeoutId: undefined,
-  }
+	const handle = previousHandle ?? {
+		timeoutId: undefined,
+	}
 
-  handle.timeoutId = setTimeout(() => {
-    if (after > 0) {
-      longTimeout(fn, after, handle)
-    } else {
-      fn()
-    }
-  }, timeout)
+	handle.timeoutId = setTimeout(() => {
+		if (remainingTimeout > 0) {
+			longTimeout(fn, remainingTimeout, previousHandle)
+		} else {
+			fn()
+		}
+	}, timeout)
 
-  return handle
+	return handle
 }
 
 /* Extracts second, minute, hour, date, month and the weekday from a date. */
 export function extractDateElements(date: Date): {
-  second: number
-  minute: number
-  hour: number
-  day: number
-  month: number
-  weekday: number
-  year: number
+	second: number
+	minute: number
+	hour: number
+	day: number
+	month: number
+	weekday: number
+	year: number
 } {
-  return {
-    second: date.getSeconds(),
-    minute: date.getMinutes(),
-    hour: date.getHours(),
-    day: date.getDate(),
-    month: date.getMonth(),
-    weekday: date.getDay(),
-    year: date.getFullYear(),
-  }
+	return {
+		second: date.getSeconds(),
+		minute: date.getMinutes(),
+		hour: date.getHours(),
+		day: date.getDate(),
+		month: date.getMonth(),
+		weekday: date.getDay(),
+		year: date.getFullYear(),
+	}
 }
 
 /* Gets the amount of days in the given month (indexed by 0) of the given year. */
 export function getDaysInMonth(year: number, month: number): number {
-  return new Date(year, month + 1, 0).getDate()
+	return new Date(year, month + 1, 0).getDate()
 }
 
 /* Gets the amount of days from weekday1 to weekday2. */
 export function getDaysBetweenWeekdays(
-  weekday1: number,
-  weekday2: number
+	weekday1: number,
+	weekday2: number,
 ): number {
-  if (weekday1 <= weekday2) {
-    return weekday2 - weekday1
-  }
+	if (weekday1 <= weekday2) {
+		return weekday2 - weekday1
+	}
 
-  return 6 - weekday1 + weekday2 + 1
+	return 6 - weekday1 + weekday2 + 1
 }
 
 export function wrapFunction(
-  fn: () => unknown,
-  errorHandler?: (err: unknown) => unknown
+	fn: () => unknown,
+	errorHandler?: (err: unknown) => unknown,
 ) {
-  return () => {
-    try {
-      const res = fn()
+	return () => {
+		try {
+			const res = fn()
 
-      if (res instanceof Promise) {
-        res.catch((err) => {
-          if (errorHandler) {
-            errorHandler(err)
-          }
-        })
-      }
-    } catch (err) {
-      if (errorHandler) {
-        errorHandler(err)
-      }
-    }
-  }
+			if (res instanceof Promise) {
+				res.catch((err) => {
+					if (errorHandler) {
+						errorHandler(err)
+					}
+				})
+			}
+		} catch (err) {
+			if (errorHandler) {
+				errorHandler(err)
+			}
+		}
+	}
 }
