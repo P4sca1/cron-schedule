@@ -1,9 +1,9 @@
 {
-  "name": "@p4sca1/cron-schedule",
-  "version": "4.0.0",
-  "exports": {
-    ".": "./src/index.ts",
-    "./schedulers/interval-based": "./src/schedulers/interval-based.ts",
-    "./schedulers/timer-based": "./src/schedulers/timer-based.ts"
-  }
+	"name": "@p4sca1/cron-schedule",
+	"version": "4.0.0",
+	"exports": {
+		".": "./src/index.ts",
+		"./schedulers/interval-based": "./src/schedulers/interval-based.ts",
+		"./schedulers/timer-based": "./src/schedulers/timer-based.ts"
+	}
 }

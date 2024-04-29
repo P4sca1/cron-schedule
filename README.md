@@ -4,7 +4,6 @@ A zero-dependency cron parser and scheduler for Node.js, Deno and the browser. P
 
 ![ts](https://flat.badgen.net/badge/-/TypeScript?icon=typescript&label&labelColor=blue&color=555555)
 [![semantic-release](https://img.shields.io/badge/%20%20%F0%9F%93%A6%F0%9F%9A%80-semantic--release-e10079.svg?style=flat-square)](https://github.com/semantic-release/semantic-release)
-[![code style: prettier](https://img.shields.io/badge/code_style-prettier-ff69b4.svg?style=flat-square)](https://github.com/prettier/prettier)
 ![](https://img.shields.io/npm/dw/cron-schedule?style=flat-square)
 
 ## Features
@@ -32,7 +31,7 @@ Via pnpm:
 
 `$ pnpm add cron-schedule`
 
-**We test our code against the following Node.js releases (`18.19`, `20.11`).**
+**We test our code against the following Node.js releases (`18.20`, `20.12`).**
 Other versions of node.js may also work, but this is not tested.
 
 ##### Usage
@@ -185,7 +184,7 @@ scheduler.start()
 - Tasks are not executed exactly on the cron date.
 - Tasks can only be executed once per interval.
 
-**For most people, the timer based scheduler should be a good option. When you have problems with long timeouts / intervals being skipped, or have performance problems because of many scheduled tasks, you should consider the interval based scheduler.**
+**For most people, the timer based scheduler should be a good option. However, setTimeout can be unreliable for long delays. When you have problems with long timeouts / intervals being skipped, or have performance problems because of many scheduled tasks, you should consider the interval based scheduler.**
 
 ## Cron expression format
 

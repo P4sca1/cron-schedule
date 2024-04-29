@@ -6,7 +6,7 @@ orbs:
 jobs:
   release:
     docker:
-      - image: cimg/node:20.11
+      - image: cimg/node:20.12
     steps:
       - checkout
       - restore_cache:
@@ -30,12 +30,13 @@ workflows:
     jobs:
       - node/test:
           override-ci-command: pnpm install
-          run-command: test:run
+          run-command: test:ci
+          test-results-path: test-report.xml
           matrix:
             parameters:
               version:
-                - '18.19'
-                - '20.11'
+                - '18.20'
+                - '20.12'
       - release:
           requires:
             - node/test

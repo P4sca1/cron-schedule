@@ -1,17 +1,17 @@
 {
-  "compilerOptions": {
-    "rootDir": "./src",
-    "outDir": "./dist",
-    "sourceMap": true,
-    "declaration": true,
+	"compilerOptions": {
+		"rootDir": "./src",
+		"outDir": "./dist",
+		"sourceMap": true,
+		"declaration": true,
 
-    "target": "es6",
-    "module": "NodeNext",
-    "moduleResolution": "nodenext",
+		"target": "es6",
+		"module": "NodeNext",
+		"moduleResolution": "nodenext",
 
-    "strict": true,
-    "noFallthroughCasesInSwitch": true,
-    "noUnusedLocals": true
-  },
-  "include": ["src/**/*.ts"]
+		"strict": true,
+		"noFallthroughCasesInSwitch": true,
+		"noUnusedLocals": true
+	},
+	"include": ["src/**/*.ts"]
 }
