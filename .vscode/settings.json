@@ -1,17 +1,8 @@
 {
-    // Do not allow guests to join live share session without approval.
-    "liveshare.guestApprovalRequired": true,
-
-    // Always use 2 spaces for indentation.
-    "editor.detectIndentation": false,
-    "editor.insertSpaces": true,
-    "editor.tabSize": 2,
-
-    // Use LF (\n) as end of line character.
-    "files.eol": "\n",
-    
-    // Run eslint fix on save.
-    "editor.codeActionsOnSave": {
-        "source.fixAll.eslint": true
-    }
+  "editor.defaultFormatter": "esbenp.prettier-vscode",
+  "editor.formatOnSave": true,
+  "eslint.enable": true,
+  "editor.codeActionsOnSave": {
+    "source.fixAll.eslint": "explicit"
+  },
 }

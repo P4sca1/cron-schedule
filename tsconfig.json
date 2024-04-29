@@ -6,12 +6,12 @@
     "declaration": true,
 
     "target": "es6",
-    "module": "es2022",
+    "module": "NodeNext",
     "moduleResolution": "nodenext",
 
     "strict": true,
     "noFallthroughCasesInSwitch": true,
-    "noUnusedLocals": true,
+    "noUnusedLocals": true
   },
   "include": ["src/**/*.ts"]
 }

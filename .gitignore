@@ -1,12 +1,4 @@
 node_modules/
 dist/
 coverage/
-
 .DS_Store
-
-.yarn/*
-!.yarn/cache
-!.yarn/releases
-!.yarn/plugins
-!.yarn/sdks
-!.yarn/versions

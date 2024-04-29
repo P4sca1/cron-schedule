@@ -1,31 +1,41 @@
 version: 2.1
 
 orbs:
-  node: circleci/node@5.0.3
+  node: circleci/node@5.2.0
 
 jobs:
   release:
     docker:
-      - image: cimg/node:22.0
+      - image: cimg/node:20.11
     steps:
       - checkout
+      - restore_cache:
+          name: Restore pnpm Package Cache
+          keys:
+            - pnpm-packages-{{ checksum "pnpm-lock.yaml" }}
       - run:
           name: Install Dependencies
-          command: yarn install
-      - run: yarn semantic-release
+          command: pnpm install
+      - save_cache:
+          name: Save pnpm Package Cache
+          key: pnpm-packages-{{ checksum "pnpm-lock.yaml" }}
+          paths:
+            - .pnpm-store
+      - run:
+          name: Release
+          command: pnpm semantic-release
 
 workflows:
   test_and_release:
     jobs:
       - node/test:
-          pkg-manager: yarn
-          override-ci-command: yarn install --immutable
+          override-ci-command: pnpm install
           run-command: test:run
           matrix:
             parameters:
               version:
-                - "16.19"
-                - "18.15"
+                - '18.19'
+                - '20.11'
       - release:
           requires:
             - node/test
