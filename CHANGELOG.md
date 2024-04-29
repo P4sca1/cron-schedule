@@ -1,3 +1,23 @@
+# [5.0.0](https://github.com/P4sca1/cron-schedule/compare/v4.0.0...v5.0.0) (2024-04-29)
+
+
+### Bug Fixes
+
+* **getPrevDate:** the wrong result was sometimes returned for months with less than 31 days ([6537bc1](https://github.com/P4sca1/cron-schedule/commit/6537bc1605714b8bfc41fe0aa4ba00aaa459d4c0)), closes [#313](https://github.com/P4sca1/cron-schedule/issues/313)
+* update dependencies, switch from eslint + prettier to biome, ([43c2868](https://github.com/P4sca1/cron-schedule/commit/43c2868d53d272bda6349c3b81c236c23249038e))
+
+
+### BREAKING CHANGES
+
+* Support for Node.js 16 is dropped, as it is End of Life.
+Our code is tested against Node.js LTS release version 18 and 20.
+
+There are a lot of changes in this commit, because of formatting changes (e.g. tabs instead of spaces).
+
+Configured vitest to generate a junit test report, which is uploaded to CircleCI. The CI will now run biome check, which checks the code for linting and formatting issues.
+
+Signed-off-by: Pascal Sthamer <10992664+P4sca1@users.noreply.github.com>
+
 # [4.0.0](https://github.com/P4sca1/cron-schedule/compare/v3.0.6...v4.0.0) (2023-03-30)
 
 
