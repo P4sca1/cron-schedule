@@ -185,7 +185,7 @@ scheduler.start()
 - Tasks are not executed exactly on the cron date.
 - Tasks can only be executed once per interval.
 
-**For most people, the timer based scheduler should be a good option. When you have problems with long timeouts / intervals being skipped, or have performance problems because of many scheduled tasks, you should consider the interval based scheduler.**
+**For most people, the timer based scheduler should be a good option. However, setTimeout can be unreliable for long delays. When you have problems with long timeouts / intervals being skipped, or have performance problems because of many scheduled tasks, you should consider the interval based scheduler.**
 
 ## Cron expression format
 
