@@ -433,6 +433,16 @@ describe('getPrevDate(s)', () => {
 				new Date(2020, 9, 5, 18, 50, 2),
 			),
 		).toStrictEqual(new Date(2019, 11, 31, 0, 0, 0))
+
+		// https://github.com/P4sca1/cron-schedule/issues/313
+		// Cron: every Wednesday at 10:00
+		// Start date: 01.05.2025 10:00:00
+		// Expected: 24.04.2024 10:00:00
+		expect(
+			parseCronExpression('0 10 * * 3').getPrevDate(
+				new Date(2024, 4, 1, 9, 0, 0),
+			),
+		).toStrictEqual(new Date(2024, 3, 24, 10, 0, 0))
 	})
 
 	test('Should correctly get the previous dates', () => {

@@ -424,7 +424,7 @@ export class Cron {
 		}
 
 		// We try every month within the past 5 years to make sure that we tried to
-		// find a matching date insidde a whole leap year.
+		// find a matching date inside a whole leap year.
 		const maxIterations = this.reversed.months.length * 5
 
 		for (let i = 0; i < maxIterations; i++) {
@@ -444,7 +444,10 @@ export class Cron {
 				'prev',
 				year,
 				month,
-				isStartMonth ? startDateElements.day : 31,
+				isStartMonth
+					? startDateElements.day
+					: // Start searching from the last day of the month.
+						getDaysInMonth(year, month),
 			)
 			let isStartDay = isStartMonth && day === startDateElements.day
 
