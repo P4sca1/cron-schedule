@@ -19,8 +19,8 @@ export function longTimeout(
 	let nextTimeout = timeout
 	let remainingTimeout = 0
 
-	if (timeout > TIMEOUT_MAX) {
-		remainingTimeout = timeout - TIMEOUT_MAX
+	if (nextTimeout > TIMEOUT_MAX) {
+		remainingTimeout = nextTimeout - TIMEOUT_MAX
 		nextTimeout = TIMEOUT_MAX
 	}
 
@@ -34,7 +34,7 @@ export function longTimeout(
 		} else {
 			fn()
 		}
-	}, timeout)
+	}, nextTimeout)
 
 	return handle
 }
