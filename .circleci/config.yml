@@ -31,7 +31,6 @@ workflows:
       - node/test:
           override-ci-command: pnpm install
           run-command: test:ci
-          test-results-for: jest
           test-results-path: test-report.xml
           matrix:
             parameters:
