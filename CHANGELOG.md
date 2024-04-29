@@ -1,3 +1,10 @@
+## [5.0.1](https://github.com/P4sca1/cron-schedule/compare/v5.0.0...v5.0.1) (2024-04-29)
+
+
+### Bug Fixes
+
+* use nextTimeout variable ([0a067a8](https://github.com/P4sca1/cron-schedule/commit/0a067a8036c89da0ba210620a502dc937347541d))
+
 # [5.0.0](https://github.com/P4sca1/cron-schedule/compare/v4.0.0...v5.0.0) (2024-04-29)
 
 
