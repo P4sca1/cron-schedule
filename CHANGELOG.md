@@ -111,6 +111,14 @@ Import them from `cron-schedule/schedulers/interval-based.js` and
 
 Signed-off-by: Pascal Sthamer <10992664+P4sca1@users.noreply.github.com>
 
+## [1.0.1](https://github.com/SolinkCorp/cron-schedule/compare/v1.0.0...v1.0.1) (2024-07-15)
+
+
+### Bug Fixes
+
+* add no-git-checks option to publish ([a27447c](https://github.com/SolinkCorp/cron-schedule/commit/a27447c2988918ea853cc9da36efe918f8aaf16b))
+* package with no-git-checks option ([355ec4f](https://github.com/SolinkCorp/cron-schedule/commit/355ec4f9a183208c297b6931ca3f041f3430fbb3))
+
 ## 1.0.0 (2024-07-15)
 
 
