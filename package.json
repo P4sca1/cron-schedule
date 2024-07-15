@@ -1,7 +1,7 @@
 {
 	"name": "cron-schedule",
 	"description": "A zero-dependency cron parser and scheduler for Node.js, Deno and the browser.",
-	"version": "5.0.1",
+	"version": "1.0.0",
 	"license": "MIT",
 	"repository": {
 		"type": "git",
@@ -28,30 +28,35 @@
 		"nodejs"
 	],
 	"type": "module",
+	"main": "./dist/cjs/index.js",
 	"packageManager": "pnpm@9.0.6+sha256.0624e30eff866cdeb363b15061bdb7fd9425b17bc1bb42c22f5f4efdea21f6b3",
 	"engines": {
 		"node": ">=18"
 	},
 	"files": [
-		"dist/**/*.js",
-		"dist/**/*.js.map",
-		"dist/**/*.d.ts"
+		"dist/**/*"
 	],
 	"exports": {
 		".": {
-			"types": "./dist/index.d.ts",
-			"default": "./dist/index.js"
+			"types": "./dist/esm/index.d.ts",
+			"default": "./dist/cjs/index.js",
+			"import": "./dist/esm/index.js",
+			"require": "./dist/cjs/index.js"
 		},
 		"./schedulers/interval-based.js": {
-			"types": "./dist/schedulers/interval-based.d.ts",
-			"default": "./dist/schedulers/interval-based.js"
+			"types": "./dist/esm/schedulers/interval-based.d.ts",
+			"default": "./dist/cjs/schedulers/interval-based.js",
+			"import": "./dist/esm/schedulers/interval-based.d.js",
+			"require": "./dist/cjs/schedulers/interval-based.d.ts"
 		},
 		"./schedulers/timer-based.js": {
-			"types": "./dist/schedulers/timer-based.d.ts",
-			"default": "./dist/schedulers/timer-based.js"
+			"types": "./dist/esm/schedulers/timer-based.d.ts",
+			"default": "./dist/cjs/schedulers/timer-based.js",
+			"import": "./dist/esm/schedulers/timer-based.js",
+			"require": "./dist/cjs/schedulers/timer-based.js"
 		}
 	},
-	"types": "./dist/index.d.ts",
+	"types": "./dist/esm/index.d.ts",
 	"sideEffects": false,
 	"release": {
 		"branches": [
@@ -79,8 +84,9 @@
 		]
 	},
 	"scripts": {
-		"build": "rimraf ./dist && pnpm run tsc:build",
-		"tsc:build": "tsc --project ./tsconfig.json",
+		"build": "rimraf ./dist && pnpm run tsc:build:esm && pnpm run tsc:build:cjs && ./bin/build-types.sh",
+		"tsc:build:esm": "tsc --project ./tsconfig.json",
+		"tsc:build:cjs": "tsc --project ./tsconfig.cjs.json",
 		"tsc:check": "tsc --project ./tsconfig.json --noEmit",
 		"tsc:watch": "tsc --project ./tsconfig.json --noEmit --watch",
 		"check": "biome check .",
