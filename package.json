@@ -1,11 +1,14 @@
 {
-	"name": "cron-schedule",
+	"name": "@solinkcorp/cron-schedule",
 	"description": "A zero-dependency cron parser and scheduler for Node.js, Deno and the browser.",
-	"version": "1.0.1",
+	"version": "1.0.2",
 	"license": "MIT",
 	"repository": {
 		"type": "git",
-		"url": "https://github.com/P4sca1/cron-schedule.git"
+		"url": "https://github.com/SolinkCorp/cron-schedule.git"
+	},
+	"publishConfig": {
+		"@solinkcorp:registry": "https://npm.pkg.github.com"
 	},
 	"author": "P4sca1 <sthamer.pascal@gmail.com>",
 	"contributors": [
@@ -39,21 +42,21 @@
 	"exports": {
 		".": {
 			"types": "./dist/esm/index.d.ts",
-			"default": "./dist/cjs/index.js",
 			"import": "./dist/esm/index.js",
-			"require": "./dist/cjs/index.js"
+			"require": "./dist/cjs/index.js",
+			"default": "./dist/cjs/index.js"
 		},
 		"./schedulers/interval-based.js": {
 			"types": "./dist/esm/schedulers/interval-based.d.ts",
-			"default": "./dist/cjs/schedulers/interval-based.js",
 			"import": "./dist/esm/schedulers/interval-based.d.js",
-			"require": "./dist/cjs/schedulers/interval-based.d.ts"
+			"require": "./dist/cjs/schedulers/interval-based.d.ts",
+			"default": "./dist/cjs/schedulers/interval-based.js"
 		},
 		"./schedulers/timer-based.js": {
 			"types": "./dist/esm/schedulers/timer-based.d.ts",
-			"default": "./dist/cjs/schedulers/timer-based.js",
 			"import": "./dist/esm/schedulers/timer-based.js",
-			"require": "./dist/cjs/schedulers/timer-based.js"
+			"require": "./dist/cjs/schedulers/timer-based.js",
+			"default": "./dist/cjs/schedulers/timer-based.js"
 		}
 	},
 	"types": "./dist/esm/index.d.ts",
