@@ -115,8 +115,11 @@ function parseElement(element: string, constraint: IConstraint): Set<number> {
 	}
 
 	// Detect if the element is a range.
+	// Possible range formats: 'start-end', 'start-end/step', '*', '*/step'.
+	// Where start and end can be numbers or aliases.
+	// Capture groups: 1: start-end, 2: start, 3: end, 4: /step, 5: step.
 	const rangeSegments =
-		/^((([0-9a-zA-Z]+)-([0-9a-zA-Z]+))|\*)(\/([0-9]+))?$/.exec(element)
+		/^(([0-9a-zA-Z]+)-([0-9a-zA-Z]+)|\*)(\/([0-9]+))?$/.exec(element)
 
 	// If not, it must be a single element.
 	if (rangeSegments === null) {
@@ -128,12 +131,12 @@ function parseElement(element: string, constraint: IConstraint): Set<number> {
 	const parsedStart =
 		rangeSegments[1] === '*'
 			? constraint.min
-			: parseSingleElement(rangeSegments[3])
+			: parseSingleElement(rangeSegments[2])
 
 	const parsedEnd =
 		rangeSegments[1] === '*'
 			? constraint.max
-			: parseSingleElement(rangeSegments[4])
+			: parseSingleElement(rangeSegments[3])
 
 	if (parsedStart > parsedEnd) {
 		throw new Error(
@@ -142,7 +145,7 @@ function parseElement(element: string, constraint: IConstraint): Set<number> {
 	}
 
 	// Check whether there is a custom step defined for the range, defaulting to 1.
-	const step = rangeSegments[6] as string | undefined
+	const step = rangeSegments[5] as string | undefined
 	let parsedStep = 1
 
 	if (step !== undefined) {
