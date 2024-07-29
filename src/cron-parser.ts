@@ -175,7 +175,8 @@ export function parseCronExpression(cronExpression: string): Cron {
 	// biome-ignore lint/style/noParameterAssign: adding another variable with a new name is more confusing
 	cronExpression = timeNicknames[cronExpression.toLowerCase()] ?? cronExpression
 
-	const elements = cronExpression.split(' ')
+	// Split the cron expression into its elements, removing empty elements (extra whitespaces).
+	const elements = cronExpression.split(' ').filter((elem) => elem.length > 0)
 	if (elements.length < 5 || elements.length > 6) {
 		throw new Error('Invalid cron expression: expected 5 or 6 elements.')
 	}

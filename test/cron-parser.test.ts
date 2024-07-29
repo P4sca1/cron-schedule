@@ -472,4 +472,17 @@ describe('parseCronExpression', () => {
 			new Error('Failed to parse step: Expected 0 to be greater than 0.'),
 		)
 	})
+
+	test('it should be resilient to extra whitespaces', () => {
+		expect(
+			parseCronExpression('    *    *    *      *         * *     '),
+		).toMatchObject({
+			seconds: Array.from({ length: 60 }, (_, i) => i),
+			minutes: Array.from({ length: 60 }, (_, i) => i),
+			hours: Array.from({ length: 24 }, (_, i) => i),
+			days: Array.from({ length: 31 }, (_, i) => i + 1),
+			months: Array.from({ length: 12 }, (_, i) => i),
+			weekdays: Array.from({ length: 7 }, (_, i) => i),
+		})
+	})
 })
