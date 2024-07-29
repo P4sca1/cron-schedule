@@ -1,102 +1,98 @@
 {
-	"name": "cron-schedule",
-	"description": "A zero-dependency cron parser and scheduler for Node.js, Deno and the browser.",
-	"version": "5.0.1",
-	"license": "MIT",
-	"repository": {
-		"type": "git",
-		"url": "https://github.com/P4sca1/cron-schedule.git"
-	},
-	"author": "P4sca1 <sthamer.pascal@gmail.com>",
-	"contributors": [
-		"buffcode <l.stoetzel@meeva.de>",
-		"Shogun <josua.riha@posteo.de>"
-	],
-	"keywords": [
-		"cron",
-		"schedule",
-		"typescript",
-		"job parser",
-		"interval",
-		"iterator",
-		"deno",
-		"javascript",
-		"timer",
-		"cron-schedule",
-		"cron-expression",
-		"schedule-tasks",
-		"nodejs"
-	],
-	"type": "module",
-	"packageManager": "pnpm@9.0.6+sha256.0624e30eff866cdeb363b15061bdb7fd9425b17bc1bb42c22f5f4efdea21f6b3",
-	"engines": {
-		"node": ">=18"
-	},
-	"files": [
-		"dist/**/*.js",
-		"dist/**/*.js.map",
-		"dist/**/*.d.ts"
-	],
-	"exports": {
-		".": {
-			"types": "./dist/index.d.ts",
-			"default": "./dist/index.js"
-		},
-		"./schedulers/interval-based.js": {
-			"types": "./dist/schedulers/interval-based.d.ts",
-			"default": "./dist/schedulers/interval-based.js"
-		},
-		"./schedulers/timer-based.js": {
-			"types": "./dist/schedulers/timer-based.d.ts",
-			"default": "./dist/schedulers/timer-based.js"
-		}
-	},
-	"types": "./dist/index.d.ts",
-	"sideEffects": false,
-	"release": {
-		"branches": [
-			"main",
-			{
-				"name": "next",
-				"prerelease": true
-			}
-		],
-		"preset": "angular",
-		"plugins": [
-			"@semantic-release/commit-analyzer",
-			"@semantic-release/release-notes-generator",
-			"@semantic-release/changelog",
-			"@semantic-release/npm",
-			[
-				"@semantic-release/github",
-				{
-					"assets": [
-						"dist/*.js"
-					]
-				}
-			],
-			"@semantic-release/git"
-		]
-	},
-	"scripts": {
-		"build": "rimraf ./dist && pnpm run tsc:build",
-		"tsc:build": "tsc --project ./tsconfig.json",
-		"tsc:check": "tsc --project ./tsconfig.json --noEmit",
-		"tsc:watch": "tsc --project ./tsconfig.json --noEmit --watch",
-		"check": "biome check .",
-		"test": "vitest",
-		"test:run": "vitest run",
-		"test:ci": "vitest run --reporter=junit --outputFile=./test-report.xml && pnpm biome ci .",
-		"prepack": "pnpm run build"
-	},
-	"devDependencies": {
-		"@biomejs/biome": "1.7.1",
-		"@semantic-release/changelog": "6.0.3",
-		"@semantic-release/git": "10.0.1",
-		"@types/node": "20.12.7",
-		"rimraf": "5.0.5",
-		"semantic-release": "23.0.8",
-		"typescript": "5.4.5",
-		"vitest": "1.5.2"
-	}
+  "name": "cron-schedule",
+  "description": "A zero-dependency cron parser and scheduler for Node.js, Deno and the browser.",
+  "version": "0.0.0-semantically-released",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/P4sca1/cron-schedule.git"
+  },
+  "author": "P4sca1 <sthamer.pascal@gmail.com>",
+  "contributors": [
+    "buffcode <l.stoetzel@meeva.de>",
+    "Shogun <josua.riha@posteo.de>"
+  ],
+  "keywords": [
+    "cron",
+    "schedule",
+    "typescript",
+    "job parser",
+    "interval",
+    "iterator",
+    "deno",
+    "javascript",
+    "timer",
+    "cron-schedule",
+    "cron-expression",
+    "schedule-tasks",
+    "nodejs"
+  ],
+  "type": "module",
+  "packageManager": "pnpm@9.0.6+sha256.0624e30eff866cdeb363b15061bdb7fd9425b17bc1bb42c22f5f4efdea21f6b3",
+  "engines": {
+    "node": ">=18"
+  },
+  "files": [
+    "dist/**/*.js",
+    "dist/**/*.js.map",
+    "dist/**/*.d.ts"
+  ],
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "default": "./dist/index.js"
+    },
+    "./schedulers/interval-based.js": {
+      "types": "./dist/schedulers/interval-based.d.ts",
+      "default": "./dist/schedulers/interval-based.js"
+    },
+    "./schedulers/timer-based.js": {
+      "types": "./dist/schedulers/timer-based.d.ts",
+      "default": "./dist/schedulers/timer-based.js"
+    }
+  },
+  "types": "./dist/index.d.ts",
+  "sideEffects": false,
+  "release": {
+    "branches": [
+      "main",
+      {
+        "name": "next",
+        "prerelease": true
+      }
+    ],
+    "preset": "angular",
+    "plugins": [
+      "@semantic-release/commit-analyzer",
+      "@semantic-release/release-notes-generator",
+      "@semantic-release/npm",
+      [
+        "@semantic-release/github",
+        {
+          "assets": [
+            "dist/*.js"
+          ]
+        }
+      ]
+    ]
+  },
+  "scripts": {
+    "build": "rimraf ./dist && pnpm run tsc:build",
+    "tsc:build": "tsc --project ./tsconfig.json",
+    "tsc:check": "tsc --project ./tsconfig.json --noEmit",
+    "tsc:watch": "tsc --project ./tsconfig.json --noEmit --watch",
+    "check": "biome check .",
+    "test": "vitest",
+    "test:run": "vitest run",
+    "test:ci": "vitest run --reporter=junit --outputFile=./test-report.xml && pnpm biome ci .",
+    "prepack": "pnpm run build"
+  },
+  "devDependencies": {
+    "@biomejs/biome": "1.8.3",
+    "@types/node": "20.12.7",
+    "rimraf": "6.0.1",
+    "semantic-release": "24.0.0",
+    "typescript": "5.5.4",
+    "vitest": "2.0.4"
+  }
 }
