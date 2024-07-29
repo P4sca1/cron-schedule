@@ -137,10 +137,10 @@ function parseElement(element: string, constraint: IConstraint): Set<number> {
 
 	// need to catch Sunday, which gets parsed here as 7, but is also legitimate at the start of a range as 0, to avoid the out of order error
 	if (
-		constraint === weekdayConstraint
-		&& parsedStart === 7
+		constraint === weekdayConstraint &&
+		parsedStart === 7 &&
 		// this check ensures that sun-sun is not incorrectly parsed as [0,1,2,3,4,5,6]
-		&& parsedEnd !== 7
+		parsedEnd !== 7
 	) {
 		parsedStart = 0
 	}
