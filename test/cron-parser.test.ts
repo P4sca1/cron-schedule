@@ -310,6 +310,24 @@ describe('parseCronExpression', () => {
 			months: [0],
 			weekdays: [4, 5, 6],
 		})
+
+		expect(parseCronExpression('0 0 0 1 1 Sun-wed,Fri')).toMatchObject({
+			seconds: [0],
+			minutes: [0],
+			hours: [0],
+			days: [1],
+			months: [0],
+			weekdays: [0, 1, 2, 3, 5],
+		})
+
+		expect(parseCronExpression('0 0 0 1 1 sun-sun')).toMatchObject({
+			seconds: [0],
+			minutes: [0],
+			hours: [0],
+			days: [1],
+			months: [0],
+			weekdays: [0],
+		})
 	})
 
 	test('Should default to 0 when no seconds are specified in the cron expression', () => {
