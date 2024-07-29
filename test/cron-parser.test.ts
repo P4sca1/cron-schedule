@@ -491,7 +491,7 @@ describe('parseCronExpression', () => {
 		)
 	})
 
-	test('it should be resilient to extra whitespaces', () => {
+	test('Should be resilient to extra whitespaces', () => {
 		expect(
 			parseCronExpression('    *    *    *      *         * *     '),
 		).toMatchObject({
