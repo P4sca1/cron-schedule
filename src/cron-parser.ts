@@ -125,7 +125,7 @@ function parseElement(element: string, constraint: IConstraint): Set<number> {
 	}
 
 	// If it is a range, get start and end of the range.
-	const parsedStart =
+	let parsedStart =
 		rangeSegments[1] === '*'
 			? constraint.min
 			: parseSingleElement(rangeSegments[3])
@@ -134,6 +134,16 @@ function parseElement(element: string, constraint: IConstraint): Set<number> {
 		rangeSegments[1] === '*'
 			? constraint.max
 			: parseSingleElement(rangeSegments[4])
+
+	// need to catch Sunday, which gets parsed here as 7, but is also legitimate at the start of a range as 0, to avoid the out of order error
+	if (
+		constraint === weekdayConstraint
+		&& parsedStart === 7
+		// this check ensures that sun-sun is not incorrectly parsed as [0,1,2,3,4,5,6]
+		&& parsedEnd !== 7
+	) {
+		parsedStart = 0
+	}
 
 	if (parsedStart > parsedEnd) {
 		throw new Error(
