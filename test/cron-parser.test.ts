@@ -349,7 +349,7 @@ describe('parseCronExpression', () => {
 
 	test('Should parse @monthly', () => {
 		expect(parseCronExpression('@MONTHLY')).toStrictEqual(
-			parseCronExpression('0 0 1 1 *'),
+			parseCronExpression('0 0 1 * *'),
 		)
 	})
 
