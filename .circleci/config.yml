@@ -6,7 +6,7 @@ orbs:
 jobs:
   release:
     docker:
-      - image: cimg/node:20.16
+      - image: cimg/node:20.18@sha256:c2ea6166daf4ed37d0abdaf9186798e0c73e75a9f1f3858b69bb770755a59cca
     steps:
       - checkout
       - restore_cache:
