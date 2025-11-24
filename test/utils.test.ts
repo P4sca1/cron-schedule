@@ -1,8 +1,8 @@
 import { describe, expect, test, vi } from 'vitest'
 import {
-	TIMEOUT_MAX,
 	extractDateElements,
 	longTimeout,
+	TIMEOUT_MAX,
 	wrapFunction,
 } from '../src/utils.js'
 
@@ -110,7 +110,7 @@ describe('wrapFunction', () => {
 		const errorHandler = vi.fn()
 		const err = new Error('Test.')
 		wrapFunction(() => {
-			return new Promise((resolve, reject) => {
+			return new Promise((_resolve, reject) => {
 				reject(err)
 			})
 		}, errorHandler)()

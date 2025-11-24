@@ -263,9 +263,9 @@ export class Cron {
 			const startWeekday = new Date(year, month, startDay).getDay()
 			const nearestAllowedWeekday =
 				dir === 'next'
-					? this.weekdays.find((x) => x >= startWeekday) ?? this.weekdays[0]
-					: this.reversed.weekdays.find((x) => x <= startWeekday) ??
-						this.reversed.weekdays[0]
+					? (this.weekdays.find((x) => x >= startWeekday) ?? this.weekdays[0])
+					: (this.reversed.weekdays.find((x) => x <= startWeekday) ??
+						this.reversed.weekdays[0])
 
 			if (nearestAllowedWeekday !== undefined) {
 				const daysBetweenWeekdays =

@@ -379,7 +379,7 @@ describe('parseCronExpression', () => {
 
 	test('Should throw error on invalid cron string', () => {
 		expect(() => parseCronExpression('')).toThrow(
-			new TypeError('Invalid cron expression: expected 5 or 6 elements.'),
+			new Error('Invalid cron expression: expected 5 or 6 elements.'),
 		)
 		// @ts-expect-error -- test without argument
 		expect(() => parseCronExpression()).toThrow(

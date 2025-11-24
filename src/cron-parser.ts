@@ -96,7 +96,6 @@ function parseElement(element: string, constraint: IConstraint): Set<number> {
 
 	// Helper function to parse a single element, which includes checking for alias, valid number and constraint min and max.
 	const parseSingleElement = (singleElement: string): number => {
-		// biome-ignore lint/style/noParameterAssign: adding another variable with a new name is more confusing
 		singleElement =
 			constraint.aliases?.[singleElement.toLowerCase()] ?? singleElement
 		const parsedElement = Number.parseInt(singleElement, 10)
@@ -185,7 +184,6 @@ export function parseCronExpression(cronExpression: string): Cron {
 	}
 
 	// Convert time nicknames.
-	// biome-ignore lint/style/noParameterAssign: adding another variable with a new name is more confusing
 	cronExpression = timeNicknames[cronExpression.toLowerCase()] ?? cronExpression
 
 	// Split the cron expression into its elements, removing empty elements (extra whitespaces).

@@ -1,12 +1,13 @@
 {
-	"$schema": "https://biomejs.dev/schemas/1.7.1/schema.json",
+	"$schema": "https://biomejs.dev/schemas/2.3.7/schema.json",
 	"files": {
-		"ignore": [
-			"package.json",
-			"test-report.xml",
-			"dist",
-			"node_modules",
-			"coverage"
+		"includes": [
+			"**",
+			"!**/package.json",
+			"!**/test-report.xml",
+			"!**/dist",
+			"!**/node_modules",
+			"!**/coverage"
 		]
 	},
 	"linter": {
@@ -18,9 +19,7 @@
 	"formatter": {
 		"enabled": true
 	},
-	"organizeImports": {
-		"enabled": true
-	},
+	"assist": { "actions": { "source": { "organizeImports": "on" } } },
 	"javascript": {
 		"formatter": {
 			"quoteStyle": "single",

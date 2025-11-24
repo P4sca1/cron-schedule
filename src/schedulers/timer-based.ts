@@ -38,8 +38,7 @@ export class TimerBasedCronScheduler {
 
 		const { timeoutId } = TimerBasedCronScheduler.setTimeout(cron, () => {
 			wrapFunction(task, opts?.errorHandler)()
-			// biome-ignore lint/complexity/noThisInStatic: <explanation>
-			this.setInterval(cron, task, { ...opts, handle })
+			TimerBasedCronScheduler.setInterval(cron, task, { ...opts, handle })
 		})
 
 		handle.timeoutId = timeoutId
