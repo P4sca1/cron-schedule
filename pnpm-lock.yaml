@@ -1128,8 +1128,8 @@ packages:
     resolution: {integrity: sha512-9qny7Z9DsQU8Ou39ERsPU4OZQlSTP47ShQzuKZ6PRXpYLtIFgl/DEBYEXKlvcEa+9tHVcK8CF81Y2V72qaZhWA==}
     engines: {node: '>=18'}
 
-  npm@11.6.3:
-    resolution: {integrity: sha512-QIWnYxYuDjrNGaTp0jrTqgl45QHM+UfdcjPBKmia4LsBkHY8TvEjZpkAVrNO7EOJA//tOP3k+9cioXwqdAfukg==}
+  npm@11.6.4:
+    resolution: {integrity: sha512-ERjKtGoFpQrua/9bG0+h3xiv/4nVdGViCjUYA1AmlV24fFvfnSB7B7dIfZnySQ1FDLd0ZVrWPsLLp78dCtJdRQ==}
     engines: {node: ^20.17.0 || >=22.9.0}
     hasBin: true
     bundledDependencies:
@@ -2108,7 +2108,7 @@ snapshots:
       lodash-es: 4.17.21
       nerf-dart: 1.0.0
       normalize-url: 8.1.0
-      npm: 11.6.3
+      npm: 11.6.4
       rc: 1.2.8
       read-pkg: 10.0.0
       registry-auth-token: 5.1.0
@@ -2767,7 +2767,7 @@ snapshots:
       path-key: 4.0.0
       unicorn-magic: 0.3.0
 
-  npm@11.6.3: {}
+  npm@11.6.4: {}
 
   object-assign@4.1.1: {}
 
