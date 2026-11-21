@@ -56,7 +56,7 @@ export class IntervalBasedCronScheduler {
 			(task) => task.nextExecution.getTime() > newTask.nextExecution.getTime(),
 		)
 
-		this.#tasks.splice(index, 0, newTask)
+		this.#tasks.splice(index === -1 ? this.#tasks.length : index, 0, newTask)
 	}
 
 	/* Registers a new task. */

@@ -77,4 +77,35 @@ describe('TimerBasedCronScheduler', () => {
 		vi.runOnlyPendingTimers()
 		expect(task).not.toBeCalled()
 	})
+
+	describe.each([true, false])('task order (one time: %s)', (isOneTimeTask) => {
+		test.each([
+			[[1, 2, 3]],
+			[[3, 2, 1]],
+			[[2, 3, 1]],
+			[[1, 1, 2]],
+		])('dispatches registration order %j at each deadline', (minutes) => {
+			let now = new Date(2026, 0, 1, 0, 0, 0).getTime()
+			vi.setSystemTime(now)
+			vi.spyOn(Date, 'now').mockImplementation(() => now)
+			const scheduler = new IntervalBasedCronScheduler(60 * 1000)
+			const executed: number[] = []
+
+			for (const minute of minutes) {
+				scheduler.registerTask(
+					parseCronExpression(`${minute} * * * *`),
+					() => executed.push(minute),
+					{ isOneTimeTask },
+				)
+			}
+
+			for (let minute = 1; minute <= 3; minute += 1) {
+				now += 60 * 1000
+				vi.advanceTimersByTime(60 * 1000)
+				expect(executed).toEqual(
+					minutes.filter((value) => value <= minute).sort((a, b) => a - b),
+				)
+			}
+		})
+	})
 })
