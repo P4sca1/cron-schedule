@@ -1,0 +1,43 @@
+name: Publish to JSR
+
+on:
+  # Called by the release workflow after publishing to npm.
+  workflow_call:
+    inputs:
+      tag:
+        required: true
+        type: string
+  # Allows to publish an existing release manually, e.g. when publishing to JSR failed.
+  # Only releases from v8.0.0 on can be published, older ones import the sources with a .js extension.
+  workflow_dispatch:
+    inputs:
+      tag:
+        description: Git tag of the release to publish (e.g. v8.0.0)
+        required: true
+        type: string
+
+permissions: {}
+
+jobs:
+  publish:
+    name: Publish to JSR
+    runs-on: ubuntu-26.04
+    permissions:
+      contents: read
+      id-token: write # to authenticate with JSR via OIDC and to create a provenance attestation
+    steps:
+      - name: Checkout
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          ref: refs/tags/${{ inputs.tag }}
+
+      - name: Setup Deno
+        uses: denoland/setup-deno@22d081ff2d3a40755e97629de92e3bcbfa7cf2ed # v2.0.5
+        with:
+          deno-version: 2.9.8
+
+      # jsr.json has no version, the version is taken from the tag.
+      - name: Publish
+        env:
+          TAG: ${{ inputs.tag }}
+        run: deno publish --set-version "${TAG#v}"

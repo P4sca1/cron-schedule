@@ -1,6 +1,6 @@
 {
   "name": "cron-schedule",
-  "description": "A zero-dependency cron parser and scheduler for Node.js, Deno and the browser.",
+  "description": "A zero-dependency cron parser and scheduler for Node.js, Deno, Bun and the browser.",
   "version": "7.0.0",
   "license": "MIT",
   "repository": {
@@ -20,6 +20,7 @@
     "interval",
     "iterator",
     "deno",
+    "bun",
     "javascript",
     "timer",
     "cron-schedule",
@@ -58,10 +59,13 @@
     "tsc:build": "tsc --project ./tsconfig.json",
     "tsc:check": "tsc --project ./tsconfig.json --noEmit",
     "tsc:watch": "tsc --project ./tsconfig.json --noEmit --watch",
+    "test:types": "tsc --project ./test/types/tsconfig.json",
     "check": "biome check .",
     "test": "vitest",
     "test:run": "vitest run",
     "test:ci": "vitest run --reporter=junit --outputFile=./test-report.xml && pnpm biome ci .",
+    "test:deno": "deno run --allow-all node_modules/vitest/vitest.mjs run",
+    "test:bun": "bun test",
     "prepack": "pnpm run build"
   },
   "devDependencies": {

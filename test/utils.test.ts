@@ -4,7 +4,7 @@ import {
 	longTimeout,
 	TIMEOUT_MAX,
 	wrapFunction,
-} from '../src/utils.js'
+} from '../src/utils.ts'
 
 describe('longTimeout', () => {
 	test('Works with short timeouts', () => {

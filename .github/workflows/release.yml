@@ -63,3 +63,13 @@ jobs:
           GH_TOKEN: ${{ github.token }}
           TAG: ${{ github.ref_name }}
         run: gh release upload "$TAG" dist/*.js
+
+  publish-jsr:
+    name: JSR
+    needs: release
+    permissions:
+      contents: read
+      id-token: write
+    uses: ./.github/workflows/publish-jsr.yml
+    with:
+      tag: ${{ github.ref_name }}

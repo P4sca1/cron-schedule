@@ -2,12 +2,23 @@ name: Test
 
 on:
   pull_request:
+    paths-ignore:
+      - "**.md"
+      - LICENSE
+      - .vscode/**
+
+# Cancel outdated runs when new commits are pushed to the pull request.
+concurrency:
+  group: test-${{ github.event.pull_request.number }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
 
 jobs:
   test:
-    name: Test
+    name: Test (Node.js ${{ matrix.node }})
     runs-on: ubuntu-26.04
-    if: "!contains(github.event.head_commit.message, '[skip ci]')"
     strategy:
       matrix:
         node: [22.23.5, 24.22.3, 26.13.1]
@@ -29,3 +40,52 @@ jobs:
 
       - name: Test
         run: pnpm test:ci
+
+  # Deno, Bun and the type checks share one job to save runner minutes.
+  test-runtimes:
+    name: Test (Deno, Bun, TypeScript)
+    runs-on: ubuntu-26.04
+    steps:
+      - name: Checkout
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+
+      - name: Install pnpm
+        uses: pnpm/action-setup@73e46992e05b19abd31f2f3c20e0e7370d762115 # v6.1.1
+
+      - name: Setup Node.js
+        uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
+        with:
+          node-version: 24.22.3
+          cache: pnpm
+
+      - name: Install dependencies
+        run: pnpm install
+
+      - name: Setup Deno
+        uses: denoland/setup-deno@22d081ff2d3a40755e97629de92e3bcbfa7cf2ed # v2.0.5
+        with:
+          deno-version: 2.9.8
+
+      - name: Setup Bun
+        uses: oven-sh/setup-bun@0c5077e51419868618aeaa5fe8019c62421857d6 # v2.2.0
+        with:
+          bun-version: 1.4.4
+
+      - name: Test (Deno)
+        run: pnpm test:deno
+
+      - name: Test (Bun)
+        run: pnpm test:bun
+
+      - name: Check JSR package
+        run: deno publish --dry-run --allow-dirty --set-version "$(node -p 'require("./package.json").version')"
+
+      - name: Build
+        run: pnpm build
+
+      - name: Check types of the package (current TypeScript)
+        run: pnpm test:types
+
+      # The oldest supported TypeScript version, see README.md.
+      - name: Check types of the package (TypeScript 5.0)
+        run: pnpm dlx --package=typescript@5.0.4 tsc --project ./test/types/tsconfig.json

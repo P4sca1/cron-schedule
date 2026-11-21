@@ -1,5 +1,5 @@
 import { describe, expect, test } from 'vitest'
-import { Cron, parseCronExpression } from '../src/index.js'
+import { Cron, parseCronExpression } from '../src/index.ts'
 
 describe('parseCronExpression', () => {
 	test('Should parse a cron expression into a schedule instance', () => {

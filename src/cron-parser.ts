@@ -1,4 +1,4 @@
-import { Cron } from './cron.js'
+import { Cron } from './cron.ts'
 
 interface IConstraint {
 	min: number

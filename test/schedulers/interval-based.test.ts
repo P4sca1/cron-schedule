@@ -1,12 +1,25 @@
 import { afterEach, describe, expect, test, vi } from 'vitest'
-import { parseCronExpression } from '../../src/index.js'
-import { IntervalBasedCronScheduler } from '../../src/schedulers/interval-based.js'
+import { type Cron, parseCronExpression } from '../../src/index.ts'
+import { IntervalBasedCronScheduler } from '../../src/schedulers/interval-based.ts'
+
+/**
+ * Creates a cron stub that is due the given amount of minutes after start and then every hour.
+ * The deadlines are relative to the fake clock, so the tests neither depend on the local time zone
+ * (e.g. daylight saving time changes) nor on vi.setSystemTime, which Bun does not support.
+ */
+function cronDueAfterMinutes(start: number, minutes: number): Cron {
+	const deadline = start + minutes * 60 * 1000
+	return {
+		getNextDate: () =>
+			new Date(Date.now() < deadline ? deadline : deadline + 60 * 60 * 1000),
+	} as unknown as Cron
+}
 
 vi.useFakeTimers()
 const setIntervalSpy = vi.spyOn(global, 'setInterval')
 const clearIntervalSpy = vi.spyOn(global, 'clearInterval')
 
-describe('TimerBasedCronScheduler', () => {
+describe('IntervalBasedCronScheduler', () => {
 	afterEach(() => {
 		vi.clearAllTimers()
 		setIntervalSpy.mockClear()
@@ -31,16 +44,12 @@ describe('TimerBasedCronScheduler', () => {
 	test('registerTask', () => {
 		const scheduler = new IntervalBasedCronScheduler(60 * 1000)
 		const cron = parseCronExpression('* * * * *')
-		let now = Date.now()
-		vi.spyOn(Date, 'now').mockImplementation(() => now)
 
 		// Test one time task.
 		const oneTimeTask = vi.fn()
 		scheduler.registerTask(cron, oneTimeTask, { isOneTimeTask: true })
-		now += 60 * 1000
 		vi.runOnlyPendingTimers()
 		expect(oneTimeTask).toBeCalledTimes(1)
-		now += 60 * 1000
 		vi.runOnlyPendingTimers()
 		expect(oneTimeTask).toBeCalledTimes(1)
 
@@ -53,17 +62,14 @@ describe('TimerBasedCronScheduler', () => {
 			isOneTimeTask: true,
 			errorHandler,
 		})
-		now += 60 * 1000
 		vi.runOnlyPendingTimers()
 		expect(errorHandler).toBeCalledTimes(1)
 
 		// Test normal task.
 		const task = vi.fn()
 		scheduler.registerTask(cron, task)
-		now += 60 * 1000
 		vi.runOnlyPendingTimers()
 		expect(task).toBeCalledTimes(1)
-		now += 60 * 1000
 		vi.runOnlyPendingTimers()
 		expect(task).toBeCalledTimes(2)
 	})
@@ -79,33 +85,28 @@ describe('TimerBasedCronScheduler', () => {
 	})
 
 	describe.each([true, false])('task order (one time: %s)', (isOneTimeTask) => {
-		test.each([
-			[[1, 2, 3]],
-			[[3, 2, 1]],
-			[[2, 3, 1]],
-			[[1, 1, 2]],
-		])('dispatches registration order %j at each deadline', (minutes) => {
-			let now = new Date(2026, 0, 1, 0, 0, 0).getTime()
-			vi.setSystemTime(now)
-			vi.spyOn(Date, 'now').mockImplementation(() => now)
-			const scheduler = new IntervalBasedCronScheduler(60 * 1000)
-			const executed: number[] = []
+		test.each([[[1, 2, 3]], [[3, 2, 1]], [[2, 3, 1]], [[1, 1, 2]]])(
+			'dispatches registration order %j at each deadline',
+			(minutes) => {
+				const start = Date.now()
+				const scheduler = new IntervalBasedCronScheduler(60 * 1000)
+				const executed: number[] = []
 
-			for (const minute of minutes) {
-				scheduler.registerTask(
-					parseCronExpression(`${minute} * * * *`),
-					() => executed.push(minute),
-					{ isOneTimeTask },
-				)
-			}
+				for (const minute of minutes) {
+					scheduler.registerTask(
+						cronDueAfterMinutes(start, minute),
+						() => executed.push(minute),
+						{ isOneTimeTask },
+					)
+				}
 
-			for (let minute = 1; minute <= 3; minute += 1) {
-				now += 60 * 1000
-				vi.advanceTimersByTime(60 * 1000)
-				expect(executed).toEqual(
-					minutes.filter((value) => value <= minute).sort((a, b) => a - b),
-				)
-			}
-		})
+				for (let minute = 1; minute <= 3; minute += 1) {
+					vi.advanceTimersByTime(60 * 1000)
+					expect(executed).toEqual(
+						minutes.filter((value) => value <= minute).sort((a, b) => a - b),
+					)
+				}
+			},
+		)
 	})
 })
