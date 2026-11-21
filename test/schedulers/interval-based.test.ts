@@ -6,7 +6,7 @@ vi.useFakeTimers()
 const setIntervalSpy = vi.spyOn(global, 'setInterval')
 const clearIntervalSpy = vi.spyOn(global, 'clearInterval')
 
-describe('TimerBasedCronScheduler', () => {
+describe('IntervalBasedCronScheduler', () => {
 	afterEach(() => {
 		vi.clearAllTimers()
 		setIntervalSpy.mockClear()
@@ -31,16 +31,12 @@ describe('TimerBasedCronScheduler', () => {
 	test('registerTask', () => {
 		const scheduler = new IntervalBasedCronScheduler(60 * 1000)
 		const cron = parseCronExpression('* * * * *')
-		let now = Date.now()
-		vi.spyOn(Date, 'now').mockImplementation(() => now)
 
 		// Test one time task.
 		const oneTimeTask = vi.fn()
 		scheduler.registerTask(cron, oneTimeTask, { isOneTimeTask: true })
-		now += 60 * 1000
 		vi.runOnlyPendingTimers()
 		expect(oneTimeTask).toBeCalledTimes(1)
-		now += 60 * 1000
 		vi.runOnlyPendingTimers()
 		expect(oneTimeTask).toBeCalledTimes(1)
 
@@ -53,17 +49,14 @@ describe('TimerBasedCronScheduler', () => {
 			isOneTimeTask: true,
 			errorHandler,
 		})
-		now += 60 * 1000
 		vi.runOnlyPendingTimers()
 		expect(errorHandler).toBeCalledTimes(1)
 
 		// Test normal task.
 		const task = vi.fn()
 		scheduler.registerTask(cron, task)
-		now += 60 * 1000
 		vi.runOnlyPendingTimers()
 		expect(task).toBeCalledTimes(1)
-		now += 60 * 1000
 		vi.runOnlyPendingTimers()
 		expect(task).toBeCalledTimes(2)
 	})
@@ -79,33 +72,30 @@ describe('TimerBasedCronScheduler', () => {
 	})
 
 	describe.each([true, false])('task order (one time: %s)', (isOneTimeTask) => {
-		test.each([
-			[[1, 2, 3]],
-			[[3, 2, 1]],
-			[[2, 3, 1]],
-			[[1, 1, 2]],
-		])('dispatches registration order %j at each deadline', (minutes) => {
-			let now = new Date(2026, 0, 1, 0, 0, 0).getTime()
-			vi.setSystemTime(now)
-			vi.spyOn(Date, 'now').mockImplementation(() => now)
-			const scheduler = new IntervalBasedCronScheduler(60 * 1000)
-			const executed: number[] = []
+		test.each([[[1, 2, 3]], [[3, 2, 1]], [[2, 3, 1]], [[1, 1, 2]]])(
+			'dispatches registration order %j at each deadline',
+			(minutes) => {
+				// The tasks are due 1, 2 or 3 minutes after the current minute.
+				// The time is not set to a fixed date, because Bun does not support vi.setSystemTime.
+				const currentMinute = new Date().getMinutes()
+				const scheduler = new IntervalBasedCronScheduler(60 * 1000)
+				const executed: number[] = []
 
-			for (const minute of minutes) {
-				scheduler.registerTask(
-					parseCronExpression(`${minute} * * * *`),
-					() => executed.push(minute),
-					{ isOneTimeTask },
-				)
-			}
+				for (const minute of minutes) {
+					scheduler.registerTask(
+						parseCronExpression(`${(currentMinute + minute) % 60} * * * *`),
+						() => executed.push(minute),
+						{ isOneTimeTask },
+					)
+				}
 
-			for (let minute = 1; minute <= 3; minute += 1) {
-				now += 60 * 1000
-				vi.advanceTimersByTime(60 * 1000)
-				expect(executed).toEqual(
-					minutes.filter((value) => value <= minute).sort((a, b) => a - b),
-				)
-			}
-		})
+				for (let minute = 1; minute <= 3; minute += 1) {
+					vi.advanceTimersByTime(60 * 1000)
+					expect(executed).toEqual(
+						minutes.filter((value) => value <= minute).sort((a, b) => a - b),
+					)
+				}
+			},
+		)
 	})
 })
