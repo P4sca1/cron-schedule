@@ -560,6 +560,18 @@ export class Cron {
 	/** Gets the previous date before the given start date or now. */
 	public getPrevDate(startDate: Date = new Date()): Date {
 		assertValidDate(startDate)
+
+		// When startDate has milliseconds, the beginning of its second is before startDate.
+		// The search below only considers earlier seconds, so check this second first.
+		const startSecond =
+			startDate.getTime() - (((startDate.getTime() % 1000) + 1000) % 1000)
+		if (
+			startSecond < startDate.getTime() &&
+			this.isOccurrence(new Date(startSecond))
+		) {
+			return new Date(startSecond)
+		}
+
 		let wallTime: IWallTime = extractDateElements(startDate)
 
 		while (true) {
@@ -718,6 +730,23 @@ export class Cron {
 
 			yield prevDate
 		}
+	}
+
+	/**
+	 * Returns true when the given date (without milliseconds) is a cron date, taking time changes into account:
+	 * Jobs that run at specific hours only run on the first occurrence of a repeated wall time.
+	 */
+	private isOccurrence(date: Date): boolean {
+		if (!this.matchDate(date)) {
+			return false
+		}
+
+		if (this.matchesEveryHour()) {
+			return true
+		}
+
+		const [firstOccurrence] = getInstantsForWallTime(extractDateElements(date))
+		return firstOccurrence?.getTime() === date.getTime()
 	}
 
 	/** Returns true when there is a cron date at the given date. */

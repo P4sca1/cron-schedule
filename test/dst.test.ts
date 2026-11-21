@@ -211,3 +211,44 @@ describe('date range', () => {
 		expect(() => cron.getPrevDate(new Date(Number.NaN))).toThrow(TypeError)
 	})
 })
+
+describe('skipped days (Pacific/Apia)', () => {
+	useTimeZone('Pacific/Apia')
+
+	test('weekdays are calculated for days that were skipped entirely', () => {
+		// December 30, 2011 (a Friday) was skipped: 2011-12-29 23:59:59 -10:00 was followed by 2011-12-31 00:00 +14:00.
+		const cron = parseCronExpression('0 * * * 5')
+		expect(
+			cron.getPrevDate(new Date('2011-12-31T12:00:00+14:00')).toISOString(),
+		).toBe('2011-12-24T09:00:00.000Z') // Friday, December 23, 23:00 -10:00
+	})
+})
+
+describe('start dates with milliseconds', () => {
+	useTimeZone('America/New_York')
+
+	test('getPrevDate includes the beginning of the start second', () => {
+		const cron = parseCronExpression('0 * * * *')
+		expect(
+			cron.getPrevDate(new Date('2024-07-01T10:00:00.500-04:00')).toISOString(),
+		).toBe('2024-07-01T14:00:00.000Z')
+		// The second occurrence of the repeated hour.
+		expect(
+			cron.getPrevDate(new Date('2024-11-03T01:00:00.500-05:00')).toISOString(),
+		).toBe('2024-11-03T06:00:00.000Z')
+		// Jobs that run at specific hours only run on the first occurrence.
+		expect(
+			parseCronExpression('0 1 * * *')
+				.getPrevDate(new Date('2024-11-03T01:00:00.500-05:00'))
+				.toISOString(),
+		).toBe('2024-11-03T05:00:00.000Z')
+	})
+
+	test('getNextDate excludes the beginning of the start second', () => {
+		expect(
+			parseCronExpression('0 * * * *')
+				.getNextDate(new Date('2024-07-01T10:00:00.500-04:00'))
+				.toISOString(),
+		).toBe('2024-07-01T15:00:00.000Z')
+	})
+})

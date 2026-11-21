@@ -245,12 +245,19 @@ export function findOffsetTransition(from: number, to: number): number {
 
 /* Gets the amount of days in the given month (indexed by 0) of the given year. */
 export function getDaysInMonth(year: number, month: number): number {
-	return createLocalDay(year, month + 1, 0).getDate()
+	// Calendar arithmetic in UTC, because local days can be skipped entirely by time zone changes.
+	const date = new Date(0)
+	date.setUTCFullYear(year, month + 1, 0)
+	return date.getUTCDate()
 }
 
 /* Gets the weekday (0 = Sunday) of the given date. */
 export function getWeekday(year: number, month: number, day: number): number {
-	return createLocalDay(year, month, day).getDay()
+	// Calendar arithmetic in UTC, because local days can be skipped entirely by time zone changes
+	// (e.g. December 30, 2011 in Pacific/Apia).
+	const date = new Date(0)
+	date.setUTCFullYear(year, month, day)
+	return date.getUTCDay()
 }
 
 /* Gets the amount of days from weekday1 to weekday2. */
