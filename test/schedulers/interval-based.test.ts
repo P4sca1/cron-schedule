@@ -1,6 +1,6 @@
 import { afterEach, describe, expect, test, vi } from 'vitest'
-import { parseCronExpression } from '../../src/index.js'
-import { IntervalBasedCronScheduler } from '../../src/schedulers/interval-based.js'
+import { parseCronExpression } from '../../src/index.ts'
+import { IntervalBasedCronScheduler } from '../../src/schedulers/interval-based.ts'
 
 vi.useFakeTimers()
 const setIntervalSpy = vi.spyOn(global, 'setInterval')

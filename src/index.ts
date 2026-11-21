@@ -12,5 +12,5 @@
  * @module
  */
 
-export * from './cron.js'
-export * from './cron-parser.js'
+export * from './cron.ts'
+export * from './cron-parser.ts'

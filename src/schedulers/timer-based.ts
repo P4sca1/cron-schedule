@@ -12,8 +12,8 @@
  * @module
  */
 
-import type { Cron } from '../cron.js'
-import { type ITimerHandle, longTimeout, wrapFunction } from '../utils.js'
+import type { Cron } from '../cron.ts'
+import { type ITimerHandle, longTimeout, wrapFunction } from '../utils.ts'
 
 /**
  * A cron scheduler that is based on timers.

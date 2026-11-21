@@ -8,6 +8,7 @@
 		"target": "es6",
 		"module": "NodeNext",
 		"moduleResolution": "nodenext",
+		"rewriteRelativeImportExtensions": true,
 
 		"strict": true,
 		"noFallthroughCasesInSwitch": true,

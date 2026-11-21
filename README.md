@@ -66,6 +66,12 @@ Importing the npm package via `npm:cron-schedule@:version` works as well.
 
 The usage is the same as for Node.js.
 
+### Cloudflare Workers
+
+Install the npm package (or the JSR package via `npx jsr add @p4sca1/cron-schedule`). The usage is the same as for Node.js.
+
+Workers always run in UTC. The schedulers only run while the Worker is active (e.g. during a request), so use [Cron Triggers](https://developers.cloudflare.com/workers/configuration/cron-triggers/) for recurring jobs. Parsing cron expressions and calculating dates works without restrictions.
+
 ### Browser via CDN
 
 ```html
@@ -123,7 +129,7 @@ cron.matchDate(date: Date): boolean
 
 You can schedule tasks to be executed based on a cron expression. _cron-schedule_ comes with 2 different schedulers.
 
-If you use TypeScript, make sure you set `compilerOptions.moduleResolution` to `node16` or `nodenext`.
+If you use TypeScript, version 5.0 or newer is required and `compilerOptions.moduleResolution` must be set to `node16`, `nodenext` or `bundler`.
 
 ### 1. Timer based scheduler
 

@@ -41,9 +41,9 @@ jobs:
       - name: Test
         run: pnpm test:ci
 
-  # Deno and Bun share one job to save runner minutes.
+  # Deno, Bun and the type checks share one job to save runner minutes.
   test-runtimes:
-    name: Test (Deno, Bun)
+    name: Test (Deno, Bun, TypeScript)
     runs-on: ubuntu-26.04
     steps:
       - name: Checkout
@@ -78,4 +78,14 @@ jobs:
         run: pnpm test:bun
 
       - name: Check JSR package
-        run: deno publish --dry-run --sloppy-imports --allow-dirty
+        run: deno publish --dry-run --allow-dirty
+
+      - name: Build
+        run: pnpm build
+
+      - name: Check types of the package (current TypeScript)
+        run: pnpm test:types
+
+      # The oldest supported TypeScript version, see README.md.
+      - name: Check types of the package (TypeScript 5.0)
+        run: pnpm dlx --package=typescript@5.0.4 tsc --project ./test/types/tsconfig.json

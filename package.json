@@ -75,6 +75,7 @@
     "tsc:build": "tsc --project ./tsconfig.json",
     "tsc:check": "tsc --project ./tsconfig.json --noEmit",
     "tsc:watch": "tsc --project ./tsconfig.json --noEmit --watch",
+    "test:types": "tsc --project ./test/types/tsconfig.json",
     "check": "biome check .",
     "test": "vitest",
     "test:run": "vitest run",

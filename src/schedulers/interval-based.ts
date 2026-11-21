@@ -13,8 +13,8 @@
  * @module
  */
 
-import type { Cron } from '../cron.js'
-import { wrapFunction } from '../utils.js'
+import type { Cron } from '../cron.ts'
+import { wrapFunction } from '../utils.ts'
 
 interface ITaskWrapper {
 	id: number

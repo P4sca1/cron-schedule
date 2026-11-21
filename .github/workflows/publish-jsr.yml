@@ -41,8 +41,7 @@ jobs:
         with:
           deno-version: 2.9.8
 
-      # The sources import TypeScript files with a .js extension (required for the npm build), so sloppy imports are needed.
       - name: Publish
         env:
           TAG: ${{ inputs.tag }}
-        run: deno publish --set-version "${TAG#v}" --sloppy-imports --allow-dirty
+        run: deno publish --set-version "${TAG#v}" --allow-dirty
