@@ -72,7 +72,7 @@
   },
   "scripts": {
     "build": "rimraf ./dist && pnpm run tsc:build",
-    "tsc:build": "tsc --project ./tsconfig.json",
+    "tsc:build": "tsc --project ./tsconfig.json && node ./scripts/fix-declaration-imports.mjs",
     "tsc:check": "tsc --project ./tsconfig.json --noEmit",
     "tsc:watch": "tsc --project ./tsconfig.json --noEmit --watch",
     "test:types": "tsc --project ./test/types/tsconfig.json",

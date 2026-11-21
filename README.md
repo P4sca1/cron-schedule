@@ -129,7 +129,7 @@ cron.matchDate(date: Date): boolean
 
 You can schedule tasks to be executed based on a cron expression. _cron-schedule_ comes with 2 different schedulers.
 
-If you use TypeScript, version 5.0 or newer is required and `compilerOptions.moduleResolution` must be set to `node16`, `nodenext` or `bundler`.
+If you use TypeScript, version 5.0 or newer is supported and `compilerOptions.moduleResolution` must be set to `node16`, `nodenext` or `bundler`.
 
 ### 1. Timer based scheduler
 
