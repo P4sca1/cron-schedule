@@ -5,7 +5,10 @@ import {
 	getDaysInMonth,
 	getEndOfSkippedPeriod,
 	getInstantsForWallTime,
+	getTimezoneOffsetMs,
+	getUtcTime,
 	getWallTimeAtOffset,
+	getWeekday,
 	type IWallTime,
 } from './utils.ts'
 
@@ -265,7 +268,7 @@ export class Cron {
 		// Try to find a day based on the weekday constraint.
 		let allowedDayByWeekdays: number | undefined
 		if (weekdaysRestricted) {
-			const startWeekday = new Date(year, month, startDay).getDay()
+			const startWeekday = getWeekday(year, month, startDay)
 			const nearestAllowedWeekday =
 				dir === 'next'
 					? (this.weekdays.find((x) => x >= startWeekday) ?? this.weekdays[0])
@@ -339,7 +342,7 @@ export class Cron {
 			startDate.getTime(),
 			occurrences[occurrences.length - 1].getTime(),
 		)
-		const offsetAfter = new Date(transition).getTimezoneOffset()
+		const offsetAfter = getTimezoneOffsetMs(transition)
 		const wallTime = this.findWallTime(
 			'next',
 			getWallTimeAtOffset(transition - 1000, offsetAfter),
@@ -369,7 +372,7 @@ export class Cron {
 			occurrences[0].getTime(),
 			startDate.getTime(),
 		)
-		const offsetBefore = new Date(transition - 1).getTimezoneOffset()
+		const offsetBefore = getTimezoneOffsetMs(transition - 1)
 		const wallTime = this.findWallTime(
 			'prev',
 			getWallTimeAtOffset(transition, offsetBefore),
@@ -397,11 +400,14 @@ export class Cron {
 				if (!this.matchesEveryHour() && periodEnd > startDate.getTime()) {
 					nextDate = new Date(periodEnd)
 				} else {
-					// Continue searching after the skipped period.
-					wallTime = getWallTimeAtOffset(
+					// Continue searching after the skipped period (and never go backwards).
+					const wallTimeAfterPeriod = getWallTimeAtOffset(
 						periodEnd - 1000,
-						new Date(periodEnd).getTimezoneOffset(),
+						getTimezoneOffsetMs(periodEnd),
 					)
+					if (getUtcTime(wallTimeAfterPeriod) > getUtcTime(wallTime)) {
+						wallTime = wallTimeAfterPeriod
+					}
 					continue
 				}
 			} else {
@@ -553,11 +559,14 @@ export class Cron {
 				if (!this.matchesEveryHour() && periodEnd < startDate.getTime()) {
 					prevDate = new Date(periodEnd)
 				} else {
-					// Continue searching before the skipped period.
-					wallTime = getWallTimeAtOffset(
+					// Continue searching before the skipped period (and never go forwards).
+					const wallTimeBeforePeriod = getWallTimeAtOffset(
 						periodEnd,
-						new Date(periodEnd - 1).getTimezoneOffset(),
+						getTimezoneOffsetMs(periodEnd - 1),
 					)
+					if (getUtcTime(wallTimeBeforePeriod) < getUtcTime(wallTime)) {
+						wallTime = wallTimeBeforePeriod
+					}
 					continue
 				}
 			} else {
@@ -571,15 +580,15 @@ export class Cron {
 				continue
 			}
 
-			if (this.matchesEveryHour()) {
-				const repeatedDate = this.findPrevDateInRepeatedPeriod(startDate)
-				if (
-					repeatedDate !== undefined &&
-					repeatedDate.getTime() < startDate.getTime() &&
-					repeatedDate.getTime() > prevDate.getTime()
-				) {
-					return repeatedDate
-				}
+			// Unlike in getNextDate, this also applies to jobs that run at specific hours: Their first occurrence in
+			// the repeated period is before startDate, but its wall time is after the wall time of startDate.
+			const repeatedDate = this.findPrevDateInRepeatedPeriod(startDate)
+			if (
+				repeatedDate !== undefined &&
+				repeatedDate.getTime() < startDate.getTime() &&
+				repeatedDate.getTime() > prevDate.getTime()
+			) {
+				return repeatedDate
 			}
 
 			return prevDate

@@ -113,6 +113,10 @@ describe('daylight saving time (America/New_York)', () => {
 			expect(
 				cron.getNextDate(new Date('2024-11-03T01:00:00-05:00')).toISOString(),
 			).toBe('2024-11-04T06:30:00.000Z')
+			// Starting in the second occurrence finds the first occurrence, although its wall time is later.
+			expect(
+				cron.getPrevDate(new Date('2024-11-03T01:00:00-05:00')).toISOString(),
+			).toBe('2024-11-03T05:30:00.000Z')
 		})
 	})
 })
@@ -151,6 +155,39 @@ describe('years 0 to 99', () => {
 		start.setUTCFullYear(98, 0, 1)
 		expect(cron.getNextDates(2, start).map((d) => d.getUTCFullYear())).toEqual([
 			99, 100,
+		])
+	})
+
+	test('leap days and weekdays are calculated for the actual year', () => {
+		const start = new Date(0)
+		start.setUTCFullYear(0, 1, 1)
+		const leapDay = parseCronExpression('0 0 29 2 *').getNextDate(start)
+		expect([
+			leapDay.getUTCFullYear(),
+			leapDay.getUTCMonth(),
+			leapDay.getUTCDate(),
+		]).toEqual([0, 1, 29])
+
+		start.setUTCFullYear(50, 0, 1) // A Saturday.
+		const monday = parseCronExpression('0 0 * * 1').getNextDate(start)
+		expect([monday.getUTCDate(), monday.getUTCDay()]).toEqual([3, 1])
+	})
+})
+
+describe('historical time zone offsets with seconds (America/New_York)', () => {
+	useTimeZone('America/New_York')
+
+	test('local mean time before 1883 (-04:56:02) is not treated as a skipped time', () => {
+		// Before November 18, 1883, New York used local mean time with an offset of -04:56:02.
+		const cron = parseCronExpression('0 * * * *')
+		const start = new Date('1800-01-01T16:26:02.000Z') // 11:30 local mean time
+		expect(iso(cron.getNextDates(2, start))).toEqual([
+			'1800-01-01T16:56:02.000Z',
+			'1800-01-01T17:56:02.000Z',
+		])
+		expect(iso(cron.getPrevDates(2, start))).toEqual([
+			'1800-01-01T15:56:02.000Z',
+			'1800-01-01T14:56:02.000Z',
 		])
 	})
 })
