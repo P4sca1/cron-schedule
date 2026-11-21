@@ -78,7 +78,7 @@ jobs:
         run: pnpm test:bun
 
       - name: Check JSR package
-        run: deno publish --dry-run --allow-dirty
+        run: deno publish --dry-run --allow-dirty --set-version "$(node -p 'require("./package.json").version')"
 
       - name: Build
         run: pnpm build

@@ -1,6 +1,5 @@
 {
 	"name": "@p4sca1/cron-schedule",
-	"version": "0.0.0-semantically-released",
 	"exports": {
 		".": "./src/index.ts",
 		"./schedulers/interval-based": "./src/schedulers/interval-based.ts",
