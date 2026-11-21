@@ -32,7 +32,7 @@ export function longTimeout(
 
 	handle.timeoutId = setTimeout(() => {
 		if (remainingTimeout > 0) {
-			longTimeout(fn, remainingTimeout, previousHandle)
+			longTimeout(fn, remainingTimeout, handle)
 		} else {
 			fn()
 		}

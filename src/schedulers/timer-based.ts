@@ -49,15 +49,19 @@ export class TimerBasedCronScheduler {
 		opts?: { errorHandler?: (err: unknown) => unknown; handle?: ITimerHandle },
 	): ITimerHandle {
 		const handle = opts?.handle ?? { timeoutId: undefined }
+		const timeout = cron.getNextDate().getTime() - Date.now()
 
-		const { timeoutId } = TimerBasedCronScheduler.setTimeout(cron, () => {
-			wrapFunction(task, opts?.errorHandler)()
-			TimerBasedCronScheduler.setInterval(cron, task, { ...opts, handle })
-		})
-
-		handle.timeoutId = timeoutId
-
-		return handle
+		// The handle is passed on, so that it always holds the current timeout, also when
+		// multiple consecutive timeouts are needed for dates beyond the timeout limit.
+		return longTimeout(
+			() => {
+				// Schedule the next execution first, so that the task itself can clear the interval.
+				TimerBasedCronScheduler.setInterval(cron, task, { ...opts, handle })
+				wrapFunction(task, opts?.errorHandler)()
+			},
+			timeout,
+			handle,
+		)
 	}
 
 	/** Clears a timeout or interval, making sure that the function will no longer execute. */
