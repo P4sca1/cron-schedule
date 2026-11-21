@@ -2,49 +2,26 @@ name: Release
 
 on:
   push:
-    branches:
-      - main
-      - next
+    tags:
+      - "v*.*.*"
+
+# Never cancel a running release.
+concurrency:
+  group: release-${{ github.ref }}
+  cancel-in-progress: false
+
+permissions: {}
 
 jobs:
-  test:
-    name: Test
-    runs-on: ubuntu-26.04
-    if: "!contains(github.event.head_commit.message, '[skip ci]')"
-    strategy:
-      matrix:
-        node: [22.23.5, 24.22.3, 26.13.1]
-    steps:
-      - name: Checkout
-        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
-
-      - name: Install pnpm
-        uses: pnpm/action-setup@73e46992e05b19abd31f2f3c20e0e7370d762115 # v6.1.1
-
-      - name: Setup Node.js
-        uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
-        with:
-          node-version: ${{ matrix.node }}
-          cache: pnpm
-
-      - name: Install dependencies
-        run: pnpm install
-
-      - name: Test
-        run: pnpm test:ci
-
+  # The full test matrix already ran in the release pull request, so only test once before publishing.
   release:
-    needs: test
     name: Release
     runs-on: ubuntu-26.04
     permissions:
-      # required for npm trusted publishing with OIDC.
-      # https://docs.npmjs.com/trusted-publishers#step-2-configure-your-cicd-workflow
-      # https://github.com/semantic-release/npm?tab=readme-ov-file#trusted-publishing-from-github-actions
-      contents: write # to be able to publish a GitHub release
-      issues: write # to be able to comment on released issues
-      pull-requests: write # to be able to comment on released pull requests
-      id-token: write # to enable use of OIDC for trusted publishing and npm provenance
+      contents: write # to upload assets to the GitHub release created by releaser-pleaser
+      # required for npm trusted publishing with OIDC and npm provenance.
+      # https://docs.npmjs.com/trusted-publishers
+      id-token: write
     steps:
       - name: Checkout
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
@@ -58,8 +35,18 @@ jobs:
           node-version: 26.13.1
           cache: pnpm
 
+      - name: Verify that the tag matches the package version
+        env:
+          TAG: ${{ github.ref_name }}
+        run: |
+          VERSION="$(node -p 'require("./package.json").version')"
+          if [ "v$VERSION" != "$TAG" ]; then
+            echo "::error::Tag $TAG does not match package.json version $VERSION"
+            exit 1
+          fi
+
       - name: Install dependencies
-        run: pnpm install
+        run: pnpm install --frozen-lockfile
 
       - name: Verify the integrity of provenance attestations and registry signatures for installed dependencies
         run: npm audit signatures
@@ -67,7 +54,12 @@ jobs:
       - name: Test
         run: pnpm test:ci
 
-      - name: Release
+      # npm publish runs the prepack script, which builds the package.
+      - name: Publish to npm
+        run: npm publish --provenance
+
+      - name: Upload release assets
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: pnpm exec semantic-release
+          GH_TOKEN: ${{ github.token }}
+          TAG: ${{ github.ref_name }}
+        run: gh release upload "$TAG" dist/*.js

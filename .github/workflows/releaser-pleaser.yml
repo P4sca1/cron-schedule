@@ -1,0 +1,31 @@
+name: releaser-pleaser
+
+# Maintains a release pull request with the next version and changelog.
+# Merging it creates the tag and GitHub release, which triggers the release workflow.
+on:
+  push:
+    branches: [main]
+  pull_request_target:
+    types:
+      - edited
+      - labeled
+      - unlabeled
+
+concurrency:
+  group: releaser-pleaser
+  cancel-in-progress: true
+
+permissions: {}
+
+jobs:
+  releaser-pleaser:
+    name: releaser-pleaser
+    runs-on: ubuntu-26.04
+    steps:
+      - name: releaser-pleaser
+        uses: apricote/releaser-pleaser@93a3e2c401320206dcd9a9b7a5bbc0850072b3c6 # v0.9.0
+        with:
+          # A personal access token is required, because tags created with the GITHUB_TOKEN do not trigger
+          # the release workflow and checks would not run on the release pull request.
+          token: ${{ secrets.RELEASER_PLEASER_TOKEN }}
+          updaters: packagejson
