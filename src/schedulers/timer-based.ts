@@ -1,3 +1,17 @@
+/**
+ * A cron scheduler that creates one timer for every scheduled cron.
+ *
+ * @example
+ * ```ts
+ * import { parseCronExpression } from '@p4sca1/cron-schedule'
+ * import { TimerBasedCronScheduler } from '@p4sca1/cron-schedule/schedulers/timer-based'
+ *
+ * TimerBasedCronScheduler.setInterval(parseCronExpression('0 * * * *'), () => console.log('Task executed'))
+ * ```
+ *
+ * @module
+ */
+
 import type { Cron } from '../cron.js'
 import { type ITimerHandle, longTimeout, wrapFunction } from '../utils.js'
 

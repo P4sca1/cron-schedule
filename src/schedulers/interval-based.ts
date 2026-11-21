@@ -1,3 +1,18 @@
+/**
+ * A cron scheduler that checks all registered tasks in a single interval.
+ *
+ * @example
+ * ```ts
+ * import { parseCronExpression } from '@p4sca1/cron-schedule'
+ * import { IntervalBasedCronScheduler } from '@p4sca1/cron-schedule/schedulers/interval-based'
+ *
+ * const scheduler = new IntervalBasedCronScheduler(60 * 1000)
+ * scheduler.registerTask(parseCronExpression('0 * * * *'), () => console.log('Task executed'))
+ * ```
+ *
+ * @module
+ */
+
 import type { Cron } from '../cron.js'
 import { wrapFunction } from '../utils.js'
 

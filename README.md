@@ -1,10 +1,13 @@
-# cron-schedule ![CircleCI](https://circleci.com/gh/P4sca1/cron-schedule.svg?style=svg)
+# cron-schedule
 
-A zero-dependency cron parser and scheduler for Node.js, Deno and the browser. Published on [NPM](https://www.npmjs.com) and [JSR](https://jsr.io)
-
+[![Release](https://github.com/P4sca1/cron-schedule/actions/workflows/release.yml/badge.svg)](https://github.com/P4sca1/cron-schedule/actions/workflows/release.yml)
+[![npm](https://img.shields.io/npm/v/cron-schedule?style=flat-square)](https://www.npmjs.com/package/cron-schedule)
+[![JSR](https://jsr.io/badges/@p4sca1/cron-schedule)](https://jsr.io/@p4sca1/cron-schedule)
 ![ts](https://flat.badgen.net/badge/-/TypeScript?icon=typescript&label&labelColor=blue&color=555555)
 [![semantic-release](https://img.shields.io/badge/%20%20%F0%9F%93%A6%F0%9F%9A%80-semantic--release-e10079.svg?style=flat-square)](https://github.com/semantic-release/semantic-release)
 ![](https://img.shields.io/npm/dw/cron-schedule?style=flat-square)
+
+A zero-dependency cron parser and scheduler for Node.js, Deno, Bun and the browser. Published on [npm](https://www.npmjs.com/package/cron-schedule) and [JSR](https://jsr.io/@p4sca1/cron-schedule).
 
 ## Features
 
@@ -12,10 +15,13 @@ A zero-dependency cron parser and scheduler for Node.js, Deno and the browser. P
 - Get next or previous schedules from a specific starting date.
 - Check if a date matches a cron expression.
 - Schedule a function call based on a cron expression.
-- Supports Node.js, Deno and the browser (ESM only)
+- Supports Node.js, Deno, Bun and the browser (ESM only)
 - [Lightweight](https://bundlephobia.com/result?p=cron-schedule@latest) and tree-shakeable.
 
 ## Installation and usage
+
+**We test our code against Node.js `22`, `24` and `26`, Deno `2` and Bun `1`.**
+Other versions may also work, but this is not tested.
 
 ### Node.js
 
@@ -31,9 +37,6 @@ Via pnpm:
 
 `$ pnpm add cron-schedule`
 
-**We test our code against the following Node.js releases (`22`, `24`, `26`).**
-Other versions of node.js may also work, but this is not tested.
-
 ##### Usage
 
 ```ts
@@ -43,34 +46,43 @@ console.log(cron.getNextDate(new Date(2020, 10, 20, 18, 32)))
 // 2020-11-20T17:35:00.000Z
 ```
 
+### Deno
+
+Use `deno add jsr:@p4sca1/cron-schedule` and import from `@p4sca1/cron-schedule`, or import from `jsr:@p4sca1/cron-schedule@:version` without an install step:
+
+```ts
+import { parseCronExpression } from 'jsr:@p4sca1/cron-schedule@:version'
+const cron = parseCronExpression('*/5 * * * *')
+console.log(cron.getNextDate(new Date(2020, 10, 20, 18, 32)))
+// 2020-11-20T17:35:00.000Z
+```
+
+On JSR, the schedulers are available as `@p4sca1/cron-schedule/schedulers/timer-based` and `@p4sca1/cron-schedule/schedulers/interval-based` (without `.js` extension).
+Importing the npm package via `npm:cron-schedule@:version` works as well.
+
+### Bun
+
+`$ bun add cron-schedule`
+
+The usage is the same as for Node.js.
+
 ### Browser via CDN
 
 ```html
 <script type="module">
-  import { parseCronExpression } from 'https://cdn.skypack.dev/cron-schedule@:version'
+  import { parseCronExpression } from 'https://cdn.jsdelivr.net/npm/cron-schedule@:version/+esm'
   const cron = parseCronExpression('*/5 * * * *')
   console.log(cron.getNextDate(new Date(2020, 10, 20, 18, 32)))
   // 2020-11-20T17:35:00.000Z
 </script>
 ```
 
-The examples above uses [Skypack](https://www.skypack.dev).
-
-### Deno
-
-```ts
-import { parseCronExpression } from 'npm:cron-schedule@:version'
-const cron = parseCronExpression('*/5 * * * *')
-console.log(cron.getNextDate(new Date(2020, 10, 20, 18, 32)))
-// 2020-11-20T17:35:00.000Z
-```
-
-Alternatively you can use `deno add @p4sca1/cron-schedule` and import from `@p4sca1/cron-schedule`, or import from `jsr:@p4sca1/cron-schedule` without an install step.
+The example above uses [jsDelivr](https://www.jsdelivr.com).
 
 ### Note on :version placeholder
 
-The deno import and Skypack CDN urls contain a `:version` placeholder. Replace `:version` with the desired version. Semver ranges are supported. To always use the latest `4.x` version use `^4.0.0`.
-See https://www.npmjs.com/package/cron-schedule for a list of available versions.
+The Deno import and CDN urls contain a `:version` placeholder. Replace `:version` with the desired version. Semver ranges are supported. To always use the latest `7.x` version use `^7.0.0`.
+See https://www.npmjs.com/package/cron-schedule or https://jsr.io/@p4sca1/cron-schedule for a list of available versions.
 
 ## Work with cron expressions
 
@@ -122,7 +134,7 @@ When the node timeout limit of ~24 days would be exceeded, it uses multiple cons
 // Import the scheduler.
 import { TimerBasedCronScheduler as scheduler } from 'cron-schedule/schedulers/timer-based.js'
 
-// Create a timeout, which fill fire the task on the next cron date.
+// Create a timeout, which will fire the task on the next cron date.
 // An optional errorHandler can be provided, which is called when the task throws an error or returns a promise that gets rejected.
 // Returns a handle which can be used to clear the timeout using clearTimeoutOrInterval.
 scheduler.setTimeout(cron: Cron, task: () => unknown, opts?: { errorHandler?: (err: Error) => unknown }): ITimerHandle
