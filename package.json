@@ -1,6 +1,6 @@
 {
   "name": "cron-schedule",
-  "description": "A zero-dependency cron parser and scheduler for Node.js, Deno and the browser.",
+  "description": "A zero-dependency cron parser and scheduler for Node.js, Deno, Bun and the browser.",
   "version": "0.0.0-semantically-released",
   "license": "MIT",
   "repository": {
@@ -20,6 +20,7 @@
     "interval",
     "iterator",
     "deno",
+    "bun",
     "javascript",
     "timer",
     "cron-schedule",
@@ -66,14 +67,7 @@
       "@semantic-release/commit-analyzer",
       "@semantic-release/release-notes-generator",
       "@semantic-release/npm",
-      [
-        "@semantic-release/github",
-        {
-          "assets": [
-            "dist/*.js"
-          ]
-        }
-      ]
+      "@semantic-release/github"
     ]
   },
   "scripts": {
@@ -85,6 +79,8 @@
     "test": "vitest",
     "test:run": "vitest run",
     "test:ci": "vitest run --reporter=junit --outputFile=./test-report.xml && pnpm biome ci .",
+    "test:deno": "deno run --allow-all node_modules/vitest/vitest.mjs run",
+    "test:bun": "bun test",
     "prepack": "pnpm run build"
   },
   "devDependencies": {

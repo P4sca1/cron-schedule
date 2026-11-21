@@ -1,0 +1,48 @@
+name: Publish to JSR
+
+on:
+  # Called by the release workflow after semantic-release created a new release.
+  workflow_call:
+    inputs:
+      tag:
+        required: true
+        type: string
+  # Allows to (re-)publish an existing release manually.
+  workflow_dispatch:
+    inputs:
+      tag:
+        description: Git tag of the release to publish (e.g. v7.0.0)
+        required: true
+        type: string
+
+permissions: {}
+
+jobs:
+  publish:
+    name: Publish to JSR
+    runs-on: ubuntu-26.04
+    permissions:
+      contents: read
+      id-token: write # to authenticate with JSR via OIDC and to create a provenance attestation
+    steps:
+      - name: Checkout
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          ref: refs/tags/${{ inputs.tag }}
+
+      # Always use the JSR config of the workflow commit, so older releases are published with the current config.
+      - name: Use current JSR config
+        run: |
+          git fetch --depth 1 origin "$GITHUB_SHA"
+          git show "$GITHUB_SHA:jsr.json" > jsr.json
+
+      - name: Setup Deno
+        uses: denoland/setup-deno@22d081ff2d3a40755e97629de92e3bcbfa7cf2ed # v2.0.5
+        with:
+          deno-version: 2.9.8
+
+      # The sources import TypeScript files with a .js extension (required for the npm build), so sloppy imports are needed.
+      - name: Publish
+        env:
+          TAG: ${{ inputs.tag }}
+        run: deno publish --set-version "${TAG#v}" --sloppy-imports --allow-dirty
