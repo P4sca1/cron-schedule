@@ -69,6 +69,23 @@ describe('longTimeout', () => {
 		setTimeoutSpy.mockRestore()
 		vi.useRealTimers()
 	})
+
+	test('The handle holds the current timeout of long timeouts', () => {
+		vi.useFakeTimers()
+
+		const callback = vi.fn()
+		const handle = longTimeout(callback, TIMEOUT_MAX * 2 + 1)
+		const firstTimeoutId = handle.timeoutId
+
+		vi.runOnlyPendingTimers()
+		expect(handle.timeoutId).not.toBe(firstTimeoutId)
+		clearTimeout(handle.timeoutId)
+		expect(vi.getTimerCount()).toBe(0)
+		vi.runAllTimers()
+		expect(callback).not.toBeCalled()
+
+		vi.useRealTimers()
+	})
 })
 
 describe('extractDateElements', () => {

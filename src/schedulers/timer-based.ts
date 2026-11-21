@@ -49,15 +49,32 @@ export class TimerBasedCronScheduler {
 		opts?: { errorHandler?: (err: unknown) => unknown; handle?: ITimerHandle },
 	): ITimerHandle {
 		const handle = opts?.handle ?? { timeoutId: undefined }
+		const timeout = cron.getNextDate().getTime() - Date.now()
 
-		const { timeoutId } = TimerBasedCronScheduler.setTimeout(cron, () => {
-			wrapFunction(task, opts?.errorHandler)()
-			TimerBasedCronScheduler.setInterval(cron, task, { ...opts, handle })
-		})
+		// The handle is passed on, so that it always holds the current timeout, also when
+		// multiple consecutive timeouts are needed for dates beyond the timeout limit.
+		return longTimeout(
+			() => {
+				// Schedule the next execution first, so that the task itself can clear the interval.
+				let schedulingFailed = false
+				let schedulingError: unknown
+				try {
+					TimerBasedCronScheduler.setInterval(cron, task, { ...opts, handle })
+				} catch (err) {
+					schedulingFailed = true
+					schedulingError = err
+				}
 
-		handle.timeoutId = timeoutId
-
-		return handle
+				// The due task still runs when no next execution can be scheduled,
+				// the scheduling error is passed to the error handler afterwards.
+				wrapFunction(task, opts?.errorHandler)()
+				if (schedulingFailed) {
+					opts?.errorHandler?.(schedulingError)
+				}
+			},
+			timeout,
+			handle,
+		)
 	}
 
 	/** Clears a timeout or interval, making sure that the function will no longer execute. */
