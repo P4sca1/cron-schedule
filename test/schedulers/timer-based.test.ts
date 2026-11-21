@@ -168,3 +168,29 @@ describe('TimerBasedCronScheduler.setInterval without a next date', () => {
 		expect(vi.getTimerCount()).toBe(0)
 	})
 })
+
+describe('TimerBasedCronScheduler.setInterval with a throwing error handler', () => {
+	afterEach(() => {
+		vi.clearAllTimers()
+	})
+
+	test('calls the error handler once for a failing task', () => {
+		const cron = parseCronExpression('* * * * *')
+		const handlerError = new Error('Handler.')
+		const errorHandler = vi.fn(() => {
+			throw handlerError
+		})
+		TimerBasedCronScheduler.setInterval(
+			cron,
+			() => {
+				throw new Error('Task.')
+			},
+			{ errorHandler },
+		)
+
+		expect(() => vi.runOnlyPendingTimers()).toThrow(handlerError)
+		expect(errorHandler).toHaveBeenCalledTimes(1)
+		// The next execution was scheduled before the task ran.
+		expect(vi.getTimerCount()).toBe(1)
+	})
+})
