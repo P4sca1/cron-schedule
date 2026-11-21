@@ -36,6 +36,11 @@ jobs:
           git fetch --depth 1 origin "$GITHUB_SHA"
           git show "$GITHUB_SHA:jsr.json" > jsr.json
 
+      # Releases up to v7.0.0 import the TypeScript sources with a .js extension, which Deno cannot resolve.
+      # This step changes nothing for newer releases, which already use the .ts extension.
+      - name: Use .ts extension for relative imports of older releases
+        run: find src -name '*.ts' -exec sed -i -E "s#(from '\.{1,2}/[^']*)\.js'#\1.ts'#" {} +
+
       - name: Setup Deno
         uses: denoland/setup-deno@22d081ff2d3a40755e97629de92e3bcbfa7cf2ed # v2.0.5
         with:
