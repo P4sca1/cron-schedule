@@ -39,7 +39,3 @@ jobs:
 
       - name: Perform CodeQL Analysis
         uses: github/codeql-action/analyze@33d7b85da1a04171e211befe2c739303b9a4c066 # v4.39.3
-        with:
-          # The category of the previous matrix-based workflow, so that pull requests are compared
-          # with the existing analyses of the default branch.
-          category: ".github/workflows/codeql-analysis.yml:analyze/language:javascript"
