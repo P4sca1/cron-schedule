@@ -31,7 +31,7 @@ Via pnpm:
 
 `$ pnpm add cron-schedule`
 
-**We test our code against the following Node.js releases (`18.20`, `20.12`).**
+**We test our code against the following Node.js releases (`22`, `24`, `26`).**
 Other versions of node.js may also work, but this is not tested.
 
 ##### Usage
