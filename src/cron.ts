@@ -1,12 +1,12 @@
+import { getTimeZone, type ITimeZone } from './time-zone.ts'
 import {
-	extractDateElements,
 	findOffsetTransition,
 	getDaysBetweenWeekdays,
 	getDaysInMonth,
 	getEndOfSkippedPeriod,
 	getInstantsForWallTime,
-	getTimezoneOffsetMs,
 	getUtcTime,
+	getWallTime,
 	getWallTimeAtOffset,
 	getWeekday,
 	type IWallTime,
@@ -32,6 +32,15 @@ export interface ICronDefinition {
 	readonly weekdays: Set<number>
 }
 
+/** Options for a Cron. */
+export interface ICronOptions {
+	/**
+	 * The IANA time zone (e.g. Europe/Berlin) in which the cron expression is evaluated.
+	 * Defaults to the local time zone of the runtime.
+	 */
+	readonly timezone?: string
+}
+
 export class Cron {
 	// Everything starting at 0, except for days.
 	public readonly seconds: ReadonlyArray<number>
@@ -50,14 +59,19 @@ export class Cron {
 		weekdays: ReadonlyArray<number>
 	}
 
-	public constructor({
-		seconds,
-		minutes,
-		hours,
-		days,
-		months,
-		weekdays,
-	}: ICronDefinition) {
+	/** The IANA time zone of the cron, or undefined for the local time zone of the runtime. */
+	public readonly timezone: string | undefined
+
+	readonly #timeZone: ITimeZone
+
+	public constructor(
+		{ seconds, minutes, hours, days, months, weekdays }: ICronDefinition,
+		options: ICronOptions = {},
+	) {
+		// Throws a RangeError for invalid time zones.
+		this.#timeZone = getTimeZone(options.timezone)
+		this.timezone = options.timezone
+
 		// Validate that there are values provided.
 		if (!seconds || seconds.size === 0)
 			throw new Error('There must be at least one allowed second.')
@@ -335,7 +349,10 @@ export class Cron {
 	 * jumps backwards.
 	 */
 	private findNextDateInRepeatedPeriod(startDate: Date): Date | undefined {
-		const occurrences = getInstantsForWallTime(extractDateElements(startDate))
+		const occurrences = getInstantsForWallTime(
+			this.#timeZone,
+			getWallTime(this.#timeZone, startDate.getTime()),
+		)
 		// startDate must lie in the first occurrence, i.e. before the time change.
 		if (
 			occurrences.length < 2 ||
@@ -346,16 +363,17 @@ export class Cron {
 
 		// The time change happens between the first and the second occurrence of the start wall time.
 		const transition = findOffsetTransition(
+			this.#timeZone,
 			startDate.getTime(),
 			occurrences[occurrences.length - 1].getTime(),
 		)
-		const offsetAfter = getTimezoneOffsetMs(transition)
+		const offsetAfter = this.#timeZone.getOffset(transition)
 		const wallTime = this.findWallTime(
 			'next',
 			getWallTimeAtOffset(transition - 1000, offsetAfter),
 		)
 
-		return getInstantsForWallTime(wallTime).find(
+		return getInstantsForWallTime(this.#timeZone, wallTime).find(
 			(date) => date.getTime() >= transition,
 		)
 	}
@@ -366,7 +384,10 @@ export class Cron {
 	 * second occurrence of a repeated local time.
 	 */
 	private findPrevDateInRepeatedPeriod(startDate: Date): Date | undefined {
-		const occurrences = getInstantsForWallTime(extractDateElements(startDate))
+		const occurrences = getInstantsForWallTime(
+			this.#timeZone,
+			getWallTime(this.#timeZone, startDate.getTime()),
+		)
 		// startDate must lie in the second occurrence, i.e. after the time change.
 		if (
 			occurrences.length < 2 ||
@@ -376,16 +397,17 @@ export class Cron {
 		}
 
 		const transition = findOffsetTransition(
+			this.#timeZone,
 			occurrences[0].getTime(),
 			startDate.getTime(),
 		)
-		const offsetBefore = getTimezoneOffsetMs(transition - 1)
+		const offsetBefore = this.#timeZone.getOffset(transition - 1)
 		const wallTime = this.findWallTime(
 			'prev',
 			getWallTimeAtOffset(transition, offsetBefore),
 		)
 
-		return getInstantsForWallTime(wallTime)
+		return getInstantsForWallTime(this.#timeZone, wallTime)
 			.reverse()
 			.find((date) => date.getTime() < transition)
 	}
@@ -393,7 +415,7 @@ export class Cron {
 	/** Gets the next date starting from the given start date or now. */
 	public getNextDate(startDate: Date = new Date()): Date {
 		assertValidDate(startDate)
-		let wallTime: IWallTime = extractDateElements(startDate)
+		let wallTime: IWallTime = getWallTime(this.#timeZone, startDate.getTime())
 
 		while (true) {
 			wallTime = this.findWallTime('next', wallTime)
@@ -402,21 +424,21 @@ export class Cron {
 				throw new Error('No valid next date was found.')
 			}
 
-			const instants = getInstantsForWallTime(wallTime)
+			const instants = getInstantsForWallTime(this.#timeZone, wallTime)
 
 			let nextDate: Date | undefined
 			if (instants.length === 0) {
 				// The wall time does not exist, because the clock was turned forward (e.g. start of daylight saving time).
 				// Like cron(8), jobs that run at specific hours run once right after the skipped period,
 				// while jobs that run every hour are scheduled normally and skip the period.
-				const periodEnd = getEndOfSkippedPeriod(wallTime)
+				const periodEnd = getEndOfSkippedPeriod(this.#timeZone, wallTime)
 				if (!this.matchesEveryHour() && periodEnd > startDate.getTime()) {
 					nextDate = new Date(periodEnd)
 				} else {
 					// Continue searching after the skipped period (and never go backwards).
 					const wallTimeAfterPeriod = getWallTimeAtOffset(
 						periodEnd - 1000,
-						getTimezoneOffsetMs(periodEnd),
+						this.#timeZone.getOffset(periodEnd),
 					)
 					if (getUtcTime(wallTimeAfterPeriod) > getUtcTime(wallTime)) {
 						wallTime = wallTimeAfterPeriod
@@ -572,7 +594,7 @@ export class Cron {
 			return new Date(startSecond)
 		}
 
-		let wallTime: IWallTime = extractDateElements(startDate)
+		let wallTime: IWallTime = getWallTime(this.#timeZone, startDate.getTime())
 
 		while (true) {
 			wallTime = this.findWallTime('prev', wallTime)
@@ -581,19 +603,19 @@ export class Cron {
 				throw new Error('No valid previous date was found.')
 			}
 
-			const instants = getInstantsForWallTime(wallTime)
+			const instants = getInstantsForWallTime(this.#timeZone, wallTime)
 
 			let prevDate: Date | undefined
 			if (instants.length === 0) {
 				// The wall time does not exist (see getNextDate).
-				const periodEnd = getEndOfSkippedPeriod(wallTime)
+				const periodEnd = getEndOfSkippedPeriod(this.#timeZone, wallTime)
 				if (!this.matchesEveryHour() && periodEnd < startDate.getTime()) {
 					prevDate = new Date(periodEnd)
 				} else {
 					// Continue searching before the skipped period (and never go forwards).
 					const wallTimeBeforePeriod = getWallTimeAtOffset(
 						periodEnd,
-						getTimezoneOffsetMs(periodEnd - 1),
+						this.#timeZone.getOffset(periodEnd - 1),
 					)
 					if (getUtcTime(wallTimeBeforePeriod) < getUtcTime(wallTime)) {
 						wallTime = wallTimeBeforePeriod
@@ -745,14 +767,19 @@ export class Cron {
 			return true
 		}
 
-		const [firstOccurrence] = getInstantsForWallTime(extractDateElements(date))
+		const [firstOccurrence] = getInstantsForWallTime(
+			this.#timeZone,
+			getWallTime(this.#timeZone, date.getTime()),
+		)
 		return firstOccurrence?.getTime() === date.getTime()
 	}
 
 	/** Returns true when there is a cron date at the given date. */
 	public matchDate(date: Date): boolean {
-		const { second, minute, hour, day, month, weekday } =
-			extractDateElements(date)
+		const { second, minute, hour, day, month, weekday } = getWallTime(
+			this.#timeZone,
+			date.getTime(),
+		)
 
 		if (
 			this.seconds.indexOf(second) === -1 ||
