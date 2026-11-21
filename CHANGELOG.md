@@ -1,5 +1,13 @@
 # Changelog
 
+## [v8.0.1](https://github.com/P4sca1/cron-schedule/releases/tag/v8.0.1)
+
+[Compare to previous version](https://github.com/P4sca1/cron-schedule/compare/v8.0.0...v8.0.1)
+
+### Bug Fixes
+
+- allow clearing timers beyond the timeout limit (#382) ([2c1202e](https://github.com/P4sca1/cron-schedule/commit/2c1202ecda531ff158463901fab43c2ee5a9a499))
+
 ## [v8.0.0](https://github.com/P4sca1/cron-schedule/releases/tag/v8.0.0)
 
 [Compare to previous version](https://github.com/P4sca1/cron-schedule/compare/v7.0.0...v8.0.0)
