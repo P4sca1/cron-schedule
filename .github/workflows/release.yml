@@ -18,7 +18,7 @@ jobs:
     name: Release
     runs-on: ubuntu-26.04
     permissions:
-      contents: write # to upload assets to the GitHub release created by releaser-pleaser
+      contents: read
       # required for npm trusted publishing with OIDC and npm provenance.
       # https://docs.npmjs.com/trusted-publishers
       id-token: write
@@ -57,12 +57,6 @@ jobs:
       # npm publish runs the prepack script, which builds the package.
       - name: Publish to npm
         run: npm publish --provenance
-
-      - name: Upload release assets
-        env:
-          GH_TOKEN: ${{ github.token }}
-          TAG: ${{ github.ref_name }}
-        run: gh release upload "$TAG" dist/*.js
 
   publish-jsr:
     name: JSR
