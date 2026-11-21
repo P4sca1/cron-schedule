@@ -191,3 +191,23 @@ describe('historical time zone offsets with seconds (America/New_York)', () => {
 		])
 	})
 })
+
+describe('date range', () => {
+	useTimeZone('UTC')
+
+	test('throws when no date is found within the range of JavaScript dates', () => {
+		const cron = parseCronExpression('* * * * * *')
+		expect(() => cron.getNextDate(new Date(8640000000000000))).toThrow(
+			'No valid next date was found.',
+		)
+		expect(() => cron.getPrevDate(new Date(-8640000000000000))).toThrow(
+			'No valid previous date was found.',
+		)
+	})
+
+	test('throws for invalid start dates', () => {
+		const cron = parseCronExpression('0 * * * *')
+		expect(() => cron.getNextDate(new Date(Number.NaN))).toThrow(TypeError)
+		expect(() => cron.getPrevDate(new Date(Number.NaN))).toThrow(TypeError)
+	})
+})

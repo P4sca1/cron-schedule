@@ -12,6 +12,13 @@ import {
 	type IWallTime,
 } from './utils.ts'
 
+/** Throws a TypeError for invalid dates (e.g. new Date(NaN)). */
+function assertValidDate(date: Date): void {
+	if (Number.isNaN(date.getTime())) {
+		throw new TypeError('Invalid start date.')
+	}
+}
+
 /**
  * An object with contains for each element of a date, which values are allowed.
  * Everything starting at 0, except for days.
@@ -385,10 +392,16 @@ export class Cron {
 
 	/** Gets the next date starting from the given start date or now. */
 	public getNextDate(startDate: Date = new Date()): Date {
+		assertValidDate(startDate)
 		let wallTime: IWallTime = extractDateElements(startDate)
 
 		while (true) {
 			wallTime = this.findWallTime('next', wallTime)
+			// The wall time is outside of the range of JavaScript dates.
+			if (!Number.isFinite(getUtcTime(wallTime))) {
+				throw new Error('No valid next date was found.')
+			}
+
 			const instants = getInstantsForWallTime(wallTime)
 
 			let nextDate: Date | undefined
@@ -546,10 +559,16 @@ export class Cron {
 
 	/** Gets the previous date before the given start date or now. */
 	public getPrevDate(startDate: Date = new Date()): Date {
+		assertValidDate(startDate)
 		let wallTime: IWallTime = extractDateElements(startDate)
 
 		while (true) {
 			wallTime = this.findWallTime('prev', wallTime)
+			// The wall time is outside of the range of JavaScript dates.
+			if (!Number.isFinite(getUtcTime(wallTime))) {
+				throw new Error('No valid previous date was found.')
+			}
+
 			const instants = getInstantsForWallTime(wallTime)
 
 			let prevDate: Date | undefined
