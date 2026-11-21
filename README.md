@@ -14,6 +14,7 @@ A zero-dependency cron parser and scheduler for Node.js, Deno, Bun and the brows
 - Get next or previous schedules from a specific starting date.
 - Check if a date matches a cron expression.
 - Schedule a function call based on a cron expression.
+- Supports time zones (e.g. `Europe/Berlin`) and daylight saving time, without dependencies.
 - Supports Node.js, Deno, Bun and the browser (ESM only)
 - [Lightweight](https://bundlephobia.com/result?p=cron-schedule@latest) and tree-shakeable.
 
@@ -69,7 +70,7 @@ The usage is the same as for Node.js.
 
 Install the npm package (or the JSR package via `npx jsr add @p4sca1/cron-schedule`). The usage is the same as for Node.js.
 
-Workers always run in UTC. The schedulers only run while the Worker is active (e.g. during a request), so use [Cron Triggers](https://developers.cloudflare.com/workers/configuration/cron-triggers/) for recurring jobs. Parsing cron expressions and calculating dates works without restrictions.
+Workers always run in UTC, use the [`timezone` option](#time-zones) to evaluate cron expressions in another time zone. The schedulers only run while the Worker is active (e.g. during a request), so use [Cron Triggers](https://developers.cloudflare.com/workers/configuration/cron-triggers/) for recurring jobs. Parsing cron expressions and calculating dates works without restrictions.
 
 ### Browser via CDN
 
@@ -124,9 +125,22 @@ cron.getPrevDatesIterator(startDate: Date = new Date(), endDate?: Date): Generat
 cron.matchDate(date: Date): boolean
 ```
 
+### Time zones
+
+By default, cron expressions are evaluated in the local time zone of the runtime. Pass an [IANA time zone](https://en.wikipedia.org/wiki/List_of_tz_database_time_zones) to evaluate them in another time zone:
+
+```ts
+const cron = parseCronExpression('0 9 * * 1-5', { timezone: 'Europe/Berlin' })
+
+// 09:00 in Berlin, i.e. 07:00 UTC in summer (CEST) and 08:00 UTC in winter (CET).
+cron.getNextDate(new Date('2024-07-01T00:00:00Z')) // 2024-07-01T07:00:00.000Z
+```
+
+All methods (`getNextDate`, `getPrevDate`, `matchDate`, ...) and the schedulers use the time zone of the cron. Invalid time zones throw a `RangeError`. The time zone support is based on `Intl.DateTimeFormat`, which is available in all supported runtimes.
+
 ### Daylight saving time
 
-Cron dates are calculated in the local time zone. Like [cron(8)](https://man7.org/linux/man-pages/man8/cron.8.html), time changes such as daylight saving time are handled as follows:
+Cron dates are calculated in the local time zone or the [time zone](#time-zones) of the cron. Like [cron(8)](https://man7.org/linux/man-pages/man8/cron.8.html), time changes such as daylight saving time are handled as follows:
 
 - **Skipped time** (clock turned forward): Jobs that run at specific hours (e.g. `30 2 * * *`) run once right after the skipped period. Jobs that run every hour (e.g. `0 * * * *`) are scheduled normally, i.e. the skipped times do not occur.
 - **Repeated time** (clock turned backward): Jobs that run at specific hours run only on the first occurrence. Jobs that run every hour run in both occurrences.

@@ -1,4 +1,4 @@
-import { Cron } from './cron.ts'
+import { Cron, type ICronOptions } from './cron.ts'
 
 interface IConstraint {
 	min: number
@@ -177,8 +177,14 @@ function parseElement(element: string, constraint: IConstraint): Set<number> {
 	return result
 }
 
-/** Parses a cron expression into a Cron instance. */
-export function parseCronExpression(cronExpression: string): Cron {
+/**
+ * Parses a cron expression into a Cron instance.
+ * The options allow to evaluate the cron expression in a specific IANA time zone (e.g. Europe/Berlin).
+ */
+export function parseCronExpression(
+	cronExpression: string,
+	options?: ICronOptions,
+): Cron {
 	if (typeof cronExpression !== 'string') {
 		throw new TypeError('Invalid cron expression: must be of type string.')
 	}
@@ -199,19 +205,22 @@ export function parseCronExpression(cronExpression: string): Cron {
 	const rawMonths = elements.length === 6 ? elements[4] : elements[3]
 	const rawWeekdays = elements.length === 6 ? elements[5] : elements[4]
 
-	return new Cron({
-		seconds: parseElement(rawSeconds, secondConstraint),
-		minutes: parseElement(rawMinutes, minuteConstraint),
-		hours: parseElement(rawHours, hourConstraint),
-		days: parseElement(rawDays, dayConstraint),
-		// months in cron are indexed by 1, but Cron expects indexes by 0, so we need to reduce all set values by one.
-		months: new Set(
-			Array.from(parseElement(rawMonths, monthConstraint)).map((x) => x - 1),
-		),
-		weekdays: new Set(
-			Array.from(parseElement(rawWeekdays, weekdayConstraint)).map(
-				(x) => x % 7,
+	return new Cron(
+		{
+			seconds: parseElement(rawSeconds, secondConstraint),
+			minutes: parseElement(rawMinutes, minuteConstraint),
+			hours: parseElement(rawHours, hourConstraint),
+			days: parseElement(rawDays, dayConstraint),
+			// months in cron are indexed by 1, but Cron expects indexes by 0, so we need to reduce all set values by one.
+			months: new Set(
+				Array.from(parseElement(rawMonths, monthConstraint)).map((x) => x - 1),
 			),
-		),
-	})
+			weekdays: new Set(
+				Array.from(parseElement(rawWeekdays, weekdayConstraint)).map(
+					(x) => x % 7,
+				),
+			),
+		},
+		options,
+	)
 }
