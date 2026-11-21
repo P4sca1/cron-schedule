@@ -11,15 +11,21 @@ on:
       - labeled
       - unlabeled
 
-concurrency:
-  group: releaser-pleaser
-  cancel-in-progress: true
-
 permissions: {}
 
 jobs:
   releaser-pleaser:
     name: releaser-pleaser
+    # Only the release pull request and merged pull requests (rp-commits overrides) affect the release.
+    # Edits of other open pull requests (e.g. by Renovate) are skipped and do not cancel a running job.
+    if: >-
+      github.event_name == 'push' ||
+      github.event.pull_request.merged ||
+      github.event.pull_request.head.ref == 'releaser-pleaser--branches--main'
+    # On job level, so that skipped runs do not join the group.
+    concurrency:
+      group: releaser-pleaser
+      cancel-in-progress: true
     runs-on: ubuntu-26.04
     steps:
       - name: releaser-pleaser
