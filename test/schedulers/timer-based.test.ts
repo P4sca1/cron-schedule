@@ -144,3 +144,27 @@ describe('TimerBasedCronScheduler.setInterval', () => {
 		expect(vi.getTimerCount()).toBe(0)
 	})
 })
+
+describe('TimerBasedCronScheduler.setInterval without a next date', () => {
+	test('executes the due task and passes the error to the error handler', () => {
+		const error = new Error('No valid next date was found.')
+		let calls = 0
+		const cron = {
+			getNextDate: () => {
+				calls += 1
+				if (calls > 1) {
+					throw error
+				}
+				return new Date(Date.now() + 60 * 1000)
+			},
+		} as unknown as Cron
+		const task = vi.fn()
+		const errorHandler = vi.fn()
+		TimerBasedCronScheduler.setInterval(cron, task, { errorHandler })
+
+		expect(() => vi.runOnlyPendingTimers()).not.toThrow()
+		expect(task).toHaveBeenCalledTimes(1)
+		expect(errorHandler).toHaveBeenCalledWith(error)
+		expect(vi.getTimerCount()).toBe(0)
+	})
+})

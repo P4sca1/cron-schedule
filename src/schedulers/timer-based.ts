@@ -54,11 +54,16 @@ export class TimerBasedCronScheduler {
 		// The handle is passed on, so that it always holds the current timeout, also when
 		// multiple consecutive timeouts are needed for dates beyond the timeout limit.
 		return longTimeout(
-			() => {
-				// Schedule the next execution first, so that the task itself can clear the interval.
-				TimerBasedCronScheduler.setInterval(cron, task, { ...opts, handle })
-				wrapFunction(task, opts?.errorHandler)()
-			},
+			wrapFunction(() => {
+				try {
+					// Schedule the next execution first, so that the task itself can clear the interval.
+					TimerBasedCronScheduler.setInterval(cron, task, { ...opts, handle })
+				} finally {
+					// The due task still runs when no next execution can be scheduled.
+					// The error is passed to the error handler afterwards.
+					wrapFunction(task, opts?.errorHandler)()
+				}
+			}, opts?.errorHandler),
 			timeout,
 			handle,
 		)
