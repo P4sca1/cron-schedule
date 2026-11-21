@@ -1,6 +1,19 @@
 import { afterEach, describe, expect, test, vi } from 'vitest'
-import { parseCronExpression } from '../../src/index.ts'
+import { type Cron, parseCronExpression } from '../../src/index.ts'
 import { IntervalBasedCronScheduler } from '../../src/schedulers/interval-based.ts'
+
+/**
+ * Creates a cron stub that is due the given amount of minutes after start and then every hour.
+ * The deadlines are relative to the fake clock, so the tests neither depend on the local time zone
+ * (e.g. daylight saving time changes) nor on vi.setSystemTime, which Bun does not support.
+ */
+function cronDueAfterMinutes(start: number, minutes: number): Cron {
+	const deadline = start + minutes * 60 * 1000
+	return {
+		getNextDate: () =>
+			new Date(Date.now() < deadline ? deadline : deadline + 60 * 60 * 1000),
+	} as unknown as Cron
+}
 
 vi.useFakeTimers()
 const setIntervalSpy = vi.spyOn(global, 'setInterval')
@@ -75,15 +88,13 @@ describe('IntervalBasedCronScheduler', () => {
 		test.each([[[1, 2, 3]], [[3, 2, 1]], [[2, 3, 1]], [[1, 1, 2]]])(
 			'dispatches registration order %j at each deadline',
 			(minutes) => {
-				// The tasks are due 1, 2 or 3 minutes after the current minute.
-				// The time is not set to a fixed date, because Bun does not support vi.setSystemTime.
-				const currentMinute = new Date().getMinutes()
+				const start = Date.now()
 				const scheduler = new IntervalBasedCronScheduler(60 * 1000)
 				const executed: number[] = []
 
 				for (const minute of minutes) {
 					scheduler.registerTask(
-						parseCronExpression(`${(currentMinute + minute) % 60} * * * *`),
+						cronDueAfterMinutes(start, minute),
 						() => executed.push(minute),
 						{ isOneTimeTask },
 					)
