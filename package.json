@@ -1,11 +1,11 @@
 {
   "name": "cron-schedule",
   "description": "A zero-dependency cron parser and scheduler for Node.js, Deno, Bun and the browser.",
-  "version": "0.0.0-semantically-released",
+  "version": "7.0.0",
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "https://github.com/P4sca1/cron-schedule.git"
+    "url": "git+https://github.com/P4sca1/cron-schedule.git"
   },
   "author": "P4sca1 <sthamer.pascal@gmail.com>",
   "contributors": [
@@ -54,25 +54,9 @@
   },
   "types": "./dist/index.d.ts",
   "sideEffects": false,
-  "release": {
-    "branches": [
-      "main",
-      {
-        "name": "next",
-        "prerelease": true
-      }
-    ],
-    "preset": "angular",
-    "plugins": [
-      "@semantic-release/commit-analyzer",
-      "@semantic-release/release-notes-generator",
-      "@semantic-release/npm",
-      "@semantic-release/github"
-    ]
-  },
   "scripts": {
     "build": "rimraf ./dist && pnpm run tsc:build",
-    "tsc:build": "tsc --project ./tsconfig.json && node ./scripts/fix-declaration-imports.mjs",
+    "tsc:build": "tsc --project ./tsconfig.json",
     "tsc:check": "tsc --project ./tsconfig.json --noEmit",
     "tsc:watch": "tsc --project ./tsconfig.json --noEmit --watch",
     "test:types": "tsc --project ./test/types/tsconfig.json",
@@ -88,7 +72,6 @@
     "@biomejs/biome": "2.6.8",
     "@types/node": "22.20.5",
     "rimraf": "6.1.4",
-    "semantic-release": "26.0.1",
     "typescript": "7.0.2",
     "vitest": "5.1.1"
   }

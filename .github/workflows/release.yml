@@ -2,9 +2,8 @@ name: Release
 
 on:
   push:
-    branches:
-      - main
-      - next
+    tags:
+      - "v*.*.*"
 
 # Never cancel a running release.
 concurrency:
@@ -14,20 +13,15 @@ concurrency:
 permissions: {}
 
 jobs:
-  # The full test matrix already ran in the pull request, so only test once before releasing.
+  # The full test matrix already ran in the release pull request, so only test once before publishing.
   release:
     name: Release
     runs-on: ubuntu-26.04
     permissions:
-      # required for npm trusted publishing with OIDC.
-      # https://docs.npmjs.com/trusted-publishers#step-2-configure-your-cicd-workflow
-      # https://github.com/semantic-release/npm?tab=readme-ov-file#trusted-publishing-from-github-actions
-      contents: write # to be able to publish a GitHub release
-      issues: write # to be able to comment on released issues
-      pull-requests: write # to be able to comment on released pull requests
-      id-token: write # to enable use of OIDC for trusted publishing and npm provenance
-    outputs:
-      tag: ${{ steps.tag.outputs.tag }}
+      contents: write # to upload assets to the GitHub release created by releaser-pleaser
+      # required for npm trusted publishing with OIDC and npm provenance.
+      # https://docs.npmjs.com/trusted-publishers
+      id-token: write
     steps:
       - name: Checkout
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
@@ -41,8 +35,18 @@ jobs:
           node-version: 26.13.1
           cache: pnpm
 
+      - name: Verify that the tag matches the package version
+        env:
+          TAG: ${{ github.ref_name }}
+        run: |
+          VERSION="$(node -p 'require("./package.json").version')"
+          if [ "v$VERSION" != "$TAG" ]; then
+            echo "::error::Tag $TAG does not match package.json version $VERSION"
+            exit 1
+          fi
+
       - name: Install dependencies
-        run: pnpm install
+        run: pnpm install --frozen-lockfile
 
       - name: Verify the integrity of provenance attestations and registry signatures for installed dependencies
         run: npm audit signatures
@@ -50,23 +54,22 @@ jobs:
       - name: Test
         run: pnpm test:ci
 
-      - name: Release
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: pnpm exec semantic-release
+      # npm publish runs the prepack script, which builds the package.
+      - name: Publish to npm
+        run: npm publish --provenance
 
-      # semantic-release creates the tag of a new release on the current commit.
-      - name: Get release tag
-        id: tag
-        run: echo "tag=$(git tag --points-at HEAD 'v*' | head -n 1)" >> "$GITHUB_OUTPUT"
+      - name: Upload release assets
+        env:
+          GH_TOKEN: ${{ github.token }}
+          TAG: ${{ github.ref_name }}
+        run: gh release upload "$TAG" dist/*.js
 
   publish-jsr:
     name: JSR
     needs: release
-    if: needs.release.outputs.tag != ''
     permissions:
       contents: read
       id-token: write
     uses: ./.github/workflows/publish-jsr.yml
     with:
-      tag: ${{ needs.release.outputs.tag }}
+      tag: ${{ github.ref_name }}
