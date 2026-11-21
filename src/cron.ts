@@ -1,7 +1,12 @@
 import {
 	extractDateElements,
+	findOffsetTransition,
 	getDaysBetweenWeekdays,
 	getDaysInMonth,
+	getEndOfSkippedPeriod,
+	getInstantsForWallTime,
+	getWallTimeAtOffset,
+	type IWallTime,
 } from './utils.ts'
 
 /**
@@ -304,9 +309,139 @@ export class Cron {
 		return undefined
 	}
 
+	/**
+	 * Returns true when the cron matches every hour of the day.
+	 * Like cron(8), such jobs run in every real hour during daylight saving time changes,
+	 * while jobs that run at specific hours run only once in a repeated hour.
+	 */
+	private matchesEveryHour(): boolean {
+		return this.hours.length === 24
+	}
+
+	/**
+	 * Returns the earliest instant after startDate that falls into the repeated period of a backward time change
+	 * (e.g. the end of daylight saving time) and matches the cron, when startDate itself lies in the first
+	 * occurrence of a repeated local time. Wall-clock based search skips this period, because the local time
+	 * jumps backwards.
+	 */
+	private findNextDateInRepeatedPeriod(startDate: Date): Date | undefined {
+		const occurrences = getInstantsForWallTime(extractDateElements(startDate))
+		// startDate must lie in the first occurrence, i.e. before the time change.
+		if (
+			occurrences.length < 2 ||
+			startDate.getTime() >= occurrences[occurrences.length - 1].getTime()
+		) {
+			return undefined
+		}
+
+		// The time change happens between the first and the second occurrence of the start wall time.
+		const transition = findOffsetTransition(
+			startDate.getTime(),
+			occurrences[occurrences.length - 1].getTime(),
+		)
+		const offsetAfter = new Date(transition).getTimezoneOffset()
+		const wallTime = this.findWallTime(
+			'next',
+			getWallTimeAtOffset(transition - 1000, offsetAfter),
+		)
+
+		return getInstantsForWallTime(wallTime).find(
+			(date) => date.getTime() >= transition,
+		)
+	}
+
+	/**
+	 * Returns the latest instant before startDate that falls into the first occurrence of a period, which
+	 * is repeated because of a backward time change, and matches the cron, when startDate itself lies in the
+	 * second occurrence of a repeated local time.
+	 */
+	private findPrevDateInRepeatedPeriod(startDate: Date): Date | undefined {
+		const occurrences = getInstantsForWallTime(extractDateElements(startDate))
+		// startDate must lie in the second occurrence, i.e. after the time change.
+		if (
+			occurrences.length < 2 ||
+			startDate.getTime() < occurrences[occurrences.length - 1].getTime()
+		) {
+			return undefined
+		}
+
+		const transition = findOffsetTransition(
+			occurrences[0].getTime(),
+			startDate.getTime(),
+		)
+		const offsetBefore = new Date(transition - 1).getTimezoneOffset()
+		const wallTime = this.findWallTime(
+			'prev',
+			getWallTimeAtOffset(transition, offsetBefore),
+		)
+
+		return getInstantsForWallTime(wallTime)
+			.reverse()
+			.find((date) => date.getTime() < transition)
+	}
+
 	/** Gets the next date starting from the given start date or now. */
 	public getNextDate(startDate: Date = new Date()): Date {
-		const startDateElements = extractDateElements(startDate)
+		let wallTime: IWallTime = extractDateElements(startDate)
+
+		while (true) {
+			wallTime = this.findWallTime('next', wallTime)
+			const instants = getInstantsForWallTime(wallTime)
+
+			let nextDate: Date | undefined
+			if (instants.length === 0) {
+				// The wall time does not exist, because the clock was turned forward (e.g. start of daylight saving time).
+				// Like cron(8), jobs that run at specific hours run once right after the skipped period,
+				// while jobs that run every hour are scheduled normally and skip the period.
+				const periodEnd = getEndOfSkippedPeriod(wallTime)
+				if (!this.matchesEveryHour() && periodEnd > startDate.getTime()) {
+					nextDate = new Date(periodEnd)
+				} else {
+					// Continue searching after the skipped period.
+					wallTime = getWallTimeAtOffset(
+						periodEnd - 1000,
+						new Date(periodEnd).getTimezoneOffset(),
+					)
+					continue
+				}
+			} else {
+				// The wall time may exist twice, because the clock was turned backward (e.g. end of daylight saving time).
+				// Jobs that run at specific hours only run on the first occurrence.
+				nextDate = (this.matchesEveryHour() ? instants : [instants[0]]).find(
+					(date) => date.getTime() > startDate.getTime(),
+				)
+			}
+
+			if (nextDate === undefined) {
+				continue
+			}
+
+			if (this.matchesEveryHour()) {
+				const repeatedDate = this.findNextDateInRepeatedPeriod(startDate)
+				if (
+					repeatedDate !== undefined &&
+					repeatedDate.getTime() > startDate.getTime() &&
+					repeatedDate.getTime() < nextDate.getTime()
+				) {
+					return repeatedDate
+				}
+			}
+
+			return nextDate
+		}
+	}
+
+	/**
+	 * Finds the next or previous wall time (local date and time) that matches the cron, starting from the given
+	 * wall time. The start wall time itself is not allowed.
+	 */
+	private findWallTime(dir: 'next' | 'prev', start: IWallTime): IWallTime {
+		return dir === 'next'
+			? this.findNextWallTime(start)
+			: this.findPrevWallTime(start)
+	}
+
+	private findNextWallTime(startDateElements: IWallTime): IWallTime {
 		let minYear = startDateElements.year
 
 		let startIndexMonth = this.months.findIndex(
@@ -342,14 +477,7 @@ export class Cron {
 			if (day !== undefined && isStartDay) {
 				const nextTime = this.findAllowedTime('next', startDateElements)
 				if (nextTime !== undefined) {
-					return new Date(
-						year,
-						month,
-						day,
-						nextTime.hour,
-						nextTime.minute,
-						nextTime.second,
-					)
+					return { year, month, day, ...nextTime }
 				}
 
 				// If no valid time has been found for the start date, try the next day.
@@ -360,14 +488,14 @@ export class Cron {
 			// If we found a next day and it is not the start day, just use the next day with the first allowed values
 			// for hours, minutes and seconds.
 			if (day !== undefined && !isStartDay) {
-				return new Date(
+				return {
 					year,
 					month,
 					day,
-					this.hours[0],
-					this.minutes[0],
-					this.seconds[0],
-				)
+					hour: this.hours[0],
+					minute: this.minutes[0],
+					second: this.seconds[0],
+				}
 			}
 
 			// No allowed day has been found for this month. Continue to search in next month.
@@ -410,9 +538,55 @@ export class Cron {
 		}
 	}
 
-	/** Gets the previous date starting from the given start date or now. */
+	/** Gets the previous date before the given start date or now. */
 	public getPrevDate(startDate: Date = new Date()): Date {
-		const startDateElements = extractDateElements(startDate)
+		let wallTime: IWallTime = extractDateElements(startDate)
+
+		while (true) {
+			wallTime = this.findWallTime('prev', wallTime)
+			const instants = getInstantsForWallTime(wallTime)
+
+			let prevDate: Date | undefined
+			if (instants.length === 0) {
+				// The wall time does not exist (see getNextDate).
+				const periodEnd = getEndOfSkippedPeriod(wallTime)
+				if (!this.matchesEveryHour() && periodEnd < startDate.getTime()) {
+					prevDate = new Date(periodEnd)
+				} else {
+					// Continue searching before the skipped period.
+					wallTime = getWallTimeAtOffset(
+						periodEnd,
+						new Date(periodEnd - 1).getTimezoneOffset(),
+					)
+					continue
+				}
+			} else {
+				prevDate = (this.matchesEveryHour() ? instants : [instants[0]])
+					.reverse()
+					.find((date) => date.getTime() < startDate.getTime())
+			}
+
+			// All occurrences of the wall time are at or after startDate. Continue searching from the wall time.
+			if (prevDate === undefined) {
+				continue
+			}
+
+			if (this.matchesEveryHour()) {
+				const repeatedDate = this.findPrevDateInRepeatedPeriod(startDate)
+				if (
+					repeatedDate !== undefined &&
+					repeatedDate.getTime() < startDate.getTime() &&
+					repeatedDate.getTime() > prevDate.getTime()
+				) {
+					return repeatedDate
+				}
+			}
+
+			return prevDate
+		}
+	}
+
+	private findPrevWallTime(startDateElements: IWallTime): IWallTime {
 		let maxYear = startDateElements.year
 
 		let startIndexMonth = this.reversed.months.findIndex(
@@ -455,14 +629,7 @@ export class Cron {
 			if (day !== undefined && isStartDay) {
 				const prevTime = this.findAllowedTime('prev', startDateElements)
 				if (prevTime !== undefined) {
-					return new Date(
-						year,
-						month,
-						day,
-						prevTime.hour,
-						prevTime.minute,
-						prevTime.second,
-					)
+					return { year, month, day, ...prevTime }
 				}
 
 				// If no valid time has been found for the start date, try the previous day.
@@ -475,14 +642,14 @@ export class Cron {
 			// If we found a previous day and it is not the start day, just use the previous day with the first allowed values
 			// for hours, minutes and seconds (which will be the latest time due to using the reversed array).
 			if (day !== undefined && !isStartDay) {
-				return new Date(
+				return {
 					year,
 					month,
 					day,
-					this.reversed.hours[0],
-					this.reversed.minutes[0],
-					this.reversed.seconds[0],
-				)
+					hour: this.reversed.hours[0],
+					minute: this.reversed.minutes[0],
+					second: this.reversed.seconds[0],
+				}
 			}
 
 			// No allowed day has been found for this month. Continue to search in previous month.

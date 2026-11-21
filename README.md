@@ -124,6 +124,15 @@ cron.getPrevDatesIterator(startDate: Date = new Date(), endDate?: Date): Generat
 cron.matchDate(date: Date): boolean
 ```
 
+### Daylight saving time
+
+Cron dates are calculated in the local time zone. Like [cron(8)](https://man7.org/linux/man-pages/man8/cron.8.html), time changes such as daylight saving time are handled as follows:
+
+- **Skipped time** (clock turned forward): Jobs that run at specific hours (e.g. `30 2 * * *`) run once right after the skipped period. Jobs that run every hour (e.g. `0 * * * *`) are scheduled normally, i.e. the skipped times do not occur.
+- **Repeated time** (clock turned backward): Jobs that run at specific hours run only on the first occurrence. Jobs that run every hour run in both occurrences.
+
+`getPrevDate` mirrors `getNextDate`, so the previous dates are always strictly before the start date.
+
 ## Schedule tasks based on cron expressions
 
 You can schedule tasks to be executed based on a cron expression. _cron-schedule_ comes with 2 different schedulers.
