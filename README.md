@@ -86,7 +86,7 @@ The example above uses [jsDelivr](https://www.jsdelivr.com).
 
 ### Note on :version placeholder
 
-The Deno import and CDN urls contain a `:version` placeholder. Replace `:version` with the desired version. Semver ranges are supported. To always use the latest `7.x` version use `^7.0.0`.
+The Deno import and CDN urls contain a `:version` placeholder. Replace `:version` with the desired version. Semver ranges are supported. To always use the latest `8.x` version use `^8.0.0` (JSR provides versions from 8.0.0 on).
 See https://www.npmjs.com/package/cron-schedule or https://jsr.io/@p4sca1/cron-schedule for a list of available versions.
 
 ## Work with cron expressions
